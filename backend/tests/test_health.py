@@ -16,7 +16,7 @@ def test_health_check_returns_unified_response() -> None:
             "service": "Premier League Insight Agent API",
             "status": "healthy",
             "environment": "development",
-            "version": "0.9.0",
+            "version": "0.10.0",
         },
     }
 

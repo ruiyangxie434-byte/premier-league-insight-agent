@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.database.seed import SAMPLE_SEASON
+from app.database.seed import MATCH_SOURCE_KIND, SAMPLE_SEASON
 from app.database.session import get_db
 from app.models import Club, Match, Player
 from app.schemas.club import (
@@ -47,7 +47,10 @@ def to_club_summary(club: Club) -> ClubSummary:
 
 
 def to_match_preview(match: Match) -> ClubMatchPreview | None:
-    if match.source_match_id is None:
+    if (
+        match.source_match_id is None
+        or match.source_kind != MATCH_SOURCE_KIND
+    ):
         return None
     return ClubMatchPreview(
         source_match_id=match.source_match_id,

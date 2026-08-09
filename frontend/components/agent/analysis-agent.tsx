@@ -303,7 +303,7 @@ export function AnalysisAgent() {
             >
               {capabilities?.qwen_configured
                 ? `${capabilities.model} · ONLINE`
-                : "LOCAL SAFE MODE · v0.9"}
+                : "LOCAL SAFE MODE · v0.10"}
             </span>
           </div>
 

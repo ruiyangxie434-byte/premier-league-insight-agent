@@ -46,6 +46,7 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/openfootball_pl_2024_25.json
 !data/processed/statsbomb_match_3749448.json
 
 # IDE and operating system

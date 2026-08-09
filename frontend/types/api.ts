@@ -170,6 +170,94 @@ export interface MatchDetailData extends MatchSummaryData {
   interpretation_note: string;
 }
 
+export type FormResult = "W" | "D" | "L";
+
+export interface FormClubData {
+  id: number;
+  name: string;
+  short_name: string;
+  slug: string;
+  primary_color: string;
+}
+
+export interface FormRecordData {
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
+  points: number;
+  points_per_game: number;
+}
+
+export interface SeasonFormClubItem {
+  position: number;
+  club: FormClubData;
+  overall: FormRecordData;
+  home: FormRecordData;
+  away: FormRecordData;
+  recent_form: FormResult[];
+  recent_points: number;
+  points_by_matchweek: number[];
+}
+
+export interface SeasonFormOverviewData {
+  competition: string;
+  season: string;
+  snapshot_date: string;
+  match_count: number;
+  goal_count: number;
+  goals_per_match: number;
+  home_wins: number;
+  draws: number;
+  away_wins: number;
+  items: SeasonFormClubItem[];
+  source_name: string;
+  source_url: string;
+  license_name: string;
+  license_url: string;
+  source_commit: string;
+  sample_notice: string;
+}
+
+export interface ClubFormMatchData {
+  source_match_id: string;
+  matchweek: number;
+  kickoff_at: string | null;
+  venue: string;
+  is_home: boolean;
+  opponent: FormClubData;
+  home_club: FormClubData;
+  away_club: FormClubData;
+  home_score: number;
+  away_score: number;
+  result: FormResult;
+  points: number;
+}
+
+export interface ClubSeasonFormData {
+  competition: string;
+  season: string;
+  snapshot_date: string;
+  club: FormClubData;
+  final_position: number;
+  overall: FormRecordData;
+  home: FormRecordData;
+  away: FormRecordData;
+  recent_form: FormResult[];
+  longest_unbeaten: number;
+  points_by_matchweek: number[];
+  matches: ClubFormMatchData[];
+  source_name: string;
+  source_url: string;
+  license_name: string;
+  license_url: string;
+  source_commit: string;
+  sample_notice: string;
+}
+
 export type PlayerPosition = "FWD" | "MID" | "DEF" | "GK";
 
 export type PlayerSortKey =

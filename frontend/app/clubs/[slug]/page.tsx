@@ -5,8 +5,11 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
-import { getClub } from "../../../services/api";
-import type { ClubDetailData } from "../../../types/api";
+import { getClub, getClubSeasonForm } from "../../../services/api";
+import type {
+  ClubDetailData,
+  ClubSeasonFormData,
+} from "../../../types/api";
 
 type ClubPageState = "loading" | "success" | "error";
 
@@ -41,6 +44,7 @@ export default function ClubDetailPage() {
   const params = useParams<{ slug: string }>();
   const [state, setState] = useState<ClubPageState>("loading");
   const [club, setClub] = useState<ClubDetailData | null>(null);
+  const [clubForm, setClubForm] = useState<ClubSeasonFormData | null>(null);
   const [requestId, setRequestId] = useState(0);
 
   useEffect(() => {
@@ -50,12 +54,16 @@ export default function ClubDetailPage() {
       setState("loading");
 
       try {
-        const response = await getClub(params.slug, controller.signal);
-        if (!response.data) {
+        const [clubResponse, formResponse] = await Promise.all([
+          getClub(params.slug, controller.signal),
+          getClubSeasonForm(params.slug, "2024-25", controller.signal),
+        ]);
+        if (!clubResponse.data || !formResponse.data) {
           throw new Error("球队详情为空");
         }
 
-        setClub(response.data);
+        setClub(clubResponse.data);
+        setClubForm(formResponse.data);
         setState("success");
       } catch {
         if (!controller.signal.aborted) {
@@ -81,7 +89,7 @@ export default function ClubDetailPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.9.0 · Agent Notebook</span>
+          <span className="phase-badge">v0.10.0 · Season Form Lab</span>
         </header>
 
         <Link className="club-back-link" href="/#club-map">
@@ -94,7 +102,7 @@ export default function ClubDetailPage() {
             <span className="loading-ring" aria-hidden="true" />
             <div>
               <strong>正在读取球队资料</strong>
-              <p>从 FastAPI 获取球场与样例阵容。</p>
+              <p>从 FastAPI 获取球场、赛季状态与样例阵容。</p>
             </div>
           </div>
         )}
@@ -116,7 +124,7 @@ export default function ClubDetailPage() {
           </div>
         )}
 
-        {state === "success" && club && (
+        {state === "success" && club && clubForm && (
           <div
             className="club-detail-content"
             style={
@@ -154,6 +162,83 @@ export default function ClubDetailPage() {
                   </dd>
                 </div>
               </dl>
+            </section>
+
+            <section className="club-form-section" aria-labelledby="club-form-title">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">2024/25 SEASON FORM</p>
+                  <h2 id="club-form-title">赛季是怎样走完的</h2>
+                </div>
+                <p>{clubForm.season} 已完赛快照 · 截止 {clubForm.snapshot_date}</p>
+              </div>
+
+              <div className="club-form-summary">
+                <article>
+                  <span>FINAL POSITION</span>
+                  <strong>{clubForm.final_position}<small> / 20</small></strong>
+                  <p>{clubForm.overall.points} 分 · {clubForm.overall.points_per_game} PPG</p>
+                </article>
+                <article>
+                  <span>RECORD</span>
+                  <strong>{clubForm.overall.won}<small> 胜</small></strong>
+                  <p>{clubForm.overall.drawn} 平 · {clubForm.overall.lost} 负</p>
+                </article>
+                <article>
+                  <span>GOAL BALANCE</span>
+                  <strong>{clubForm.overall.goal_difference > 0 ? "+" : ""}{clubForm.overall.goal_difference}</strong>
+                  <p>{clubForm.overall.goals_for} 进 · {clubForm.overall.goals_against} 失</p>
+                </article>
+                <article>
+                  <span>UNBEATEN RUN</span>
+                  <strong>{clubForm.longest_unbeaten}<small> 场</small></strong>
+                  <p>赛季最长连续不败</p>
+                </article>
+              </div>
+
+              <div className="club-form-detail-grid">
+                <div className="club-form-splits">
+                  <article>
+                    <span>HOME · 主场</span>
+                    <strong>{clubForm.home.points} 分</strong>
+                    <p>{clubForm.home.won}胜 {clubForm.home.drawn}平 {clubForm.home.lost}负 · {clubForm.home.goals_for}:{clubForm.home.goals_against}</p>
+                  </article>
+                  <article>
+                    <span>AWAY · 客场</span>
+                    <strong>{clubForm.away.points} 分</strong>
+                    <p>{clubForm.away.won}胜 {clubForm.away.drawn}平 {clubForm.away.lost}负 · {clubForm.away.goals_for}:{clubForm.away.goals_against}</p>
+                  </article>
+                </div>
+
+                <div className="club-recent-results">
+                  <div>
+                    <span>LAST FIVE · 末五场</span>
+                    <div className="form-chip-row">
+                      {clubForm.recent_form.map((result, index) => (
+                        <i data-result={result} key={`${result}-${index}`}>{result}</i>
+                      ))}
+                    </div>
+                  </div>
+                  <ol>
+                    {clubForm.matches.slice(-5).reverse().map((match) => (
+                      <li key={match.source_match_id}>
+                        <i data-result={match.result}>{match.result}</i>
+                        <span>
+                          <small>MW {match.matchweek} · {match.is_home ? "主" : "客"}</small>
+                          <strong>{match.opponent.short_name}</strong>
+                        </span>
+                        <b>{match.home_score}–{match.away_score}</b>
+                        <time dateTime={match.kickoff_at ?? undefined}>{formatMatchDate(match.kickoff_at)}</time>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+
+              <div className="club-form-footer">
+                <p>{clubForm.sample_notice}</p>
+                <Link className="primary-button" href="/form">打开赛季状态实验室</Link>
+              </div>
             </section>
 
             <section
@@ -234,6 +319,9 @@ export default function ClubDetailPage() {
                 </Link>
                 <Link className="secondary-button" href="/matches">
                   打开比赛实验室
+                </Link>
+                <Link className="secondary-button" href="/form">
+                  查看赛季走势
                 </Link>
               </div>
             </section>

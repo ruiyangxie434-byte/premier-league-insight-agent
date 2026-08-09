@@ -8,6 +8,7 @@ import type {
   AgentRunListData,
   ApiResponse,
   ClubDetailData,
+  ClubSeasonFormData,
   ClubListData,
   HealthData,
   MatchDetailData,
@@ -15,6 +16,7 @@ import type {
   PlayerLabData,
   PlayerLabItem,
   PlayerLabQuery,
+  SeasonFormOverviewData,
   StandingTableData,
 } from "../types/api";
 
@@ -98,6 +100,27 @@ export function getMatch(
 ): Promise<ApiResponse<MatchDetailData>> {
   return getApiData<MatchDetailData>(
     `/matches/${encodeURIComponent(sourceMatchId)}`,
+    signal,
+  );
+}
+
+export function getSeasonForm(
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<SeasonFormOverviewData>> {
+  return getApiData<SeasonFormOverviewData>(
+    `/form?season=${encodeURIComponent(season)}`,
+    signal,
+  );
+}
+
+export function getClubSeasonForm(
+  slug: string,
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<ClubSeasonFormData>> {
+  return getApiData<ClubSeasonFormData>(
+    `/form/clubs/${encodeURIComponent(slug)}?season=${encodeURIComponent(season)}`,
     signal,
   );
 }

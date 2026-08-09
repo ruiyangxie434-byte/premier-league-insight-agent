@@ -136,7 +136,7 @@ export default function MatchDetailPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.9.0 · Agent Notebook</span>
+          <span className="phase-badge">v0.10.0 · Season Form Lab</span>
         </header>
 
         <Link className="club-back-link" href="/matches">

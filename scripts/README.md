@@ -13,3 +13,13 @@ python .\scripts\build_match_snapshot.py
 ```
 
 应用启动时不会下载远程事件数据。来源、许可、字段与解释边界见 [`docs/MATCH_LAB.md`](../docs/MATCH_LAB.md)。
+
+## 生成 Season Form Lab 快照
+
+`build_season_results_snapshot.py` 读取固定 OpenFootball 提交中的 2024-25 英超结果文本，解析 380 场比分，并验证 38 轮、20 队、每队 38 场和 1115 个进球。
+
+```powershell
+python .\scripts\build_season_results_snapshot.py
+```
+
+运行中的应用只读取 `data/processed/openfootball_pl_2024_25.json`，不会联网更新赛果。来源提交、CC0 许可、指标和边界见 [`docs/SEASON_FORM_LAB.md`](../docs/SEASON_FORM_LAB.md)。

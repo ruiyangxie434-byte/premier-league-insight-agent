@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from sqlalchemy import select
@@ -12,11 +12,18 @@ CLUB_SOURCE_KIND = "reference"
 STANDING_SOURCE_KIND = "historical"
 PLAYER_SOURCE_KIND = "sample"
 MATCH_SOURCE_KIND = "open-data"
+SEASON_RESULTS_SOURCE_KIND = "openfootball"
 MATCH_SNAPSHOT_PATH = (
     Path(__file__).resolve().parents[3]
     / "data"
     / "processed"
     / "statsbomb_match_3749448.json"
+)
+SEASON_RESULTS_SNAPSHOT_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "data"
+    / "processed"
+    / "openfootball_pl_2024_25.json"
 )
 
 CLUBS = [
@@ -705,6 +712,65 @@ def load_match_snapshot() -> dict:
     return json.loads(MATCH_SNAPSHOT_PATH.read_text(encoding="utf-8"))
 
 
+def load_season_results_snapshot() -> dict:
+    return json.loads(
+        SEASON_RESULTS_SNAPSHOT_PATH.read_text(encoding="utf-8")
+    )
+
+
+def seed_season_results(
+    session: Session,
+    clubs_by_slug: dict[str, Club],
+) -> bool:
+    """Synchronize the pinned 2024-25 OpenFootball result snapshot."""
+
+    snapshot = load_season_results_snapshot()
+    existing_matches = {
+        match.source_match_id: match
+        for match in session.scalars(
+            select(Match).where(
+                Match.source_kind == SEASON_RESULTS_SOURCE_KIND
+            )
+        ).all()
+        if match.source_match_id is not None
+    }
+    rows_changed = False
+
+    for match_data in snapshot["matches"]:
+        source_match_id = match_data["source_match_id"]
+        kickoff_at = (
+            datetime.fromisoformat(match_data["kickoff_at"])
+            .astimezone(UTC)
+            .replace(tzinfo=None)
+        )
+        home_club = clubs_by_slug[match_data["home_slug"]]
+        away_club = clubs_by_slug[match_data["away_slug"]]
+        expected_match = {
+            "season": snapshot["season"],
+            "matchweek": match_data["matchweek"],
+            "kickoff_at": kickoff_at,
+            "home_club_id": home_club.id,
+            "away_club_id": away_club.id,
+            "home_score": match_data["home_score"],
+            "away_score": match_data["away_score"],
+            "venue": home_club.stadium_name,
+            "status": "completed",
+            "source_kind": SEASON_RESULTS_SOURCE_KIND,
+        }
+        match = existing_matches.get(source_match_id)
+        if match is None:
+            session.add(Match(source_match_id=source_match_id, **expected_match))
+            rows_changed = True
+            continue
+
+        for field, value in expected_match.items():
+            if getattr(match, field) != value:
+                setattr(match, field, value)
+                rows_changed = True
+
+    return rows_changed
+
+
 def seed_match_snapshot(
     session: Session,
     clubs_by_slug: dict[str, Club],
@@ -793,9 +859,9 @@ def seed_sample_data(session: Session) -> bool:
 
     Club and final-table reference rows are updated in place so an existing
     v0.5 database can receive the complete league without deleting SQLite.
-    Player and player-stat rows remain clearly marked as samples.  The featured
-    historical match is synchronized from a compact StatsBomb Open Data
-    snapshot and retains separate provenance.
+    Player and player-stat rows remain clearly marked as samples.  The complete
+    2024-25 result list and featured historical event match are synchronized
+    from separate compact snapshots with distinct provenance.
     """
 
     rows_changed = False
@@ -881,6 +947,9 @@ def seed_sample_data(session: Session) -> bool:
                     )
                 )
                 rows_changed = True
+
+    if seed_season_results(session, clubs_by_slug):
+        rows_changed = True
 
     if seed_match_snapshot(session, clubs_by_slug):
         rows_changed = True

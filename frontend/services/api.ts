@@ -10,6 +10,9 @@ import type {
   ClubDetailData,
   ClubSeasonFormData,
   ClubListData,
+  CopilotAnswerData,
+  CopilotCapabilitiesData,
+  CopilotQueryRequest,
   HealthData,
   MatchDetailData,
   MatchListData,
@@ -242,6 +245,36 @@ export async function runAgentFollowUp(
   const body = (await response.json()) as ApiResponse<AgentAnalysisData>;
   if (!response.ok) {
     throw new Error(body.message || `追问失败：HTTP ${response.status}`);
+  }
+  return body;
+}
+
+export function getCopilotCapabilities(
+  signal?: AbortSignal,
+): Promise<ApiResponse<CopilotCapabilitiesData>> {
+  return getApiData<CopilotCapabilitiesData>(
+    "/copilot/capabilities",
+    signal,
+  );
+}
+
+export async function runCopilotQuery(
+  payload: CopilotQueryRequest,
+  signal?: AbortSignal,
+): Promise<ApiResponse<CopilotAnswerData>> {
+  const response = await fetch(`${API_BASE_URL}/copilot/query`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+    cache: "no-store",
+    signal,
+  });
+  const body = (await response.json()) as ApiResponse<CopilotAnswerData>;
+  if (!response.ok) {
+    throw new Error(body.message || `Copilot 请求失败：HTTP ${response.status}`);
   }
   return body;
 }

@@ -521,3 +521,86 @@ export interface AgentRunDetailData {
   source_note: string;
   storage_notice: string;
 }
+
+export type CopilotToolName =
+  | "get_league_table"
+  | "get_club_form"
+  | "compare_players"
+  | "get_match_shot_summary";
+
+export type CopilotMode = "local_tool_router" | "qwen_tool_calling";
+
+export interface CopilotToolCapability {
+  name: CopilotToolName;
+  label: string;
+  description: string;
+  data_scope: string;
+}
+
+export interface CopilotCapabilitiesData {
+  qwen_configured: boolean;
+  model: string;
+  default_mode: CopilotMode;
+  tools: CopilotToolCapability[];
+  message: string;
+}
+
+export interface CopilotSource {
+  name: string;
+  url: string;
+  license_name: string | null;
+  license_url: string | null;
+  data_scope: string;
+}
+
+export interface CopilotEvidence {
+  label: string;
+  value: string;
+  detail: string;
+  tool: CopilotToolName;
+}
+
+export interface CopilotToolTrace {
+  index: number;
+  call_id: string;
+  tool: CopilotToolName;
+  label: string;
+  arguments: Record<string, string | number | boolean | null>;
+  summary: string;
+  evidence: CopilotEvidence[];
+  source: CopilotSource;
+  status: "completed";
+}
+
+export interface CopilotGeneration {
+  mode: CopilotMode;
+  status: "completed" | "not_configured" | "fallback";
+  provider: "local" | "qwen";
+  model: string | null;
+  note: string;
+}
+
+export interface CopilotLink {
+  label: string;
+  href: string;
+}
+
+export interface CopilotAnswerData {
+  run_id: string;
+  question: string;
+  season: string;
+  headline: string;
+  answer: string;
+  generation: CopilotGeneration;
+  tool_calls: CopilotToolTrace[];
+  evidence: CopilotEvidence[];
+  links: CopilotLink[];
+  limitations: string[];
+  suggestions: string[];
+  scope_notice: string;
+}
+
+export interface CopilotQueryRequest {
+  question: string;
+  season: string;
+}

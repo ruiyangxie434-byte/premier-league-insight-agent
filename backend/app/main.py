@@ -24,7 +24,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(
     title=settings.app_name,
-    description="英超地理探索、完整赛季状态、球员与比赛事件分析平台 REST API",
+    description="英超地理探索、完整赛季状态、球员比赛分析与受控函数调用 REST API",
     version=settings.app_version,
     debug=settings.debug,
     lifespan=lifespan,

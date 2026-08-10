@@ -60,7 +60,7 @@ export default function AgentReportPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.10.0 · Season Form Lab</span>
+          <span className="phase-badge">v0.11.0 · League Copilot</span>
         </header>
 
         <div className="report-toolbar">

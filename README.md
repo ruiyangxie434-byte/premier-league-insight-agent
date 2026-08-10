@@ -3,7 +3,7 @@
 > 面向中文英超球迷与内容创作者的垂直足球数据分析助手  
 > 将球队、球员与比赛数据转化为可查询、可比较、可解释的分析结论。
 
-**当前版本：`v0.10.0 · Season Form Lab`**
+**当前版本：`v0.11.0 · League Copilot`**
 
 **项目状态：MVP 开发中**
 
@@ -11,7 +11,7 @@
 
 Premier League Insight Agent 是一个结合足球数据工程、Web 开发与大模型应用的英超数据分析项目。
 
-系统通过数据库查询、每 90 分钟指标计算、证据排序和结论边界判断生成结构化分析，并使用通义千问进一步组织自然语言回答。千问不可用时，系统会自动切换至本地安全分析模式。
+系统通过数据库查询、每 90 分钟指标计算、证据排序和结论边界判断生成结构化分析。League Copilot 允许通义千问从受控函数清单中选择数据工具；千问不可用时，系统会使用同一工具执行层的本地安全路由。
 
 项目由数据科学与大数据技术专业学生独立开发，主要用于比赛展示、GitHub 项目积累与足球数据分析实践。
 
@@ -32,6 +32,8 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 | 比赛数据管道 | StatsBomb Open Data 清洗脚本、坐标归一化、来源 ID 与幂等导入 |
 | Match Lab | Arsenal 4–2 Liverpool 的 28 次射门、xG 对比、筛选、进球时间线与事件清单 |
 | Agent 工具链 | 意图识别、数据查询、指标计算、证据排序与结论生成 |
+| League Copilot | 积分榜、球队状态、球员比较、单场射门四工具自然语言调度 |
+| 函数调用 | 千问 OpenAI-compatible `tool_calls`、后端参数校验与可视化执行轨迹 |
 | Agent Notebook | 自动保存分析、最近记录、历史恢复、父子追问链与上下文轨迹 |
 | 球探报告 | 独立报告页、指标表、证据链、来源边界及打印 / 保存 PDF |
 | 千问增强 | 接入 `qwen-plus`，生成更自然的中文足球分析 |
@@ -45,18 +47,17 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 
 ```mermaid
 flowchart TD
-    A["选择两名球员与分析侧重点"] --> B["查询结构化数据"]
-    B --> C["计算每90分钟指标"]
-    C --> D["证据排序与结论边界判断"]
-    D --> E{"千问服务可用？"}
-    E -->|是| F["QWEN ENHANCED"]
-    E -->|否| G["LOCAL SAFE MODE"]
-    F --> H["保存分析快照与球探报告"]
-    G --> H
-    H --> I["恢复记录并继续追问"]
+    A["自然语言问题"] --> B{"千问服务可用？"}
+    B -->|是| C["Qwen tool_calls"]
+    B -->|否| D["本地工具路由"]
+    C --> E["后端校验并执行受控工具"]
+    D --> E
+    E --> F["结构化证据与数据源"]
+    F --> G["千问或本地模板组织回答"]
+    G --> H["答案、调用轨迹与结论边界"]
 ```
 
-千问主要负责组织和解释已经计算出的证据，不直接替代数据库查询与指标计算。
+千问可以选择允许的工具，但不能直接访问数据库。工具名称、参数、赛季和实体均由后端校验；排名、积分、比分、xG 和球员指标仍由本地代码计算。
 
 ## 技术栈
 
@@ -174,6 +175,19 @@ NEXT_PUBLIC_MAP_TILE_URL=https://tile.openstreetmap.org/{z}/{x}/{y}.png
 
 记录目前只保存在项目连接的 SQLite 数据库中，不包含登录、云同步或跨用户共享。接口、数据模型和边界见 [`docs/AGENT_NOTEBOOK.md`](docs/AGENT_NOTEBOOK.md)。
 
+## League Copilot
+
+访问 `http://localhost:3000/copilot` 可以：
+
+- 用自然语言查询 2024-25 最终积分榜；
+- 同时调用积分榜与两支球队状态工具完成跨模块对比；
+- 复用既有球员每90指标与证据排序工具；
+- 调用 2003-04 历史比赛射门与 xG 工具，并保持赛季隔离；
+- 查看模型或本地路由选择的函数、规范化参数、调用顺序和数据源；
+- 在没有千问 Key 时使用同一组真实工具完成可复现演示。
+
+工具注册、Qwen `tool_calls`、API、降级与边界见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)。
+
 ## 千问配置
 
 项目未配置千问 API Key 时仍可运行，并自动使用本地安全分析模式。
@@ -188,6 +202,8 @@ NEXT_PUBLIC_MAP_TILE_URL=https://tile.openstreetmap.org/{z}/{x}/{y}.png
 
 - `QWEN ENHANCED`：千问调用成功。
 - `LOCAL SAFE MODE`：正在使用本地分析结果。
+- `QWEN TOOL CALLING`：League Copilot 由千问选择受控函数。
+- `LOCAL TOOL ROUTER`：League Copilot 由本地路由选择相同函数。
 
 ## 项目测试
 
@@ -206,15 +222,15 @@ npm run lint
 npm run build
 ```
 
-`v0.10.0` 阶段验收项目：
+`v0.11.0` 阶段验收项目：
 
-- 后端：35/35 测试通过，覆盖原有功能、380 场导入、积分榜对账、球队状态和数据边界
+- 后端：43/43 测试通过，覆盖原有功能、四工具路由、多工具组合、千问调用、范围门控与赛季边界
 - 前端：Lint 通过
 - 前端：TypeScript 通过
 - 前端：Production Build 通过
 - Alembic 可从空库顺序升级至 `20260808_0003`，旧数据无需删除
 - v0.9.0 数据库可无损补入 380 场赛果，连续初始化保持幂等
-- 首页、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
+- 首页、League Copilot、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
 
 ## 版本进度
 
@@ -228,6 +244,7 @@ npm run build
 - [x] `v0.8.0` 公开比赛数据管道、射门图、xG 对比与进球时间线
 - [x] `v0.9.0` Agent 分析记录、上下文追问与可打印球探报告
 - [x] `v0.10.0` 380 场完整赛果、赛季状态、积分走势与球队近期结果
+- [x] `v0.11.0` 千问真实函数调用、四类受控工具、执行轨迹与本地工具路由
 - [ ] 更完整阵容与多赛季历史分析
 - [ ] 在线部署与移动端优化
 
@@ -235,7 +252,7 @@ npm run build
 
 当前版本的球队范围、2024-25 最终积分榜和 380 场赛果是完整历史快照；球员及赛季分析指标仍使用 12 名演示样例。Match Lab 单独使用 StatsBomb Open Data 的 2003/2004 历史比赛事件。
 
-积分榜、赛果和比赛 API 都返回来源、许可与时间边界。球探报告保存的是已计算结果快照，不会把追问内容当作新数据来源。球场坐标遵循 OpenStreetMap 署名要求；比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
+积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
 
 ## 当前边界
 
@@ -252,7 +269,7 @@ npm run build
 项目当前重点是完成一条可靠的流程：
 
 ```text
-结构化数据 → 清洗与指标计算 → 可视化 / 证据排序 → 结论边界 → 千问解释
+自然语言问题 → 受控工具规划 → 后端查询 / 计算 → 可验证证据 → 结论边界 → 千问或本地解释
 ```
 
 ## 项目定位

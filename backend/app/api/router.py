@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.api.routes.agent import router as agent_router
 from app.api.routes.clubs import router as clubs_router
+from app.api.routes.copilot import router as copilot_router
 from app.api.routes.form import router as form_router
 from app.api.routes.health import router as health_router
 from app.api.routes.matches import router as matches_router
@@ -16,3 +17,4 @@ api_router.include_router(form_router)
 api_router.include_router(players_router)
 api_router.include_router(matches_router)
 api_router.include_router(agent_router)
+api_router.include_router(copilot_router)

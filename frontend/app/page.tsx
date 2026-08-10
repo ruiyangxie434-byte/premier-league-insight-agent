@@ -7,14 +7,14 @@ import { BackendStatus } from "../components/system/backend-status";
 
 const futureModules = [
   {
-    phase: "v0.10 已上线",
-    title: "赛季状态实验室",
-    description: "380 场完整赛果、38 轮积分走势、主客场拆分与球队末五场状态已经打通。",
+    phase: "v0.11 已上线",
+    title: "League Copilot",
+    description: "千问真实函数调用、本地安全路由、四类受控数据工具与可核查执行轨迹已经打通。",
   },
   {
-    phase: "Agent 下一步",
-    title: "真实函数调用",
-    description: "让千问在受控工具清单中规划查询，同时继续保留本地安全降级。",
+    phase: "数据下一步",
+    title: "扩大球员覆盖",
+    description: "在许可和口径明确的前提下，把 12 名演示样例扩展为更完整的赛季球员池。",
   },
   {
     phase: "v1.0 目标",
@@ -38,7 +38,7 @@ export default function Home() {
             </span>
           </Link>
           <span className="phase-badge">
-            v0.10.0 · Season Form Lab
+            v0.11.0 · League Copilot
           </span>
         </header>
 
@@ -53,7 +53,7 @@ export default function Home() {
             </h1>
             <p className="hero-description">
               在英格兰地图上探索球队与球场，再让英超智析 Agent
-              查询球员数据、换算每90分钟指标，并用完整赛季比分与真实比赛事件解释球队表现。
+              调用受控数据工具，查询球员、赛季与比赛证据，再生成可核查的中文分析。
             </p>
             <div className="hero-actions">
               <a className="primary-button" href="#club-map">
@@ -67,6 +67,9 @@ export default function Home() {
               </Link>
               <Link className="secondary-button" href="/form">
                 打开赛季状态实验室
+              </Link>
+              <Link className="secondary-button" href="/copilot">
+                体验 League Copilot
               </Link>
               <a className="secondary-button" href="#analysis-agent">
                 体验分析 Agent
@@ -89,7 +92,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、球员、完整赛季、单场事件与可追问 Agent 报告链路已经打通，下一步面向真实工具调用与 v1.0 发布。</p>
+            <p>地图、球员、完整赛季、单场事件、分析记录与真实工具调用已经打通，下一步面向数据覆盖和 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

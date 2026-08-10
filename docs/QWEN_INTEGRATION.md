@@ -52,11 +52,14 @@ QWEN_TIMEOUT_SECONDS=20
 - 提交前在项目根目录运行 `git status`，确认没有 `.env`。
 - 如果 Key 曾经被上传到 GitHub，应立即在百炼控制台删除并重新创建。
 
-## 两种正常页面状态
+## 四种正常页面状态
 
 | 页面状态 | 含义 |
 | --- | --- |
 | `LOCAL SAFE MODE` | 未配置千问，或本次调用已安全回退；本地分析仍完整可用 |
 | `QWEN ENHANCED` | 千问已基于本地计算结果组织回答 |
+| `LOCAL TOOL ROUTER` | League Copilot 由本地路由选择受控工具并执行 |
+| `QWEN TOOL CALLING` | 千问返回 `tool_calls`，后端校验、执行并回传结构化证据 |
 
 即使页面显示 `QWEN ENHANCED`，数值和证据仍来自本地数据库与 Python 计算。
+即使页面显示 `QWEN TOOL CALLING`，千问也不能直接访问数据库或修改工具结果。完整流程见 [`LEAGUE_COPILOT.md`](LEAGUE_COPILOT.md)。

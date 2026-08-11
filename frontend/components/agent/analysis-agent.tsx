@@ -552,7 +552,7 @@ export function AnalysisAgent() {
                             <strong>{value.value.toFixed(2)}</strong>
                             <div
                               className="metric-bar"
-                              title={`样例百分位 ${value.percentile}`}
+                              title={`固定球员池百分位 ${value.percentile}`}
                             >
                               <i
                                 style={{

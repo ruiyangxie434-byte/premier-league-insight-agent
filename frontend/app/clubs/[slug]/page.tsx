@@ -89,7 +89,7 @@ export default function ClubDetailPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.11.0 · League Copilot</span>
+          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
         </header>
 
         <Link className="club-back-link" href="/#club-map">
@@ -102,7 +102,7 @@ export default function ClubDetailPage() {
             <span className="loading-ring" aria-hidden="true" />
             <div>
               <strong>正在读取球队资料</strong>
-              <p>从 FastAPI 获取球场、赛季状态与样例阵容。</p>
+              <p>从 FastAPI 获取球场、赛季状态与完整历史阵容快照。</p>
             </div>
           </div>
         )}
@@ -247,18 +247,22 @@ export default function ClubDetailPage() {
             >
               <div className="section-heading">
                 <div>
-                  <p className="eyebrow">SAMPLE SQUAD</p>
-                  <h2 id="club-squad-title">阵容数据预览</h2>
+                  <p className="eyebrow">PLAYER SNAPSHOT · 2024/25</p>
+                  <h2 id="club-squad-title">赛季出场记录</h2>
                 </div>
                 <p>
-                  当前仅展示数据库中的样例球员，用于验证“地图 → 球队详情”的完整路径。
+                  来自 Kaggle v1 的固定赛季快照；转会球员在不同俱乐部的记录分别展示，不代表当前实时名单。
                 </p>
               </div>
 
               {club.players.length > 0 ? (
                 <div className="club-player-grid">
                   {club.players.map((player) => (
-                    <article className="club-player-card" key={player.slug}>
+                    <Link
+                      className="club-player-card"
+                      href={`/players/${player.slug}`}
+                      key={player.slug}
+                    >
                       <span className="player-shirt-number">
                         {player.shirt_number ?? "—"}
                       </span>
@@ -270,7 +274,7 @@ export default function ClubDetailPage() {
                         <p>{player.nationality}</p>
                       </div>
                       <i aria-hidden="true" />
-                    </article>
+                    </Link>
                   ))}
                 </div>
               ) : (
@@ -279,7 +283,7 @@ export default function ClubDetailPage() {
                   <div>
                     <strong>球队入口已经就位</strong>
                     <p>
-                      这支球队的球场与基础资料已接入；球员样例将在球员数据阶段继续扩充。
+                      这支球队的球场与基础资料已接入，但当前快照没有对应球员记录。
                     </p>
                   </div>
                 </div>
@@ -315,7 +319,7 @@ export default function ClubDetailPage() {
                   用 Agent 比较球员
                 </Link>
                 <Link className="secondary-button" href="/#data-preview">
-                  查看积分榜样例
+                  查看完整积分榜
                 </Link>
                 <Link className="secondary-button" href="/matches">
                   打开比赛实验室

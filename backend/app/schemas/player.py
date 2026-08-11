@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 PlayerPosition = Literal["FWD", "MID", "DEF", "GK"]
-PlayerPercentileScope = Literal["position_sample", "all_sample_players"]
+PlayerPercentileScope = Literal["position_pool", "all_qualified_players"]
 PlayerSortOrder = Literal["asc", "desc"]
 PlayerSortKey = Literal[
     "full_name",
@@ -78,6 +78,7 @@ class PlayerLabItem(BaseModel):
     position: PlayerPosition
     nationality: str
     date_of_birth: date | None
+    birth_year: int | None
     source_kind: str
     club: PlayerClubData
     season: str
@@ -90,6 +91,9 @@ class PlayerLabData(BaseModel):
     items: list[PlayerLabItem]
     total: int
     pool_total: int
+    dataset_total: int
+    unique_player_total: int
+    transfer_record_total: int
     season: str
     minimum_minutes: int
     limit: int
@@ -98,5 +102,10 @@ class PlayerLabData(BaseModel):
     order: PlayerSortOrder
     available_positions: list[PlayerPosition]
     available_clubs: list[PlayerClubData]
+    source_name: str
+    source_url: str
+    source_version: int
+    license_name: str
+    license_url: str
     sample_notice: str
     percentile_notice: str

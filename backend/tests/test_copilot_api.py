@@ -112,7 +112,35 @@ def test_copilot_reuses_grounded_player_comparison_tool(
         "focus": "creativity",
     }
     assert "创造与组织" in data["evidence"][0]["label"]
-    assert any("12 名球员" in item for item in data["limitations"])
+    assert any("400 条" in item for item in data["limitations"])
+
+
+def test_copilot_requires_club_context_for_transferred_player(
+    api_client: TestClient,
+    monkeypatch,
+) -> None:
+    use_local_copilot(monkeypatch)
+    ambiguous = api_client.post(
+        "/api/copilot/query",
+        json={"question": "比较 Trevoh Chalobah 和 Bukayo Saka 的防守表现"},
+    )
+    qualified = api_client.post(
+        "/api/copilot/query",
+        json={
+            "question": (
+                "比较 Chelsea 的 Trevoh Chalobah 和 Bukayo Saka 的防守表现"
+            )
+        },
+    )
+
+    assert ambiguous.status_code == 422
+    assert qualified.status_code == 200
+    comparison = next(
+        item
+        for item in qualified.json()["data"]["tool_calls"]
+        if item["tool"] == "compare_players"
+    )
+    assert comparison["arguments"]["player_a"] == "trevoh-chalobah-chelsea"
 
 
 def test_copilot_keeps_historical_match_separate(

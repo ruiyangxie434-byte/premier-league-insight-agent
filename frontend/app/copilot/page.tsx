@@ -22,7 +22,7 @@ export default function CopilotPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.11.0 · League Copilot</span>
+          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
         </header>
 
         <section className="copilot-hero" aria-labelledby="copilot-hero-title">

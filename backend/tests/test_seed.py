@@ -8,7 +8,15 @@ from app.database.seed import (
     seed_sample_data,
 )
 from app.database.session import create_schema
-from app.models import AgentRun, Club, Match, MatchEvent, Standing
+from app.models import (
+    AgentRun,
+    Club,
+    Match,
+    MatchEvent,
+    Player,
+    PlayerSeasonStat,
+    Standing,
+)
 
 
 def create_test_engine():
@@ -28,6 +36,8 @@ def test_seed_is_idempotent() -> None:
         assert seed_sample_data(session) is False
         assert session.scalar(select(func.count(Club.id))) == 20
         assert session.scalar(select(func.count(Standing.id))) == 20
+        assert session.scalar(select(func.count(Player.id))) == 574
+        assert session.scalar(select(func.count(PlayerSeasonStat.id))) == 574
         assert session.scalar(select(func.count(Match.id))) == 381
         assert session.scalar(
             select(func.count(Match.id)).where(

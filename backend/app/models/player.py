@@ -39,6 +39,7 @@ class Player(Base):
     position: Mapped[str] = mapped_column(String(20), index=True)
     nationality: Mapped[str] = mapped_column(String(80))
     date_of_birth: Mapped[date | None] = mapped_column(Date, nullable=True)
+    birth_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     source_kind: Mapped[str] = mapped_column(
         String(20),
         default="sample",

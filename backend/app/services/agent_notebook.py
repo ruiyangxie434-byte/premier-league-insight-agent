@@ -1,6 +1,7 @@
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.database.seed import load_player_snapshot
 from app.models.agent_run import AgentRun
 from app.schemas.agent import (
     AgentAnalysisData,
@@ -11,14 +12,12 @@ from app.schemas.agent import (
     AgentStep,
 )
 
-SOURCE_NAME = "2024-25 球员演示样例"
-SOURCE_URL = (
-    "https://github.com/ruiyangxie434-byte/"
-    "premier-league-insight-agent/blob/main/docs/DATA_SOURCES.md"
-)
+PLAYER_SNAPSHOT = load_player_snapshot()
+SOURCE_NAME = PLAYER_SNAPSHOT["source"]["name"]
+SOURCE_URL = PLAYER_SNAPSHOT["source"]["dataset_url"]
 SOURCE_NOTE = (
-    "报告只使用当前数据库中的 12 名球员演示样例与后端计算结果，"
-    "不包含伤病、实时状态或完整英超球员池。"
+    "报告只使用 2024-25 固定快照中达到 450 分钟的 400 条球员—球队"
+    "记录与后端计算结果，不包含伤病或实时状态。"
 )
 STORAGE_NOTICE = (
     "分析记录仅保存在当前项目连接的数据库中；项目尚未提供用户账户或跨设备同步。"

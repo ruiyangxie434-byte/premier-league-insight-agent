@@ -9,7 +9,8 @@
 
 每份数据都应记录来源、获取日期、许可证或使用条件，以及它属于真实公开数据还是人工示例数据。
 
-当前提交两份必要的处理后快照：
+当前提交三份必要的处理后快照：
 
 - `processed/statsbomb_match_3749448.json`：只保留 Match Lab 所需的 28 次射门字段，可通过 `scripts/build_match_snapshot.py` 从 StatsBomb Open Data 重建；原始 2.5 MB 事件文件不进入仓库。
 - `processed/openfootball_pl_2024_25.json`：包含 Season Form Lab 所需的 380 场最终比分，可通过 `scripts/build_season_results_snapshot.py` 从固定 OpenFootball 提交重建；上游文本、提交和 CC0 许可记录在快照与文档中。
+- `processed/kaggle_pl_players_2024_25.json`：包含 574 条 2024-25 英超球员—球队记录，可通过 `scripts/build_player_snapshot.py` 从固定 Kaggle v1 压缩包重建；脚本校验压缩包、CSV、球队集合和记录数。

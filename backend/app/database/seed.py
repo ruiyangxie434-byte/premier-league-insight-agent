@@ -10,7 +10,7 @@ from app.models import Club, Match, MatchEvent, Player, PlayerSeasonStat, Standi
 SAMPLE_SEASON = "2024-25"
 CLUB_SOURCE_KIND = "reference"
 STANDING_SOURCE_KIND = "historical"
-PLAYER_SOURCE_KIND = "sample"
+PLAYER_SOURCE_KIND = "kaggle-fbref"
 MATCH_SOURCE_KIND = "open-data"
 SEASON_RESULTS_SOURCE_KIND = "openfootball"
 MATCH_SNAPSHOT_PATH = (
@@ -24,6 +24,12 @@ SEASON_RESULTS_SNAPSHOT_PATH = (
     / "data"
     / "processed"
     / "openfootball_pl_2024_25.json"
+)
+PLAYER_SNAPSHOT_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "data"
+    / "processed"
+    / "kaggle_pl_players_2024_25.json"
 )
 
 CLUBS = [
@@ -718,6 +724,100 @@ def load_season_results_snapshot() -> dict:
     )
 
 
+def load_player_snapshot() -> dict:
+    return json.loads(PLAYER_SNAPSHOT_PATH.read_text(encoding="utf-8"))
+
+
+def seed_player_snapshot(
+    session: Session,
+    clubs_by_slug: dict[str, Club],
+) -> bool:
+    """Synchronize the pinned Kaggle v1 player-team season snapshot.
+
+    Existing v0.11 sample rows are matched by their stable slugs and updated in
+    place.  This preserves record identifiers (and any known full birth date or
+    shirt number) while adding the rest of the league snapshot.  Transfer rows
+    use club-qualified slugs, so two club spells never overwrite one another.
+    """
+
+    snapshot = load_player_snapshot()
+    if snapshot["season"] != SAMPLE_SEASON:
+        raise ValueError("Player snapshot season does not match SAMPLE_SEASON")
+
+    existing_players = {
+        player.slug: player
+        for player in session.scalars(select(Player)).all()
+    }
+    existing_stats = {
+        stats.player_id: stats
+        for stats in session.scalars(
+            select(PlayerSeasonStat).where(
+                PlayerSeasonStat.season == SAMPLE_SEASON
+            )
+        ).all()
+    }
+    rows_changed = False
+
+    for record in snapshot["players"]:
+        club = clubs_by_slug[record["club_slug"]]
+        player_values = {
+            "club_id": club.id,
+            "full_name": record["full_name"],
+            "position": record["position"],
+            "nationality": record["nationality"],
+            "birth_year": record["birth_year"],
+            "source_kind": PLAYER_SOURCE_KIND,
+        }
+        player = existing_players.get(record["slug"])
+        if player is None:
+            player = Player(
+                slug=record["slug"],
+                shirt_number=None,
+                date_of_birth=None,
+                **player_values,
+            )
+            session.add(player)
+            session.flush()
+            existing_players[player.slug] = player
+            rows_changed = True
+        else:
+            for field, value in player_values.items():
+                if getattr(player, field) != value:
+                    setattr(player, field, value)
+                    rows_changed = True
+
+        stat_values = {
+            "appearances": record["appearances"],
+            "starts": record["starts"],
+            "minutes": record["minutes"],
+            "goals": record["goals"],
+            "assists": record["assists"],
+            "shots": record["shots"],
+            "key_passes": record["key_passes"],
+            "tackles": record["tackles"],
+            "interceptions": record["interceptions"],
+            "expected_goals": record["expected_goals"],
+            "source_kind": PLAYER_SOURCE_KIND,
+        }
+        stats = existing_stats.get(player.id)
+        if stats is None:
+            stats = PlayerSeasonStat(
+                player_id=player.id,
+                season=SAMPLE_SEASON,
+                **stat_values,
+            )
+            session.add(stats)
+            existing_stats[player.id] = stats
+            rows_changed = True
+        else:
+            for field, value in stat_values.items():
+                if getattr(stats, field) != value:
+                    setattr(stats, field, value)
+                    rows_changed = True
+
+    return rows_changed
+
+
 def seed_season_results(
     session: Session,
     clubs_by_slug: dict[str, Club],
@@ -859,9 +959,9 @@ def seed_sample_data(session: Session) -> bool:
 
     Club and final-table reference rows are updated in place so an existing
     v0.5 database can receive the complete league without deleting SQLite.
-    Player and player-stat rows remain clearly marked as samples.  The complete
-    2024-25 result list and featured historical event match are synchronized
-    from separate compact snapshots with distinct provenance.
+    Player and player-stat rows are synchronized from the pinned Kaggle v1
+    snapshot.  The complete 2024-25 result list and featured historical event
+    match use separate compact snapshots with distinct provenance.
     """
 
     rows_changed = False
@@ -911,42 +1011,8 @@ def seed_sample_data(session: Session) -> bool:
                     setattr(standing, field, value)
                     rows_changed = True
 
-    for slug, players in PLAYERS.items():
-        for player_data in players:
-            player = session.scalar(
-                select(Player).where(Player.slug == player_data["slug"])
-            )
-            if player is None:
-                player = Player(
-                    club_id=clubs_by_slug[slug].id,
-                    full_name=player_data["full_name"],
-                    slug=player_data["slug"],
-                    shirt_number=player_data["shirt_number"],
-                    position=player_data["position"],
-                    nationality=player_data["nationality"],
-                    date_of_birth=player_data["date_of_birth"],
-                    source_kind=PLAYER_SOURCE_KIND,
-                )
-                session.add(player)
-                session.flush()
-                rows_changed = True
-
-            stats = session.scalar(
-                select(PlayerSeasonStat).where(
-                    PlayerSeasonStat.player_id == player.id,
-                    PlayerSeasonStat.season == SAMPLE_SEASON,
-                )
-            )
-            if stats is None:
-                session.add(
-                    PlayerSeasonStat(
-                        player_id=player.id,
-                        season=SAMPLE_SEASON,
-                        source_kind=PLAYER_SOURCE_KIND,
-                        **player_data["stats"],
-                    )
-                )
-                rows_changed = True
+    if seed_player_snapshot(session, clubs_by_slug):
+        rows_changed = True
 
     if seed_season_results(session, clubs_by_slug):
         rows_changed = True

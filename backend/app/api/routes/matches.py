@@ -22,7 +22,7 @@ MATCH_SOURCE_KIND = "open-data"
 MATCH_COMPETITION = MATCH_SNAPSHOT["match"]["competition"]
 MATCH_SAMPLE_NOTICE = (
     "当前仅提供一场 2003-04 历史英超公开事件快照；"
-    "它与 2024-25 球员演示样例属于不同赛季，不用于实时结论。"
+    "它与 2024-25 球员赛季快照属于不同赛季，不用于实时结论。"
 )
 COORDINATE_NOTE = (
     "射门坐标由 StatsBomb 120×80 坐标系归一化为 0-100；"

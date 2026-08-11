@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { PlayerRadar } from "../../components/players/player-radar";
-import { getPlayers } from "../../services/api";
+import { getPlayer, getPlayers } from "../../services/api";
 import type {
   PlayerLabData,
   PlayerLabItem,
@@ -36,22 +36,6 @@ const columns: Array<{ key: PlayerSortKey; label: string }> = [
   { key: "tackles_per90", label: "抢断/90" },
 ];
 
-function getSortValue(item: PlayerLabItem, key: PlayerSortKey) {
-  if (key === "full_name") {
-    return item.full_name;
-  }
-  if (key === "club") {
-    return item.club.short_name;
-  }
-  if (key === "position") {
-    return item.position;
-  }
-  if (key.endsWith("_per90")) {
-    return item.per90[key as keyof PlayerLabItem["per90"]];
-  }
-  return item.totals[key as keyof PlayerLabItem["totals"]] ?? 0;
-}
-
 function defaultDirection(key: PlayerSortKey): PlayerSortOrder {
   return key === "full_name" || key === "club" || key === "position"
     ? "asc"
@@ -68,6 +52,7 @@ function initials(name: string) {
 }
 
 export default function PlayersPage() {
+  const pageSize = 50;
   const [state, setState] = useState<PageState>("loading");
   const [data, setData] = useState<PlayerLabData | null>(null);
   const [query, setQuery] = useState("");
@@ -76,11 +61,29 @@ export default function PlayersPage() {
   const [minimumMinutes, setMinimumMinutes] = useState(450);
   const [sortBy, setSortBy] = useState<PlayerSortKey>("goals_per90");
   const [order, setOrder] = useState<PlayerSortOrder>("desc");
-  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([
-    "bukayo-saka",
-    "cole-palmer",
-  ]);
+  const [offset, setOffset] = useState(0);
+  const [selectedPlayers, setSelectedPlayers] = useState<PlayerLabItem[]>([]);
   const [requestId, setRequestId] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function loadPreferredComparison() {
+      try {
+        const responses = await Promise.all([
+          getPlayer("bukayo-saka", "2024-25", controller.signal),
+          getPlayer("cole-palmer", "2024-25", controller.signal),
+        ]);
+        const players = responses
+          .map((response) => response.data)
+          .filter((player): player is PlayerLabItem => Boolean(player));
+        setSelectedPlayers((current) => (current.length ? current : players));
+      } catch {
+        // The table remains usable if the optional default comparison fails.
+      }
+    }
+    void loadPreferredComparison();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -91,9 +94,13 @@ export default function PlayersPage() {
         const response = await getPlayers(
           {
             minimumMinutes,
-            limit: 100,
-            sortBy: "full_name",
-            order: "asc",
+            query: query.trim() || undefined,
+            position: position === "all" ? undefined : position,
+            clubSlug: clubSlug === "all" ? undefined : clubSlug,
+            limit: pageSize,
+            offset,
+            sortBy,
+            order,
           },
           controller.signal,
         );
@@ -101,23 +108,6 @@ export default function PlayersPage() {
           throw new Error("球员数据为空");
         }
         setData(response.data);
-        setSelectedSlugs((current) => {
-          const available = new Set(
-            response.data?.items.map((player) => player.slug) ?? [],
-          );
-          const retained = current.filter((slug) => available.has(slug));
-          const preferred = ["bukayo-saka", "cole-palmer"].filter(
-            (slug) => available.has(slug) && !retained.includes(slug),
-          );
-          const fallback =
-            response.data?.items
-              .map((player) => player.slug)
-              .filter(
-                (slug) =>
-                  !retained.includes(slug) && !preferred.includes(slug),
-              ) ?? [];
-          return [...retained, ...preferred, ...fallback].slice(0, 2);
-        });
         setState("success");
       } catch {
         if (!controller.signal.aborted) {
@@ -128,73 +118,33 @@ export default function PlayersPage() {
 
     void loadPlayers();
     return () => controller.abort();
-  }, [minimumMinutes, requestId]);
+  }, [clubSlug, minimumMinutes, offset, order, pageSize, position, query, requestId, sortBy]);
 
-  const visiblePlayers = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-    const normalized = query.trim().toLocaleLowerCase();
-    return data.items
-      .filter((player) => {
-        const matchesQuery =
-          !normalized ||
-          [
-            player.full_name,
-            player.club.name,
-            player.club.short_name,
-            player.nationality,
-          ].some((value) =>
-            value.toLocaleLowerCase().includes(normalized),
-          );
-        return (
-          matchesQuery &&
-          (position === "all" || player.position === position) &&
-          (clubSlug === "all" || player.club.slug === clubSlug)
-        );
-      })
-      .sort((left, right) => {
-        const leftValue = getSortValue(left, sortBy);
-        const rightValue = getSortValue(right, sortBy);
-        const comparison =
-          typeof leftValue === "string" && typeof rightValue === "string"
-            ? leftValue.localeCompare(rightValue, "en")
-            : Number(leftValue) - Number(rightValue);
-        if (comparison === 0) {
-          return left.full_name.localeCompare(right.full_name, "en");
-        }
-        return order === "asc" ? comparison : -comparison;
-      });
-  }, [clubSlug, data, order, position, query, sortBy]);
-
-  const selectedPlayers = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-    const bySlug = new Map(data.items.map((player) => [player.slug, player]));
-    return selectedSlugs
-      .map((slug) => bySlug.get(slug))
-      .filter((player): player is PlayerLabItem => Boolean(player));
-  }, [data, selectedSlugs]);
+  const selectedSlugs = useMemo(
+    () => selectedPlayers.map((player) => player.slug),
+    [selectedPlayers],
+  );
 
   function handleSort(key: PlayerSortKey) {
     if (sortBy === key) {
       setOrder((current) => (current === "asc" ? "desc" : "asc"));
+      setOffset(0);
       return;
     }
     setSortBy(key);
     setOrder(defaultDirection(key));
+    setOffset(0);
   }
 
-  function togglePlayer(slug: string) {
-    setSelectedSlugs((current) => {
-      if (current.includes(slug)) {
-        return current.filter((item) => item !== slug);
+  function togglePlayer(player: PlayerLabItem) {
+    setSelectedPlayers((current) => {
+      if (current.some((item) => item.slug === player.slug)) {
+        return current.filter((item) => item.slug !== player.slug);
       }
       if (current.length >= 2) {
         return current;
       }
-      return [...current, slug];
+      return [...current, player];
     });
   }
 
@@ -216,7 +166,7 @@ export default function PlayersPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.11.0 · League Copilot</span>
+          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
         </header>
 
         <Link className="club-back-link" href="/">
@@ -226,30 +176,30 @@ export default function PlayersPage() {
 
         <section className="player-lab-hero" aria-labelledby="player-lab-title">
           <div>
-            <p className="eyebrow">PLAYER LAB · 2024/25 SAMPLE</p>
+            <p className="eyebrow">PLAYER INTELLIGENCE ATLAS · 2024/25</p>
             <h1 id="player-lab-title">
               从累计数据，
               <span>看到能力结构。</span>
             </h1>
             <p>
-              统一由 FastAPI 换算每90分钟指标，再按同位置样例计算百分位；你可以筛选、排序并选择两名球员生成雷达对比。
+              浏览完整赛季球员—球队快照，由 FastAPI 统一换算每90分钟指标与同位置百分位；转会球员的两段俱乐部记录会分别保留。
             </p>
           </div>
           <div className="player-lab-hero-stats">
             <div>
-              <span>PLAYER POOL</span>
+              <span>RECORDS</span>
+              <strong>{data?.dataset_total ?? "—"}</strong>
+              <small>球员—球队记录</small>
+            </div>
+            <div>
+              <span>PLAYERS</span>
+              <strong>{data?.unique_player_total ?? "—"}</strong>
+              <small>独立球员姓名</small>
+            </div>
+            <div>
+              <span>QUALIFIED</span>
               <strong>{data?.pool_total ?? "—"}</strong>
-              <small>名演示样例</small>
-            </div>
-            <div>
-              <span>MINUTES</span>
-              <strong>{minimumMinutes}+</strong>
-              <small>当前门槛</small>
-            </div>
-            <div>
-              <span>METRICS</span>
-              <strong>7</strong>
-              <small>项每90指标</small>
+              <small>{minimumMinutes ? `${minimumMinutes}+ 分钟` : "全部记录"}</small>
             </div>
           </div>
         </section>
@@ -259,7 +209,7 @@ export default function PlayersPage() {
             <span className="loading-ring" aria-hidden="true" />
             <div>
               <strong>正在构建球员数据中心</strong>
-              <p>读取赛季数据、换算每90指标并计算样例百分位。</p>
+              <p>读取固定赛季快照、换算每90指标并计算位置百分位。</p>
             </div>
           </div>
         )}
@@ -288,14 +238,19 @@ export default function PlayersPage() {
                   <p className="eyebrow">SORT · FILTER · INSPECT</p>
                   <h2 id="player-table-title">球员数据榜</h2>
                 </div>
-                <span>{visiblePlayers.length} / {data.pool_total} 名球员</span>
+                <span>
+                  {data.total} 条匹配记录 · 当前显示 {data.items.length} 条
+                </span>
               </div>
 
               <div className="player-filter-bar">
                 <label className="player-search-field">
                   <span>搜索</span>
                   <input
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={(event) => {
+                      setQuery(event.target.value);
+                      setOffset(0);
+                    }}
                     placeholder="球员、球队或国籍"
                     type="search"
                     value={query}
@@ -304,9 +259,10 @@ export default function PlayersPage() {
                 <label>
                   <span>位置</span>
                   <select
-                    onChange={(event) =>
-                      setPosition(event.target.value as PlayerPosition | "all")
-                    }
+                    onChange={(event) => {
+                      setPosition(event.target.value as PlayerPosition | "all");
+                      setOffset(0);
+                    }}
                     value={position}
                   >
                     <option value="all">全部位置</option>
@@ -320,7 +276,10 @@ export default function PlayersPage() {
                 <label>
                   <span>球队</span>
                   <select
-                    onChange={(event) => setClubSlug(event.target.value)}
+                    onChange={(event) => {
+                      setClubSlug(event.target.value);
+                      setOffset(0);
+                    }}
                     value={clubSlug}
                   >
                     <option value="all">全部球队</option>
@@ -334,12 +293,15 @@ export default function PlayersPage() {
                 <label>
                   <span>最低分钟</span>
                   <select
-                    onChange={(event) =>
-                      setMinimumMinutes(Number(event.target.value))
-                    }
+                    onChange={(event) => {
+                      setMinimumMinutes(Number(event.target.value));
+                      setOffset(0);
+                      setSelectedPlayers([]);
+                    }}
                     value={minimumMinutes}
                   >
-                    <option value={450}>450 分钟</option>
+                    <option value={0}>全部出场记录</option>
+                    <option value={450}>450 分钟（默认）</option>
                     <option value={1800}>1,800 分钟</option>
                     <option value={2700}>2,700 分钟</option>
                   </select>
@@ -352,7 +314,7 @@ export default function PlayersPage() {
                   <strong>{selectedPlayers.length} / 2</strong>
                 </p>
                 <button
-                  onClick={() => setSelectedSlugs([])}
+                  onClick={() => setSelectedPlayers([])}
                   type="button"
                 >
                   清空选择
@@ -394,7 +356,7 @@ export default function PlayersPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {visiblePlayers.map((player) => {
+                    {data.items.map((player) => {
                       const selected = selectedSlugs.includes(player.slug);
                       const selectionFull = selectedSlugs.length >= 2;
                       return (
@@ -405,7 +367,7 @@ export default function PlayersPage() {
                               className="player-select-button"
                               data-selected={selected}
                               disabled={!selected && selectionFull}
-                              onClick={() => togglePlayer(player.slug)}
+                              onClick={() => togglePlayer(player)}
                               type="button"
                             >
                               {selected ? "✓" : "+"}
@@ -449,15 +411,47 @@ export default function PlayersPage() {
                 </table>
               </div>
 
-              {visiblePlayers.length === 0 && (
+              {data.items.length === 0 && (
                 <div className="player-table-empty">
                   没有符合当前条件的球员，请降低分钟门槛或清除筛选。
                 </div>
               )}
 
+              {data.total > 0 && (
+                <nav className="player-pagination" aria-label="球员数据分页">
+                  <button
+                    disabled={offset === 0}
+                    onClick={() => setOffset(Math.max(0, offset - pageSize))}
+                    type="button"
+                  >
+                    ← 上一页
+                  </button>
+                  <span>
+                    {offset + 1}–{Math.min(offset + data.items.length, data.total)} / {data.total} 条
+                  </span>
+                  <button
+                    disabled={offset + data.items.length >= data.total}
+                    onClick={() => setOffset(offset + pageSize)}
+                    type="button"
+                  >
+                    下一页 →
+                  </button>
+                </nav>
+              )}
+
               <p className="player-data-notice">
-                <span aria-hidden="true">i</span>
-                {data.sample_notice}
+                <span className="player-notice-icon" aria-hidden="true">i</span>
+                <span className="player-notice-copy">
+                  {data.sample_notice} 来源：
+                  <a href={data.source_url} rel="noreferrer" target="_blank">
+                    {data.source_name} v{data.source_version}
+                  </a>
+                  （
+                  <a href={data.license_url} rel="noreferrer" target="_blank">
+                    {data.license_name}
+                  </a>
+                  ）。
+                </span>
               </p>
             </section>
 
@@ -472,7 +466,7 @@ export default function PlayersPage() {
                   <h2 id="player-radar-title">双球员能力雷达</h2>
                 </div>
                 <p>
-                  数值表示球员在对应比较样例中的相对位置，不等同于完整英超排名或绝对能力评分。
+                  数值表示球员在当前分钟门槛下对应位置池中的相对位置，不等同于实时排名或绝对能力评分。
                 </p>
               </div>
 
@@ -494,7 +488,7 @@ export default function PlayersPage() {
                       <div className="compare-player-topline">
                         <span>PLAYER {index + 1}</span>
                         <button
-                          onClick={() => togglePlayer(player.slug)}
+                          onClick={() => togglePlayer(player)}
                           type="button"
                         >
                           移除
@@ -526,9 +520,9 @@ export default function PlayersPage() {
                         </div>
                       </div>
                       <p className="percentile-scope">
-                        {player.percentiles.scope === "position_sample"
-                          ? `同位置 ${player.percentiles.peer_count} 人样例`
-                          : `位置样本不足，回退全部 ${player.percentiles.peer_count} 人样例`}
+                        {player.percentiles.scope === "position_pool"
+                          ? `同位置 ${player.percentiles.peer_count} 条合格记录`
+                          : `位置池不足，回退全部 ${player.percentiles.peer_count} 条记录`}
                       </p>
                       <Link href={`/players/${player.slug}`}>查看完整资料 →</Link>
                     </article>

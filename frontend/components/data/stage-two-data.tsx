@@ -245,7 +245,7 @@ export function StageTwoData() {
             <div>
               <span>PLAYERS</span>
               <strong>{clubs.player_total}</strong>
-              <small>名分析样例</small>
+              <small>条球员记录</small>
             </div>
             <div>
               <span>TABLE</span>

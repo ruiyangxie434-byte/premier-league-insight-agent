@@ -137,7 +137,7 @@ export function getPlayers(
     minimum_minutes: String(options.minimumMinutes ?? 450),
     sort_by: options.sortBy ?? "goals_per90",
     order: options.order ?? "desc",
-    limit: String(options.limit ?? 100),
+    limit: String(options.limit ?? 50),
     offset: String(options.offset ?? 0),
   });
   if (options.query) {

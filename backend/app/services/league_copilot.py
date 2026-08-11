@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import Settings
 from app.database.seed import SAMPLE_SEASON
-from app.models import Club, Player
+from app.models import Club
 from app.schemas.agent import AgentFocus
 from app.schemas.copilot import (
     CopilotAnswerData,
@@ -29,6 +29,8 @@ from app.services.copilot_tools import (
     find_club_mentions,
     find_player_mentions,
 )
+from app.services.player_lab import DEFAULT_MINIMUM_MINUTES
+from app.services.player_metrics import load_player_snapshots
 
 
 class CopilotInputError(ValueError):
@@ -53,7 +55,8 @@ class PlannedToolCall:
 
 SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
-    "12 名球员演示样例，以及 2003-04 Arsenal 4–2 Liverpool 单场事件；"
+    "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
+    "以及 2003-04 Arsenal 4–2 Liverpool 单场事件；"
     "不联网查询实时新闻、伤病、转会或比分。"
 )
 
@@ -63,7 +66,8 @@ PLANNER_SYSTEM_PROMPT = """
 
 规则：
 1. 每个事实都必须来自工具；不得使用训练记忆补充实时新闻、伤病、转会或赛果。
-2. 2024-25 只可用于最终积分榜、完整赛果和 12 名球员样例。
+2. 2024-25 只可用于最终积分榜、完整赛果和固定球员历史快照。
+   同名跨队球员必须使用俱乐部或完整 slug 消除歧义。
 3. 2003-04 只可用于 source_match_id=3749448 的单场射门事件，不能与 2024-25 混算。
 4. 比较两支球队时，可以分别调用两次 get_club_form；同时询问排名时再调用 get_league_table。
 5. 最多调用四个工具。参数使用工具声明允许的值。
@@ -211,20 +215,30 @@ def build_local_tool_plan(
     if not calls:
         raise CopilotInputError(
             "当前问题无法落到可用数据工具。请询问积分榜、球队状态、"
-            "两名样例球员比较，或 2004 年 Arsenal 4–2 Liverpool 的射门。"
+            "两名 450+ 分钟球员记录的比较，或 2004 年 Arsenal 4–2 "
+            "Liverpool 的射门；同名跨队记录请同时写明俱乐部。"
         )
     return calls
 
 
 def _entity_context(db: Session) -> dict[str, list[dict[str, str]]]:
+    player_snapshots = load_player_snapshots(
+        db,
+        SAMPLE_SEASON,
+        DEFAULT_MINIMUM_MINUTES,
+    )
     return {
         "clubs": [
             {"name": club.name, "short_name": club.short_name, "slug": club.slug}
             for club in db.scalars(select(Club).order_by(Club.name)).all()
         ],
         "players": [
-            {"name": player.full_name, "slug": player.slug}
-            for player in db.scalars(select(Player).order_by(Player.full_name)).all()
+            {
+                "name": item.player.full_name,
+                "slug": item.player.slug,
+                "club": item.player.club.short_name,
+            }
+            for item in player_snapshots
         ],
     }
 

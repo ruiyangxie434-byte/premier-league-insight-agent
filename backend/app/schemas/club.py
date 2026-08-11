@@ -31,6 +31,7 @@ class PlayerSummary(BaseModel):
     position: str
     nationality: str
     date_of_birth: date | None
+    birth_year: int | None
     source_kind: str
 
 

@@ -50,7 +50,8 @@ export interface ClubPlayerSummary {
   position: string;
   nationality: string;
   date_of_birth: string | null;
-  source_kind: "sample";
+  birth_year: number | null;
+  source_kind: "kaggle-fbref";
 }
 
 export interface ClubDetailData extends ClubSummary {
@@ -318,7 +319,7 @@ export interface PlayerMetricPercentiles {
 }
 
 export interface PlayerPercentileProfile {
-  scope: "position_sample" | "all_sample_players";
+  scope: "position_pool" | "all_qualified_players";
   peer_count: number;
   metrics: PlayerMetricPercentiles;
 }
@@ -331,7 +332,8 @@ export interface PlayerLabItem {
   position: PlayerPosition;
   nationality: string;
   date_of_birth: string | null;
-  source_kind: "sample";
+  birth_year: number | null;
+  source_kind: "kaggle-fbref";
   club: PlayerClubData;
   season: string;
   totals: PlayerSeasonTotals;
@@ -343,6 +345,9 @@ export interface PlayerLabData {
   items: PlayerLabItem[];
   total: number;
   pool_total: number;
+  dataset_total: number;
+  unique_player_total: number;
+  transfer_record_total: number;
   season: string;
   minimum_minutes: number;
   limit: number;
@@ -351,6 +356,11 @@ export interface PlayerLabData {
   order: PlayerSortOrder;
   available_positions: PlayerPosition[];
   available_clubs: PlayerClubData[];
+  source_name: string;
+  source_url: string;
+  source_version: number;
+  license_name: string;
+  license_url: string;
   sample_notice: string;
   percentile_notice: string;
 }

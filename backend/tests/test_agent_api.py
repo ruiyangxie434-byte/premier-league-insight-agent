@@ -1,14 +1,14 @@
 from fastapi.testclient import TestClient
 
 
-def test_agent_player_options_include_new_demo_pair(
+def test_agent_player_options_use_450_minute_snapshot_pool(
     api_client: TestClient,
 ) -> None:
     response = api_client.get("/api/agent/players?season=2024-25")
 
     assert response.status_code == 200
     data = response.json()["data"]
-    assert data["total"] == 12
+    assert data["total"] == 400
     assert {
         item["slug"]
         for item in data["items"]
@@ -155,8 +155,10 @@ def test_agent_notebook_lists_and_restores_saved_run(
     assert detail_data["result"]["run_id"] == run_id
     assert detail_data["parent_run_id"] is None
     assert detail_data["follow_up_depth"] == 0
-    assert detail_data["source_name"] == "2024-25 球员演示样例"
-    assert "12 名球员" in detail_data["source_note"]
+    assert detail_data["source_name"] == (
+        "Top 5 League Football Player Stats (2017-2025)"
+    )
+    assert "400 条" in detail_data["source_note"]
 
 
 def test_agent_follow_up_inherits_scope_and_creates_new_run(

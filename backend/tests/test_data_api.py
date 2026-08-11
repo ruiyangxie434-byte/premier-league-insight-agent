@@ -10,7 +10,7 @@ def test_club_list_returns_complete_2024_25_league(
     body = response.json()
     assert body["success"] is True
     assert body["data"]["total"] == 20
-    assert body["data"]["player_total"] == 12
+    assert body["data"]["player_total"] == 574
     assert body["data"]["season"] == "2024-25"
     assert body["data"]["is_complete"] is True
     assert len(body["data"]["items"]) == 20
@@ -45,18 +45,19 @@ def test_club_list_returns_complete_2024_25_league(
     }
 
 
-def test_club_detail_includes_sample_players(api_client: TestClient) -> None:
+def test_club_detail_includes_full_player_snapshot(api_client: TestClient) -> None:
     response = api_client.get("/api/clubs/liverpool")
 
     assert response.status_code == 200
     data = response.json()["data"]
     assert data["name"] == "Liverpool"
     assert data["stadium"]["name"] == "Anfield"
-    assert len(data["players"]) == 2
-    assert {player["full_name"] for player in data["players"]} == {
+    assert len(data["players"]) == 24
+    assert {player["full_name"] for player in data["players"]} >= {
         "Mohamed Salah",
         "Virgil van Dijk",
     }
+    assert all(player["source_kind"] == "kaggle-fbref" for player in data["players"])
     assert len(data["featured_matches"]) == 1
     assert data["featured_matches"][0]["source_match_id"] == "3749448"
 

@@ -1,3 +1,4 @@
+from collections import defaultdict
 from uuid import uuid4
 
 from sqlalchemy.orm import Session
@@ -21,10 +22,11 @@ from app.services.player_metrics import (
     load_player_snapshots,
     percentile_rank,
 )
+from app.services.player_lab import DEFAULT_MINIMUM_MINUTES
 
 SAMPLE_NOTICE = (
-    "当前结论仅基于 2024-25 赛季的小型公开演示样例，用于验证 Agent "
-    "工作流，不代表实时球探意见。"
+    "当前结论使用 2024-25 历史快照中达到 450 分钟的 400 条球员—球队"
+    "记录；百分位按该固定分析池计算，不代表实时球探意见。"
 )
 
 FOCUS_LABELS: dict[AgentFocus, str] = {
@@ -145,7 +147,7 @@ def _resolve_focus(request: AgentAnalysisRequest) -> AgentFocus:
 
 
 def list_agent_players(db: Session, season: str) -> AgentPlayerOptionData:
-    snapshots = load_player_snapshots(db, season)
+    snapshots = load_player_snapshots(db, season, DEFAULT_MINIMUM_MINUTES)
     return AgentPlayerOptionData(
         items=[
             AgentPlayerOption(
@@ -177,15 +179,48 @@ def _resolve_player_slugs(
 
     question = request.question.casefold()
     matched: list[str] = []
+    by_name: defaultdict[str, list[PlayerSnapshot]] = defaultdict(list)
     for snapshot in snapshots:
-        player = snapshot.player
-        candidates = {
-            player.full_name.casefold(),
-            player.slug.replace("-", " ").casefold(),
-            player.full_name.split()[-1].casefold(),
-        }
-        if any(candidate in question for candidate in candidates):
-            matched.append(player.slug)
+        by_name[snapshot.player.full_name.casefold()].append(snapshot)
+
+    for full_name, name_records in by_name.items():
+        slug_mentions = [
+            item
+            for item in name_records
+            if item.player.slug.replace("-", " ").casefold() in question
+        ]
+        if slug_mentions:
+            matched.extend(item.player.slug for item in slug_mentions)
+            continue
+        if full_name not in question:
+            continue
+        if len(name_records) == 1:
+            matched.append(name_records[0].player.slug)
+            continue
+        for item in name_records:
+            club = item.player.club
+            if any(
+                candidate.casefold() in question
+                for candidate in (
+                    club.name,
+                    club.short_name,
+                    club.slug.replace("-", " "),
+                )
+            ):
+                matched.append(item.player.slug)
+
+    last_names: defaultdict[str, list[PlayerSnapshot]] = defaultdict(list)
+    for snapshot in snapshots:
+        last_names[snapshot.player.full_name.split()[-1].casefold()].append(
+            snapshot
+        )
+    for last_name, name_records in last_names.items():
+        if (
+            len(name_records) == 1
+            and last_name in question
+            and name_records[0].player.slug not in matched
+        ):
+            matched.append(name_records[0].player.slug)
 
     for alias, slug in PLAYER_ALIASES.items():
         if alias in request.question and slug in available and slug not in matched:
@@ -257,7 +292,7 @@ def _build_evidence(
         if metric.leader_slug is None:
             detail = (
                 f"两人的{metric.label}均为 {first.value:.2f}，"
-                "当前样例下没有明显差距。"
+                "当前合格球员池下没有明显差距。"
             )
         else:
             leader = next(
@@ -273,7 +308,8 @@ def _build_evidence(
             detail = (
                 f"{names[leader.player_slug]}为 {leader.value:.2f}，"
                 f"{names[other.player_slug]}为 {other.value:.2f}；"
-                f"样例百分位分别为 {leader.percentile} 和 {other.percentile}。"
+                f"合格球员池百分位分别为 {leader.percentile} 和 "
+                f"{other.percentile}。"
             )
         evidence.append(
             AgentEvidence(
@@ -289,9 +325,13 @@ def analyze_players(
     db: Session,
     request: AgentAnalysisRequest,
 ) -> AgentAnalysisData:
-    population = load_player_snapshots(db, request.season)
+    population = load_player_snapshots(
+        db,
+        request.season,
+        DEFAULT_MINIMUM_MINUTES,
+    )
     if len(population) < 2:
-        raise AgentInputError("当前赛季没有足够的球员样例用于比较")
+        raise AgentInputError("当前赛季没有足够的合格球员记录用于比较")
 
     slugs = _resolve_player_slugs(request, population)
     by_slug = {item.player.slug: item for item in population}
@@ -311,8 +351,9 @@ def analyze_players(
     focus_label = FOCUS_LABELS[resolved_focus]
 
     limitations = [
-        "数据为小型赛季样例，未包含伤病、对手强度、比赛状态和战术角色。",
-        "百分位只在当前样例球员池内计算，不能等同于完整英超排名。",
+        "数据未包含伤病、对手强度、比赛状态和具体战术角色。",
+        "百分位只在达到 450 分钟的固定球员—球队记录池内计算，不能"
+        "等同于绝对能力排名。",
     ]
     if selected[0].player.position != selected[1].player.position:
         limitations.append("两名球员登记位置不同，结论应结合实际场上职责理解。")
@@ -364,7 +405,10 @@ def analyze_players(
                 index=3,
                 title="统一指标口径",
                 tool="per90_calculator",
-                detail="将累计数据换算为每90分钟指标，并计算样例球员池百分位。",
+                detail=(
+                    "将累计数据换算为每90分钟指标，并在达到 450 分钟的"
+                    "固定球员池中计算百分位。"
+                ),
                 status="completed",
             ),
             AgentStep(
@@ -382,7 +426,8 @@ def analyze_players(
             headline=f"{names[winner_slug]}更适合本次“{focus_label}”任务",
             summary=(
                 f"Agent 综合得分 {scores[winner_slug]} 对 {scores[loser_slug]}。"
-                "该建议来自每90分钟数据与样例百分位加权，不代表绝对能力排名。"
+                "该建议来自每90分钟数据与合格球员池百分位加权，不代表"
+                "绝对能力排名。"
             ),
             confidence=confidence,
             scores=scores,

@@ -50,9 +50,9 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-function formatBirthDate(value: string | null) {
+function formatBirthDate(value: string | null, birthYear: number | null) {
   if (!value) {
-    return "未知";
+    return birthYear ? `${birthYear} 年` : "未知";
   }
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
@@ -108,7 +108,7 @@ export default function PlayerDetailPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.11.0 · League Copilot</span>
+          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
         </header>
 
         <Link className="club-back-link" href="/players">
@@ -121,7 +121,7 @@ export default function PlayerDetailPage() {
             <span className="loading-ring" aria-hidden="true" />
             <div>
               <strong>正在读取球员赛季档案</strong>
-              <p>获取累计数据、每90指标和样例百分位。</p>
+              <p>获取累计数据、每90指标和位置百分位。</p>
             </div>
           </div>
         )}
@@ -165,8 +165,8 @@ export default function PlayerDetailPage() {
               </div>
               <dl className="player-profile-facts">
                 <div>
-                  <dt>出生日期</dt>
-                  <dd>{formatBirthDate(player.date_of_birth)}</dd>
+                  <dt>{player.date_of_birth ? "出生日期" : "出生年份"}</dt>
+                  <dd>{formatBirthDate(player.date_of_birth, player.birth_year)}</dd>
                 </div>
                 <div>
                   <dt>出场 / 首发</dt>
@@ -201,7 +201,7 @@ export default function PlayerDetailPage() {
                 <article>
                   <span>EXPECTED GOALS</span>
                   <strong>{player.totals.expected_goals?.toFixed(1) ?? "—"}</strong>
-                  <small>赛季 xG 样例</small>
+                  <small>赛季 xG</small>
                 </article>
               </div>
 
@@ -213,9 +213,9 @@ export default function PlayerDetailPage() {
                       <h2>能力结构</h2>
                     </div>
                     <small>
-                      {player.percentiles.scope === "position_sample"
-                        ? `同位置 ${player.percentiles.peer_count} 人样例`
-                        : `全部 ${player.percentiles.peer_count} 人样例`}
+                      {player.percentiles.scope === "position_pool"
+                        ? `同位置 ${player.percentiles.peer_count} 条合格记录`
+                        : `全部 ${player.percentiles.peer_count} 条合格记录`}
                     </small>
                   </div>
                   <PlayerRadar players={[player]} />
@@ -254,7 +254,7 @@ export default function PlayerDetailPage() {
 
               <div className="player-detail-footer">
                 <p>
-                  当前资料来自项目演示样例，百分位只描述小型样例池内的相对位置，不代表官方实时球员排名。
+                  当前资料来自 Kaggle v1 的 2024-25 历史快照。默认百分位只描述达到 450 分钟的固定球员—球队记录池，不代表官方实时排名。
                 </p>
                 <div>
                   <Link className="secondary-button" href={`/clubs/${player.club.slug}`}>

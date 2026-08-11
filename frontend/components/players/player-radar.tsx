@@ -75,7 +75,7 @@ export function PlayerRadar({ players }: { players: PlayerLabItem[] }) {
   return (
     <div className="radar-visual">
       <svg
-        aria-label={`${players.map((player) => player.full_name).join(" 与 ")}的每90分钟样例百分位雷达图`}
+        aria-label={`${players.map((player) => player.full_name).join(" 与 ")}的每90分钟合格球员池百分位雷达图`}
         role="img"
         viewBox="0 0 520 430"
       >

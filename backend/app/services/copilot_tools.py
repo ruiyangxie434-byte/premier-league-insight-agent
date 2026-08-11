@@ -13,6 +13,7 @@ from app.database.seed import (
     SAMPLE_SEASON,
     SEASON_RESULTS_SOURCE_KIND,
     load_match_snapshot,
+    load_player_snapshot,
     load_season_results_snapshot,
 )
 from app.models import Club, Match, MatchEvent, Player, Standing
@@ -36,6 +37,8 @@ from app.services.season_form import (
     longest_unbeaten_run,
     recent_form,
 )
+from app.services.player_lab import DEFAULT_MINIMUM_MINUTES
+from app.services.player_metrics import load_player_snapshots
 
 
 class CopilotToolError(ValueError):
@@ -89,8 +92,8 @@ TOOL_CAPABILITIES = [
     CopilotToolCapability(
         name="compare_players",
         label="球员证据比较",
-        description="比较两名样例球员的每90指标、百分位与加权得分。",
-        data_scope="2024-25 共 12 名球员演示样例",
+        description="比较两名合格球员记录的每90指标、百分位与加权得分。",
+        data_scope="2024-25 共 400 条达到 450 分钟的球员—球队记录",
     ),
     CopilotToolCapability(
         name="get_match_shot_summary",
@@ -154,7 +157,8 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
         "function": {
             "name": "compare_players",
             "description": (
-                "比较两名球员的每90分钟指标与样例百分位。focus 仅支持"
+                "比较两名球员的每90分钟指标与固定球员池百分位。"
+                "同名跨队记录必须提供俱乐部或完整 slug；focus 仅支持"
                 " balanced、scoring、creativity、pressing。"
             ),
             "parameters": {
@@ -205,7 +209,7 @@ CLUB_ALIASES = {
     "枪手": "arsenal",
     "维拉": "aston-villa",
     "阿斯顿维拉": "aston-villa",
-    "伯恩茅斯": "afc-bournemouth",
+    "伯恩茅斯": "bournemouth",
     "布伦特福德": "brentford",
     "布莱顿": "brighton-and-hove-albion",
     "切尔西": "chelsea",
@@ -255,13 +259,13 @@ FORM_SOURCE = CopilotSource(
     license_url=FORM_SNAPSHOT["source"]["license_url"],
     data_scope="2024-25 完整 380 场最终比分快照",
 )
+PLAYER_SNAPSHOT = load_player_snapshot()
 PLAYER_SOURCE = CopilotSource(
-    name="2024-25 球员演示样例",
-    url=(
-        "https://github.com/ruiyangxie434-byte/"
-        "premier-league-insight-agent/blob/main/docs/DATA_SOURCES.md"
-    ),
-    data_scope="12 名球员样例与后端计算的每90分钟指标",
+    name=PLAYER_SNAPSHOT["source"]["name"],
+    url=PLAYER_SNAPSHOT["source"]["dataset_url"],
+    license_name=PLAYER_SNAPSHOT["source"]["license_name"],
+    license_url=PLAYER_SNAPSHOT["source"]["license_url"],
+    data_scope="574 条历史记录中的 400 条 450+ 分钟分析池",
 )
 MATCH_SNAPSHOT = load_match_snapshot()
 MATCH_SOURCE = CopilotSource(
@@ -340,11 +344,14 @@ def _resolve_player(db: Session, value: str) -> Player:
         ),
         None,
     )
-    players = list(
-        db.scalars(
-            select(Player).options(joinedload(Player.club)).order_by(Player.full_name)
-        ).unique().all()
-    )
+    players = [
+        item.player
+        for item in load_player_snapshots(
+            db,
+            SAMPLE_SEASON,
+            DEFAULT_MINIMUM_MINUTES,
+        )
+    ]
     if alias_slug is not None:
         match = next((player for player in players if player.slug == alias_slug), None)
         if match is not None:
@@ -358,6 +365,9 @@ def _resolve_player(db: Session, value: str) -> Player:
             _normalize(player.slug),
             _normalize(player.full_name),
             _normalize(player.full_name.split()[-1]),
+            _normalize(f"{player.full_name} {player.club.name}"),
+            _normalize(f"{player.full_name} {player.club.short_name}"),
+            _normalize(f"{player.full_name} {player.club.slug}"),
         }
     ]
     if len(exact) == 1:
@@ -391,15 +401,47 @@ def find_player_mentions(db: Session, question: str) -> list[str]:
         index = folded.find(alias.casefold())
         if index >= 0:
             mentions.append((index, slug))
-    for player in db.scalars(select(Player).order_by(Player.full_name)).all():
-        for candidate in (
-            player.full_name,
-            player.full_name.split()[-1],
-            player.slug.replace("-", " "),
-        ):
-            index = folded.find(candidate.casefold())
-            if index >= 0:
+    players = [
+        item.player
+        for item in load_player_snapshots(
+            db,
+            SAMPLE_SEASON,
+            DEFAULT_MINIMUM_MINUTES,
+        )
+    ]
+    records_by_name: dict[str, list[Player]] = {}
+    records_by_last_name: dict[str, list[Player]] = {}
+    for player in players:
+        records_by_name.setdefault(player.full_name.casefold(), []).append(player)
+        records_by_last_name.setdefault(
+            player.full_name.split()[-1].casefold(), []
+        ).append(player)
+
+    for full_name, records in records_by_name.items():
+        index = folded.find(full_name)
+        if index < 0:
+            continue
+        if len(records) == 1:
+            mentions.append((index, records[0].slug))
+            continue
+        for player in records:
+            if any(
+                candidate.casefold() in folded
+                for candidate in (
+                    player.club.name,
+                    player.club.short_name,
+                    player.club.slug.replace("-", " "),
+                    player.slug.replace("-", " "),
+                )
+            ):
                 mentions.append((index, player.slug))
+
+    for last_name, records in records_by_last_name.items():
+        if len(records) != 1:
+            continue
+        index = folded.find(last_name)
+        if index >= 0:
+            mentions.append((index, records[0].slug))
     ordered: list[str] = []
     for _, slug in sorted(mentions, key=lambda item: (item[0], -len(item[1]))):
         if slug not in ordered:
@@ -687,7 +729,10 @@ def _compare_players(
                 f"{names[slug]} {score}"
                 for slug, score in result.recommendation.scores.items()
             ),
-            detail=f"样例加权结果更支持 {winner}；该得分不是完整英超排名。",
+            detail=(
+                f"固定 450+ 分钟球员池的加权结果更支持 {winner}；"
+                "该得分不是绝对能力排名。"
+            ),
             tool="compare_players",
         ),
     )
@@ -727,7 +772,8 @@ def _compare_players(
             CopilotLink(label="打开球员实验室", href="/players"),
         ],
         limitations=[
-            "当前比较只覆盖 12 名球员演示样例，百分位不是完整英超排名。",
+            "当前比较使用 400 条达到 450 分钟的球员—球队记录；百分位"
+            "是固定历史快照内的相对位置，不是实时或绝对排名。",
             *result.limitations,
         ],
     )

@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.database.seed import load_player_snapshot
 from app.schemas.player import (
     PlayerClubData,
     PlayerLabData,
@@ -21,13 +22,16 @@ from app.services.player_metrics import (
 
 DEFAULT_MINIMUM_MINUTES = 450
 MINIMUM_POSITION_PEERS = 3
+PLAYER_SNAPSHOT = load_player_snapshot()
 SAMPLE_NOTICE = (
-    "当前球员中心包含 12 名 2024-25 赛季演示样例，用于验证筛选、"
-    "每90分钟换算和可视化流程，不代表完整英超球员库或实时数据。"
+    "当前球员中心使用 Kaggle v1 的 2024-25 历史快照：574 条球员—球队"
+    "出场记录、562 个球员姓名与 20 支球队；12 条跨队附加记录按俱乐部"
+    "分别保留。该快照不是实时名单。"
 )
 PERCENTILE_NOTICE = (
-    "雷达图优先使用同位置样例百分位；当同位置样例少于 3 人时，"
-    "自动回退到全部合格样例，并在球员卡片中标明比较范围。"
+    "雷达图优先使用达到当前分钟门槛的同位置球员百分位；同位置不足"
+    "3 条记录时回退到全部合格记录。切换到全部出场记录时，低分钟球员"
+    "的每90数据可能波动较大。"
 )
 
 
@@ -52,10 +56,10 @@ def _percentile_profile(
     ]
     if len(position_peers) >= MINIMUM_POSITION_PEERS:
         peers = position_peers
-        scope = "position_sample"
+        scope = "position_pool"
     else:
         peers = pool
-        scope = "all_sample_players"
+        scope = "all_qualified_players"
 
     metrics = {
         key: percentile_rank(
@@ -86,6 +90,7 @@ def _to_item(
         position=player.position,
         nationality=player.nationality,
         date_of_birth=player.date_of_birth,
+        birth_year=player.birth_year,
         source_kind=player.source_kind,
         club=_club_data(snapshot),
         season=season,
@@ -139,7 +144,12 @@ def list_player_lab(
     limit: int,
     offset: int,
 ) -> PlayerLabData:
-    pool = load_player_snapshots(db, season, minimum_minutes)
+    dataset = load_player_snapshots(db, season, 0)
+    pool = [
+        snapshot
+        for snapshot in dataset
+        if snapshot.stats.minutes >= minimum_minutes
+    ]
     items = [_to_item(snapshot, season, pool) for snapshot in pool]
 
     normalized_query = query.strip().casefold() if query else ""
@@ -172,10 +182,10 @@ def list_player_lab(
 
     clubs_by_slug = {
         snapshot.player.club.slug: _club_data(snapshot)
-        for snapshot in pool
+        for snapshot in dataset
     }
     available_positions = sorted(
-        {snapshot.player.position for snapshot in pool},
+        {snapshot.player.position for snapshot in dataset},
         key=("GK", "DEF", "MID", "FWD").index,
     )
 
@@ -183,6 +193,12 @@ def list_player_lab(
         items=page_items,
         total=total,
         pool_total=len(pool),
+        dataset_total=len(dataset),
+        unique_player_total=len(
+            {snapshot.player.full_name for snapshot in dataset}
+        ),
+        transfer_record_total=len(dataset)
+        - len({snapshot.player.full_name for snapshot in dataset}),
         season=season,
         minimum_minutes=minimum_minutes,
         limit=limit,
@@ -194,6 +210,11 @@ def list_player_lab(
             clubs_by_slug.values(),
             key=lambda club: club.short_name,
         ),
+        source_name=PLAYER_SNAPSHOT["source"]["name"],
+        source_url=PLAYER_SNAPSHOT["source"]["dataset_url"],
+        source_version=PLAYER_SNAPSHOT["source"]["dataset_version"],
+        license_name=PLAYER_SNAPSHOT["source"]["license_name"],
+        license_url=PLAYER_SNAPSHOT["source"]["license_url"],
         sample_notice=SAMPLE_NOTICE,
         percentile_notice=PERCENTILE_NOTICE,
     )

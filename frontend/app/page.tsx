@@ -7,14 +7,14 @@ import { BackendStatus } from "../components/system/backend-status";
 
 const futureModules = [
   {
-    phase: "v0.11 已上线",
-    title: "League Copilot",
-    description: "千问真实函数调用、本地安全路由、四类受控数据工具与可核查执行轨迹已经打通。",
+    phase: "v0.12 已上线",
+    title: "Player Intelligence Atlas",
+    description: "574 条球员—球队记录、位置百分位、完整球队阵容与 Agent 球员覆盖已经打通。",
   },
   {
     phase: "数据下一步",
-    title: "扩大球员覆盖",
-    description: "在许可和口径明确的前提下，把 12 名演示样例扩展为更完整的赛季球员池。",
+    title: "多赛季对照",
+    description: "在保留数据许可、赛季边界和转会分段的前提下，扩展跨赛季变化分析。",
   },
   {
     phase: "v1.0 目标",
@@ -38,7 +38,7 @@ export default function Home() {
             </span>
           </Link>
           <span className="phase-badge">
-            v0.11.0 · League Copilot
+            v0.12.0 · Player Intelligence Atlas
           </span>
         </header>
 
@@ -92,7 +92,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、球员、完整赛季、单场事件、分析记录与真实工具调用已经打通，下一步面向数据覆盖和 v1.0 发布。</p>
+            <p>地图、完整球员快照、赛季赛果、单场事件、分析记录与真实工具调用已经打通，下一步面向多赛季与 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

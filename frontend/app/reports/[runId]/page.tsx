@@ -60,7 +60,7 @@ export default function AgentReportPage() {
               <small>Premier League Insight Agent</small>
             </span>
           </Link>
-          <span className="phase-badge">v0.11.0 · League Copilot</span>
+          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
         </header>
 
         <div className="report-toolbar">
@@ -170,7 +170,7 @@ export default function AgentReportPage() {
                 <span>01</span>
                 <div>
                   <h2>指标对比</h2>
-                  <p>所有累计数据已由后端换算为每 90 分钟，并在演示样例池内计算百分位。</p>
+                  <p>所有累计数据已由后端换算为每 90 分钟，并在 450+ 分钟固定球员池内计算百分位。</p>
                 </div>
               </div>
               <div className="report-table-wrap">

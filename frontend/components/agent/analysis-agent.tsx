@@ -19,6 +19,7 @@ import type {
   AgentRequestedFocus,
   AgentRunSummary,
 } from "../../types/api";
+import { APP_VERSION } from "../../lib/product";
 
 const FOCUS_OPTIONS: {
   value: AgentRequestedFocus;
@@ -303,7 +304,7 @@ export function AnalysisAgent() {
             >
               {capabilities?.qwen_configured
                 ? `${capabilities.model} · ONLINE`
-                : "LOCAL SAFE MODE · v0.11"}
+                : `LOCAL SAFE MODE · v${APP_VERSION}`}
             </span>
           </div>
 

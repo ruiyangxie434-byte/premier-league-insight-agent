@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { SiteHeader } from "../../../components/system/site-header";
 import { getClub, getClubSeasonForm } from "../../../services/api";
 import type {
   ClubDetailData,
@@ -79,18 +80,7 @@ export default function ClubDetailPage() {
   return (
     <main>
       <div className="page-shell club-detail-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">
-              AI
-            </span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <Link className="club-back-link" href="/#club-map">
           <span aria-hidden="true">←</span>

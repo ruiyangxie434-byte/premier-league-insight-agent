@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { PointsTrendChart } from "../../components/form/points-trend-chart";
+import { SiteHeader } from "../../components/system/site-header";
 import { getSeasonForm } from "../../services/api";
 import type {
   FormResult,
@@ -110,16 +111,7 @@ export default function SeasonFormPage() {
   return (
     <main>
       <div className="page-shell form-page-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">AI</span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <Link className="club-back-link" href="/">
           <span aria-hidden="true">←</span>

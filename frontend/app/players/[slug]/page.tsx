@@ -6,14 +6,17 @@ import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { PlayerRadar } from "../../../components/players/player-radar";
-import { getPlayer } from "../../../services/api";
+import { SiteHeader } from "../../../components/system/site-header";
+import { getPlayer, getSimilarPlayers } from "../../../services/api";
 import type {
   PlayerLabItem,
   PlayerPer90Metrics,
   PlayerPosition,
+  PlayerSimilarityData,
 } from "../../../types/api";
 
 type DetailState = "loading" | "success" | "error";
+type SimilarityState = "loading" | "success" | "error";
 type MetricKey = keyof PlayerPer90Metrics;
 
 const positionLabels: Record<PlayerPosition, string> = {
@@ -67,6 +70,13 @@ export default function PlayerDetailPage() {
   const [state, setState] = useState<DetailState>("loading");
   const [player, setPlayer] = useState<PlayerLabItem | null>(null);
   const [requestId, setRequestId] = useState(0);
+  const [similarityState, setSimilarityState] =
+    useState<SimilarityState>("loading");
+  const [similarity, setSimilarity] =
+    useState<PlayerSimilarityData | null>(null);
+  const [similarityMinimumMinutes, setSimilarityMinimumMinutes] =
+    useState(450);
+  const [similarityRequestId, setSimilarityRequestId] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -95,21 +105,41 @@ export default function PlayerDetailPage() {
     return () => controller.abort();
   }, [params.slug, requestId]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadSimilarity() {
+      setSimilarityState("loading");
+      try {
+        const response = await getSimilarPlayers(
+          params.slug,
+          {
+            season: "2024-25",
+            minimumMinutes: similarityMinimumMinutes,
+            limit: 5,
+          },
+          controller.signal,
+        );
+        if (!response.data) {
+          throw new Error("相似球员数据为空");
+        }
+        setSimilarity(response.data);
+        setSimilarityState("success");
+      } catch {
+        if (!controller.signal.aborted) {
+          setSimilarityState("error");
+        }
+      }
+    }
+
+    void loadSimilarity();
+    return () => controller.abort();
+  }, [params.slug, similarityMinimumMinutes, similarityRequestId]);
+
   return (
     <main>
       <div className="page-shell player-detail-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">
-              AI
-            </span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <Link className="club-back-link" href="/players">
           <span aria-hidden="true">←</span>
@@ -252,6 +282,180 @@ export default function PlayerDetailPage() {
                 </article>
               </div>
 
+              <section
+                className="similarity-scout"
+                aria-labelledby="similarity-scout-title"
+              >
+                <div className="similarity-scout-heading">
+                  <div>
+                    <p className="eyebrow">SIMILARITY SCOUT · EXPLAINABLE MATCHING</p>
+                    <h2 id="similarity-scout-title">同位置相似球员</h2>
+                    <p>
+                      用同位置百分位画像寻找风格接近的赛季记录，同时保留最接近指标与最大差异，避免把相似分当成绝对能力。
+                    </p>
+                  </div>
+                  <label>
+                    <span>候选分钟门槛</span>
+                    <select
+                      onChange={(event) =>
+                        setSimilarityMinimumMinutes(Number(event.target.value))
+                      }
+                      value={similarityMinimumMinutes}
+                    >
+                      <option value={450}>450+ 分钟</option>
+                      <option value={1800}>1,800+ 分钟</option>
+                      <option value={2700}>2,700+ 分钟</option>
+                    </select>
+                  </label>
+                </div>
+
+                {similarityState === "loading" && (
+                  <div className="similarity-state" aria-live="polite">
+                    <span className="loading-ring" aria-hidden="true" />
+                    <div>
+                      <strong>正在匹配同位置画像</strong>
+                      <p>计算七项百分位差异与位置权重。</p>
+                    </div>
+                  </div>
+                )}
+
+                {similarityState === "error" && (
+                  <div className="similarity-state similarity-state-error" role="alert">
+                    <div>
+                      <strong>暂时无法读取相似球员</strong>
+                      <p>球员资料仍可使用，可以单独重新加载该模块。</p>
+                    </div>
+                    <button
+                      className="secondary-button"
+                      onClick={() =>
+                        setSimilarityRequestId((value) => value + 1)
+                      }
+                      type="button"
+                    >
+                      重新匹配
+                    </button>
+                  </div>
+                )}
+
+                {similarityState === "success" && similarity && (
+                  <>
+                    {!similarity.is_supported && (
+                      <div className="similarity-unavailable">
+                        <span>DATA BOUNDARY</span>
+                        <strong>当前不生成相似度结果</strong>
+                        <p>{similarity.unavailable_reason}</p>
+                      </div>
+                    )}
+
+                    {similarity.is_supported && (
+                      <>
+                        <div className="similarity-model-summary">
+                          <div>
+                            <span>CANDIDATE POOL</span>
+                            <strong>{similarity.candidate_total}</strong>
+                            <small>
+                              条 {positionLabels[similarity.position]}记录
+                            </small>
+                          </div>
+                          <div className="similarity-weight-list">
+                            {similarity.metric_weights.map((metric) => (
+                              <span key={metric.key}>
+                                {metric.label}
+                                <b>{Math.round(metric.weight * 100)}%</b>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <ol className="similarity-card-grid">
+                          {similarity.items.map((candidate, index) => (
+                            <li key={candidate.player.slug}>
+                              <article
+                                className="similarity-card"
+                                style={
+                                  {
+                                    "--candidate-color":
+                                      candidate.player.club.primary_color,
+                                    "--similarity-score":
+                                      `${candidate.similarity_score}%`,
+                                  } as CSSProperties
+                                }
+                              >
+                                <div className="similarity-card-topline">
+                                  <span>#{index + 1} MATCH</span>
+                                  <div
+                                    aria-label={`相似度 ${candidate.similarity_score} 分`}
+                                    aria-valuemax={100}
+                                    aria-valuemin={0}
+                                    aria-valuenow={candidate.similarity_score}
+                                    className="similarity-score"
+                                    role="progressbar"
+                                  >
+                                    <strong>{candidate.similarity_score}</strong>
+                                    <small>/100</small>
+                                  </div>
+                                </div>
+
+                                <Link
+                                  className="similarity-player-identity"
+                                  href={`/players/${candidate.player.slug}`}
+                                >
+                                  <span>{initials(candidate.player.full_name)}</span>
+                                  <div>
+                                    <h3>{candidate.player.full_name}</h3>
+                                    <p>
+                                      {candidate.player.club.short_name} · {candidate.player.totals.minutes.toLocaleString("en-US")} 分钟
+                                    </p>
+                                  </div>
+                                </Link>
+
+                                <div className="similarity-closest-metrics">
+                                  <span>最接近</span>
+                                  {candidate.closest_metrics.map((metric) => (
+                                    <b key={metric}>{metric}</b>
+                                  ))}
+                                </div>
+
+                                <dl className="similarity-difference">
+                                  <div>
+                                    <dt>最大画像差异 · {candidate.key_difference.label}</dt>
+                                    <dd>
+                                      <span>
+                                        {player.full_name} P{candidate.key_difference.target_percentile}
+                                      </span>
+                                      <span>
+                                        {candidate.player.full_name} P{candidate.key_difference.candidate_percentile}
+                                      </span>
+                                    </dd>
+                                  </div>
+                                  <strong>Δ {candidate.key_difference.gap}</strong>
+                                </dl>
+
+                                <div className="similarity-card-actions">
+                                  <Link href={`/players/${candidate.player.slug}`}>
+                                    查看资料
+                                  </Link>
+                                  <Link
+                                    href={`/players?compare=${encodeURIComponent(player.slug)},${encodeURIComponent(candidate.player.slug)}#player-radar`}
+                                  >
+                                    立即对比 →
+                                  </Link>
+                                </div>
+                              </article>
+                            </li>
+                          ))}
+                        </ol>
+                      </>
+                    )}
+
+                    <p className="similarity-method-notice">
+                      <span aria-hidden="true">i</span>
+                      {similarity.method_notice}
+                    </p>
+                  </>
+                )}
+              </section>
+
               <div className="player-detail-footer">
                 <p>
                   当前资料来自 Kaggle v1 的 2024-25 历史快照。默认百分位只描述达到 450 分钟的固定球员—球队记录池，不代表官方实时排名。
@@ -260,7 +464,10 @@ export default function PlayerDetailPage() {
                   <Link className="secondary-button" href={`/clubs/${player.club.slug}`}>
                     查看球队资料
                   </Link>
-                  <Link className="primary-button" href="/players#player-radar">
+                  <Link
+                    className="primary-button"
+                    href={`/players?compare=${encodeURIComponent(player.slug)}#player-radar`}
+                  >
                     加入双人对比
                   </Link>
                 </div>

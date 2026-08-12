@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { PlayerRadar } from "../../components/players/player-radar";
+import { SiteHeader } from "../../components/system/site-header";
 import { getPlayer, getPlayers } from "../../services/api";
 import type {
   PlayerLabData,
@@ -56,6 +57,7 @@ export default function PlayersPage() {
   const [state, setState] = useState<PageState>("loading");
   const [data, setData] = useState<PlayerLabData | null>(null);
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [position, setPosition] = useState<PlayerPosition | "all">("all");
   const [clubSlug, setClubSlug] = useState("all");
   const [minimumMinutes, setMinimumMinutes] = useState(450);
@@ -64,21 +66,51 @@ export default function PlayersPage() {
   const [offset, setOffset] = useState(0);
   const [selectedPlayers, setSelectedPlayers] = useState<PlayerLabItem[]>([]);
   const [requestId, setRequestId] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setDebouncedQuery(query);
+      setOffset(0);
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [query]);
 
   useEffect(() => {
     const controller = new AbortController();
     async function loadPreferredComparison() {
-      try {
-        const responses = await Promise.all([
-          getPlayer("bukayo-saka", "2024-25", controller.signal),
-          getPlayer("cole-palmer", "2024-25", controller.signal),
-        ]);
-        const players = responses
-          .map((response) => response.data)
-          .filter((player): player is PlayerLabItem => Boolean(player));
+      const requested = Array.from(
+        new Set(
+          new URLSearchParams(window.location.search)
+            .get("compare")
+            ?.split(",")
+            .map((slug) => slug.trim())
+            .filter(Boolean) ?? [],
+        ),
+      ).slice(0, 2);
+      const defaults = ["bukayo-saka", "cole-palmer"];
+
+      async function loadSlugs(slugs: string[]) {
+        const responses = await Promise.all(
+          slugs.map(async (slug) => {
+            try {
+              return await getPlayer(slug, "2024-25", controller.signal);
+            } catch {
+              return null;
+            }
+          }),
+        );
+        return responses
+          .map((response) => response?.data ?? null)
+          .filter((item): item is PlayerLabItem => Boolean(item));
+      }
+
+      let players = await loadSlugs(requested.length ? requested : defaults);
+      if (!players.length && requested.length) {
+        players = await loadSlugs(defaults);
+      }
+      if (!controller.signal.aborted) {
         setSelectedPlayers((current) => (current.length ? current : players));
-      } catch {
-        // The table remains usable if the optional default comparison fails.
       }
     }
     void loadPreferredComparison();
@@ -89,12 +121,13 @@ export default function PlayersPage() {
     const controller = new AbortController();
 
     async function loadPlayers() {
-      setState("loading");
+      setState((current) => (current === "success" ? current : "loading"));
+      setIsRefreshing(true);
       try {
         const response = await getPlayers(
           {
             minimumMinutes,
-            query: query.trim() || undefined,
+            query: debouncedQuery.trim() || undefined,
             position: position === "all" ? undefined : position,
             clubSlug: clubSlug === "all" ? undefined : clubSlug,
             limit: pageSize,
@@ -113,12 +146,16 @@ export default function PlayersPage() {
         if (!controller.signal.aborted) {
           setState("error");
         }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsRefreshing(false);
+        }
       }
     }
 
     void loadPlayers();
     return () => controller.abort();
-  }, [clubSlug, minimumMinutes, offset, order, pageSize, position, query, requestId, sortBy]);
+  }, [clubSlug, debouncedQuery, minimumMinutes, offset, order, pageSize, position, requestId, sortBy]);
 
   const selectedSlugs = useMemo(
     () => selectedPlayers.map((player) => player.slug),
@@ -156,18 +193,7 @@ export default function PlayersPage() {
   return (
     <main>
       <div className="page-shell player-lab-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">
-              AI
-            </span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <Link className="club-back-link" href="/">
           <span aria-hidden="true">←</span>
@@ -232,14 +258,21 @@ export default function PlayersPage() {
 
         {state === "success" && data && (
           <>
-            <section className="player-explorer" aria-labelledby="player-table-title">
+            <section
+              aria-busy={isRefreshing}
+              aria-labelledby="player-table-title"
+              className="player-explorer"
+              data-refreshing={isRefreshing}
+            >
               <div className="player-explorer-heading">
                 <div>
                   <p className="eyebrow">SORT · FILTER · INSPECT</p>
                   <h2 id="player-table-title">球员数据榜</h2>
                 </div>
                 <span>
-                  {data.total} 条匹配记录 · 当前显示 {data.items.length} 条
+                  {isRefreshing
+                    ? "正在更新筛选结果…"
+                    : `${data.total} 条匹配记录 · 当前显示 ${data.items.length} 条`}
                 </span>
               </div>
 
@@ -249,7 +282,6 @@ export default function PlayersPage() {
                   <input
                     onChange={(event) => {
                       setQuery(event.target.value);
-                      setOffset(0);
                     }}
                     placeholder="球员、球队或国籍"
                     type="search"

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import { getApiHealth } from "../../services/api";
+import { APP_VERSION } from "../../lib/product";
+import { getApiBaseUrl, getApiHealth } from "../../services/api";
 import type { HealthData } from "../../types/api";
 
 type RequestState = "loading" | "success" | "error";
@@ -10,17 +11,23 @@ type RequestState = "loading" | "success" | "error";
 export function BackendStatus() {
   const [state, setState] = useState<RequestState>("loading");
   const [health, setHealth] = useState<HealthData | null>(null);
+  const [apiBaseUrl, setApiBaseUrl] = useState(
+    "http://localhost:8000/api",
+  );
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function checkBackend() {
+      const resolvedApiBaseUrl = getApiBaseUrl();
       try {
         const response = await getApiHealth(controller.signal);
         setHealth(response.data);
+        setApiBaseUrl(resolvedApiBaseUrl);
         setState("success");
       } catch {
         if (!controller.signal.aborted) {
+          setApiBaseUrl(resolvedApiBaseUrl);
           setState("error");
         }
       }
@@ -69,7 +76,7 @@ export function BackendStatus() {
         <div className="status-details">
           <div className="status-row">
             <span>API 地址</span>
-            <code>{process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000/api"}</code>
+            <code>{apiBaseUrl}</code>
           </div>
           <div className="status-row">
             <span>环境</span>
@@ -77,7 +84,7 @@ export function BackendStatus() {
           </div>
           <div className="status-row">
             <span>版本</span>
-            <strong>{health?.version ?? "0.9.0"}</strong>
+            <strong>{health?.version ?? APP_VERSION}</strong>
           </div>
         </div>
       </div>

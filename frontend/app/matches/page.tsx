@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { SiteHeader } from "../../components/system/site-header";
 import { getMatches } from "../../services/api";
 import type { MatchListData } from "../../types/api";
 
@@ -51,16 +52,7 @@ export default function MatchesPage() {
   return (
     <main>
       <div className="page-shell match-list-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">AI</span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <Link className="club-back-link" href="/">
           <span aria-hidden="true">←</span>

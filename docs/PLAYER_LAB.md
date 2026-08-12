@@ -7,6 +7,7 @@
 ```text
 574 条球员—球队记录 → 搜索 / 筛选 / 排序 / 分页
                     ├→ 球员详情 → 累计数据 / 每90指标 / 百分位
+                    ├→ 相似球员 → 位置画像 / 差异解释 / 双人对比
                     └→ 双人雷达 → Agent 对比
 ```
 
@@ -70,8 +71,9 @@
 ```text
 GET /api/players
 GET /api/players/{slug}
+GET /api/players/{slug}/similar
 ```
 
 列表接口支持 `season`、`minimum_minutes`、`query`、`position`、`club_slug`、`sort_by`、`order`、`limit` 和 `offset`，并返回完整数据集、合格池、唯一姓名和转会附加记录数量，以及来源和许可元数据。
 
-自动化测试覆盖快照不变量、迁移保留、指标换算、筛选、排序、分页、详情、百分位范围、同名转会记录和参数错误。
+相似球员接口支持 `season`、`minimum_minutes` 和 `limit`，详细算法与限制见 [`SIMILARITY_SCOUT.md`](SIMILARITY_SCOUT.md)。自动化测试覆盖快照不变量、迁移保留、指标换算、筛选、排序、分页、详情、百分位范围、相似度排序、同名转会记录和参数错误。

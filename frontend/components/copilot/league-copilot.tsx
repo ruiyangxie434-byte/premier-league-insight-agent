@@ -16,6 +16,7 @@ import type {
 const promptExamples = [
   "利物浦和阿森纳的最终排名、主客场表现和近五场状态有什么差异？",
   "萨卡和帕尔默谁更适合承担创造任务？",
+  "找出和萨卡统计画像最相似的球员",
   "2004 年 Arsenal 4–2 Liverpool 的射门和 xG 如何？",
   "2024-25 英超积分榜前三名是谁？",
 ];
@@ -24,6 +25,7 @@ const toolMeta: Record<CopilotToolName, { code: string; className: string }> = {
   get_league_table: { code: "TAB", className: "table" },
   get_club_form: { code: "FRM", className: "form" },
   compare_players: { code: "CMP", className: "compare" },
+  find_similar_players: { code: "SIM", className: "similarity" },
   get_match_shot_summary: { code: "xG", className: "match" },
 };
 
@@ -108,7 +110,7 @@ export function LeagueCopilot() {
         <div className="copilot-console-topline">
           <div>
             <p className="eyebrow">CONTROLLED FUNCTION CALLING</p>
-            <h2 id="copilot-console-title">用一句话调度四类足球数据工具</h2>
+            <h2 id="copilot-console-title">用一句话调度五类足球数据工具</h2>
           </div>
           <span
             className="copilot-mode-badge"

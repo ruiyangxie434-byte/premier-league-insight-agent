@@ -19,17 +19,35 @@ import type {
   PlayerLabData,
   PlayerLabItem,
   PlayerLabQuery,
+  PlayerSimilarityData,
   SeasonFormOverviewData,
   StandingTableData,
 } from "../types/api";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000/api";
+const CONFIGURED_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(
+  /\/$/,
+  "",
+);
+
+export function getApiBaseUrl(): string {
+  if (CONFIGURED_API_BASE_URL) {
+    return CONFIGURED_API_BASE_URL;
+  }
+  if (typeof window !== "undefined") {
+    const hostname = ["localhost", "127.0.0.1"].includes(
+      window.location.hostname,
+    )
+      ? window.location.hostname
+      : "localhost";
+    return `http://${hostname}:8000/api`;
+  }
+  return "http://localhost:8000/api";
+}
 
 export async function getApiHealth(
   signal?: AbortSignal,
 ): Promise<ApiResponse<HealthData>> {
-  const response = await fetch(`${API_BASE_URL}/health`, {
+  const response = await fetch(`${getApiBaseUrl()}/health`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -49,7 +67,7 @@ async function getApiData<T>(
   path: string,
   signal?: AbortSignal,
 ): Promise<ApiResponse<T>> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(`${getApiBaseUrl()}${path}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -163,6 +181,26 @@ export function getPlayer(
   );
 }
 
+export function getSimilarPlayers(
+  slug: string,
+  options: {
+    season?: string;
+    minimumMinutes?: number;
+    limit?: number;
+  } = {},
+  signal?: AbortSignal,
+): Promise<ApiResponse<PlayerSimilarityData>> {
+  const search = new URLSearchParams({
+    season: options.season ?? "2024-25",
+    minimum_minutes: String(options.minimumMinutes ?? 450),
+    limit: String(options.limit ?? 5),
+  });
+  return getApiData<PlayerSimilarityData>(
+    `/players/${encodeURIComponent(slug)}/similar?${search.toString()}`,
+    signal,
+  );
+}
+
 export function getAgentPlayers(
   season = "2024-25",
   signal?: AbortSignal,
@@ -186,7 +224,7 @@ export async function runAgentAnalysis(
   payload: AgentAnalysisRequest,
   signal?: AbortSignal,
 ): Promise<ApiResponse<AgentAnalysisData>> {
-  const response = await fetch(`${API_BASE_URL}/agent/analyze`, {
+  const response = await fetch(`${getApiBaseUrl()}/agent/analyze`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -230,7 +268,7 @@ export async function runAgentFollowUp(
   signal?: AbortSignal,
 ): Promise<ApiResponse<AgentAnalysisData>> {
   const response = await fetch(
-    `${API_BASE_URL}/agent/runs/${encodeURIComponent(runId)}/follow-up`,
+    `${getApiBaseUrl()}/agent/runs/${encodeURIComponent(runId)}/follow-up`,
     {
       method: "POST",
       headers: {
@@ -262,7 +300,7 @@ export async function runCopilotQuery(
   payload: CopilotQueryRequest,
   signal?: AbortSignal,
 ): Promise<ApiResponse<CopilotAnswerData>> {
-  const response = await fetch(`${API_BASE_URL}/copilot/query`, {
+  const response = await fetch(`${getApiBaseUrl()}/copilot/query`, {
     method: "POST",
     headers: {
       Accept: "application/json",

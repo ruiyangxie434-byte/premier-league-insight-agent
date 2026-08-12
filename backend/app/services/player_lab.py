@@ -12,6 +12,10 @@ from app.schemas.player import (
     PlayerSeasonTotals,
     PlayerSortKey,
     PlayerSortOrder,
+    PlayerSimilarityCandidate,
+    PlayerSimilarityData,
+    PlayerSimilarityDifference,
+    PlayerSimilarityMetricWeight,
 )
 from app.services.player_metrics import (
     PER90_METRIC_KEYS,
@@ -32,6 +36,51 @@ PERCENTILE_NOTICE = (
     "雷达图优先使用达到当前分钟门槛的同位置球员百分位；同位置不足"
     "3 条记录时回退到全部合格记录。切换到全部出场记录时，低分钟球员"
     "的每90数据可能波动较大。"
+)
+
+SIMILARITY_METRIC_LABELS = {
+    "goals_per90": "进球",
+    "assists_per90": "助攻",
+    "shots_per90": "射门",
+    "key_passes_per90": "关键传球",
+    "tackles_per90": "抢断",
+    "interceptions_per90": "拦截",
+    "expected_goals_per90": "预期进球",
+}
+SIMILARITY_WEIGHTS: dict[PlayerPosition, dict[str, float]] = {
+    "FWD": {
+        "goals_per90": 0.25,
+        "assists_per90": 0.15,
+        "shots_per90": 0.18,
+        "key_passes_per90": 0.16,
+        "tackles_per90": 0.08,
+        "interceptions_per90": 0.06,
+        "expected_goals_per90": 0.12,
+    },
+    "MID": {
+        "goals_per90": 0.10,
+        "assists_per90": 0.16,
+        "shots_per90": 0.10,
+        "key_passes_per90": 0.22,
+        "tackles_per90": 0.16,
+        "interceptions_per90": 0.14,
+        "expected_goals_per90": 0.12,
+    },
+    "DEF": {
+        "goals_per90": 0.05,
+        "assists_per90": 0.08,
+        "shots_per90": 0.05,
+        "key_passes_per90": 0.12,
+        "tackles_per90": 0.25,
+        "interceptions_per90": 0.30,
+        "expected_goals_per90": 0.05,
+    },
+}
+SIMILARITY_METHOD_NOTICE = (
+    "相似度只比较达到分钟门槛的同位置记录。系统先把七项每90指标转换为"
+    "同位置百分位，再按位置权重计算绝对差异；100 表示当前指标画像完全"
+    "一致。结果排除目标球员本人及其其他俱乐部分段，不代表转会建议或"
+    "绝对能力排名。"
 )
 
 
@@ -240,3 +289,137 @@ def get_player_lab_item(
         DEFAULT_MINIMUM_MINUTES,
     )
     return _to_item(snapshot, season, percentile_pool)
+
+
+def find_similar_players(
+    db: Session,
+    *,
+    slug: str,
+    season: str,
+    minimum_minutes: int,
+    limit: int,
+) -> PlayerSimilarityData | None:
+    dataset = load_player_snapshots(db, season, 0)
+    target_snapshot = next(
+        (item for item in dataset if item.player.slug == slug),
+        None,
+    )
+    if target_snapshot is None:
+        return None
+
+    qualified_pool = [
+        item
+        for item in dataset
+        if item.stats.minutes >= minimum_minutes
+    ]
+    target = _to_item(target_snapshot, season, qualified_pool)
+    candidate_pool = [
+        item
+        for item in qualified_pool
+        if item.player.position == target_snapshot.player.position
+        and item.player.full_name != target_snapshot.player.full_name
+    ]
+    position_pool = [
+        item
+        for item in qualified_pool
+        if item.player.position == target_snapshot.player.position
+    ]
+
+    unsupported_reason: str | None = None
+    if target_snapshot.player.position == "GK":
+        unsupported_reason = (
+            "当前快照缺少扑救、失球和零封等门将指标，暂不生成可能误导的"
+            "门将相似度。"
+        )
+    elif target_snapshot.stats.minutes <= 0:
+        unsupported_reason = "该球员记录没有有效比赛分钟，无法计算可靠的每90画像。"
+    elif len(position_pool) < MINIMUM_POSITION_PEERS or not candidate_pool:
+        unsupported_reason = (
+            "当前分钟门槛下的同位置合格记录不足 3 条，无法建立稳定的"
+            "百分位比较池。"
+        )
+
+    weights = SIMILARITY_WEIGHTS.get(target_snapshot.player.position, {})
+    metric_weights = [
+        PlayerSimilarityMetricWeight(
+            key=key,
+            label=SIMILARITY_METRIC_LABELS[key],
+            weight=weight,
+        )
+        for key, weight in weights.items()
+    ]
+    if unsupported_reason is not None:
+        return PlayerSimilarityData(
+            target=target,
+            items=[],
+            candidate_total=len(candidate_pool),
+            season=season,
+            minimum_minutes=minimum_minutes,
+            position=target_snapshot.player.position,
+            is_supported=False,
+            unavailable_reason=unsupported_reason,
+            metric_weights=metric_weights,
+            method_notice=SIMILARITY_METHOD_NOTICE,
+            sample_notice=SAMPLE_NOTICE,
+        )
+
+    target_percentiles = target.percentiles.metrics.model_dump()
+    ranked: list[tuple[float, PlayerSimilarityCandidate]] = []
+    for candidate_snapshot in candidate_pool:
+        candidate = _to_item(candidate_snapshot, season, qualified_pool)
+        candidate_percentiles = candidate.percentiles.metrics.model_dump()
+        gaps = {
+            key: abs(target_percentiles[key] - candidate_percentiles[key])
+            for key in weights
+        }
+        distance = sum(weights[key] * gaps[key] for key in weights)
+        closest_keys = sorted(
+            weights,
+            key=lambda key: (gaps[key], -weights[key], key),
+        )[:2]
+        contrast_key = max(
+            weights,
+            key=lambda key: (weights[key] * gaps[key], gaps[key], key),
+        )
+        ranked.append(
+            (
+                distance,
+                PlayerSimilarityCandidate(
+                    player=candidate,
+                    similarity_score=max(0, min(100, round(100 - distance))),
+                    closest_metrics=[
+                        SIMILARITY_METRIC_LABELS[key]
+                        for key in closest_keys
+                    ],
+                    key_difference=PlayerSimilarityDifference(
+                        key=contrast_key,
+                        label=SIMILARITY_METRIC_LABELS[contrast_key],
+                        target_percentile=target_percentiles[contrast_key],
+                        candidate_percentile=candidate_percentiles[contrast_key],
+                        gap=gaps[contrast_key],
+                    ),
+                ),
+            )
+        )
+
+    ranked.sort(
+        key=lambda item: (
+            item[0],
+            -item[1].player.totals.minutes,
+            item[1].player.full_name.casefold(),
+            item[1].player.slug,
+        )
+    )
+    return PlayerSimilarityData(
+        target=target,
+        items=[item for _, item in ranked[:limit]],
+        candidate_total=len(candidate_pool),
+        season=season,
+        minimum_minutes=minimum_minutes,
+        position=target_snapshot.player.position,
+        is_supported=True,
+        unavailable_reason=None,
+        metric_weights=metric_weights,
+        method_notice=SIMILARITY_METHOD_NOTICE,
+        sample_notice=SAMPLE_NOTICE,
+    )

@@ -22,7 +22,7 @@ def use_local_copilot(monkeypatch) -> None:
     monkeypatch.setattr(copilot_route, "get_settings", local_settings)
 
 
-def test_copilot_capabilities_expose_four_controlled_tools(
+def test_copilot_capabilities_expose_five_controlled_tools(
     api_client: TestClient,
     monkeypatch,
 ) -> None:
@@ -37,6 +37,7 @@ def test_copilot_capabilities_expose_four_controlled_tools(
         "get_league_table",
         "get_club_form",
         "compare_players",
+        "find_similar_players",
         "get_match_shot_summary",
     ]
 
@@ -113,6 +114,52 @@ def test_copilot_reuses_grounded_player_comparison_tool(
     }
     assert "创造与组织" in data["evidence"][0]["label"]
     assert any("400 条" in item for item in data["limitations"])
+
+
+def test_copilot_finds_explainable_similar_player_profiles(
+    api_client: TestClient,
+    monkeypatch,
+) -> None:
+    use_local_copilot(monkeypatch)
+    response = api_client.post(
+        "/api/copilot/query",
+        json={"question": "找出和萨卡统计画像最相似的球员"},
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert [item["tool"] for item in data["tool_calls"]] == [
+        "find_similar_players"
+    ]
+    assert data["tool_calls"][0]["arguments"] == {
+        "player": "bukayo-saka",
+        "season": "2024-25",
+        "minimum_minutes": 450,
+        "limit": 5,
+    }
+    assert "Son Heung-min" in data["headline"]
+    assert data["evidence"][0]["value"] == "Son Heung-min · 85/100"
+    assert data["evidence"][0]["tool"] == "find_similar_players"
+    assert any("首位候选双人雷达" in link["label"] for link in data["links"])
+    assert any("转会建议" in item for item in data["limitations"])
+
+
+def test_copilot_explains_goalkeeper_similarity_boundary(
+    api_client: TestClient,
+    monkeypatch,
+) -> None:
+    use_local_copilot(monkeypatch)
+    response = api_client.post(
+        "/api/copilot/query",
+        json={"question": "找出和 Alisson 统计画像相似的门将"},
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["tool_calls"][0]["tool"] == "find_similar_players"
+    assert data["evidence"][0]["value"] == "未生成排名"
+    assert "当前不生成相似球员排名" in data["headline"]
+    assert "门将指标" in data["answer"]
 
 
 def test_copilot_requires_club_context_for_transferred_player(
@@ -192,7 +239,7 @@ def test_qwen_selects_tool_before_grounded_narrative() -> None:
         calls.append(payload)
         assert request.headers["Authorization"] == "Bearer test-key"
         if "tools" in payload:
-            assert len(payload["tools"]) == 4
+            assert len(payload["tools"]) == 5
             return httpx.Response(
                 200,
                 json={

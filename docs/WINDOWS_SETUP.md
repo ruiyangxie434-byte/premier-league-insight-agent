@@ -1,366 +1,233 @@
-# v0.4.0 Hybrid Agent：Windows 启动与验证
+# Windows 本地启动与验收
 
-本文以 PowerShell 为例。命令前的“运行目录”很重要；如果目录不对，命令即使没有拼错也会失败。
+本文适用于 `v0.13.0 · Similarity Scout`。示例使用 PowerShell；每条命令所在目录都明确写出，避免 `package.json`、虚拟环境或端口问题被误判为代码故障。
 
-## 1. 最终目录结构
+## 1. 环境要求
 
-以下是当前阶段与第一版目标结构。带“后续”字样的页面会在后续阶段创建。
+| 软件 | 建议版本 | 验证命令 |
+|---|---|---|
+| Git | 最新稳定版 | `git --version` |
+| Node.js | 22 LTS | `node --version` |
+| npm | 随 Node 安装 | `npm --version` |
+| Python | 3.12.x | `py -3.12 --version` |
+| VS Code | 最新稳定版 | — |
 
-```text
-pl-geo-analytics/
-├── frontend/
-│   ├── app/
-│   │   ├── clubs/[clubId]/page.tsx          # 后续
-│   │   ├── standings/page.tsx               # 后续
-│   │   ├── players/[playerId]/page.tsx      # 后续
-│   │   ├── players/page.tsx                 # 后续
-│   │   ├── compare/page.tsx                 # 后续
-│   │   ├── matches/[matchId]/page.tsx       # 后续
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── components/
-│   │   ├── agent/                           # 足球分析 Agent
-│   │   ├── data/                            # 阶段 2 数据展示
-│   │   ├── charts/                          # 后续
-│   │   ├── clubs/                           # 后续
-│   │   ├── layout/                          # 后续
-│   │   ├── map/                             # 后续
-│   │   ├── matches/                         # 后续
-│   │   ├── players/                         # 后续
-│   │   ├── system/
-│   │   └── ui/                              # 后续
-│   ├── services/
-│   ├── types/
-│   ├── public/
-│   ├── .env.example
-│   └── package.json
-├── backend/
-│   ├── app/
-│   │   ├── api/routes/
-│   │   ├── core/
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   └── main.py
-│   ├── tests/
-│   ├── migrations/
-│   ├── alembic.ini
-│   ├── .env.example
-│   ├── pyproject.toml
-│   └── requirements.txt
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   ├── geo/
-│   └── sample/
-├── notebooks/
-├── scripts/
-├── docs/
-├── .editorconfig
-├── .env.example
-├── .gitignore
-├── README.md
-└── PROJECT_PLAN.md
-```
+应用使用 SQLite，本地不需要安装 PostgreSQL、MySQL 或其他数据库服务。
 
-## 2. 前端、后端和数据库的关系
+## 2. 第一次安装
 
-1. 用户打开 Next.js 前端。
-2. 前端通过 `NEXT_PUBLIC_API_BASE_URL` 请求 FastAPI 的 `/api/*`。
-3. FastAPI 校验请求，调用数据处理服务或数据库。
-4. 数据库只接受后端连接，不直接暴露给浏览器。
-5. FastAPI 以统一 JSON 返回结果，前端再绘制表格、地图或图表。
+### 2.1 获取代码
 
-数据库密码绝不能放进 `NEXT_PUBLIC_*` 变量，因为这类变量会出现在浏览器代码中。
-
-## 3. 需要提前安装的软件
-
-### 当前阶段必装
-
-| 软件 | 建议版本 | 用途 |
-| --- | --- | --- |
-| VS Code | 最新稳定版 | 编写和调试代码 |
-| Git | 最新稳定版 | 分支、提交和 GitHub |
-| Node.js | 22 LTS | Next.js 前端 |
-| Python | 3.12.x | FastAPI 后端 |
-| Microsoft Edge / Chrome | 最新稳定版 | 浏览器调试 |
-
-VS Code 建议扩展：
-
-- Python
-- Pylance
-- ESLint
-- Tailwind CSS IntelliSense
-- GitLens（可选）
-
-### 后续再安装也可以
-
-- PostgreSQL（正式数据库）
-- DBeaver 或 pgAdmin（二选一即可）
-- Postman（Swagger 已能测试 API，所以不是必需）
-
-当前已使用 SQLite，因此不需要单独安装数据库软件。
-
-安装后在 PowerShell 验证：
+在准备存放项目的目录运行：
 
 ```powershell
-git --version
-node --version
-npm --version
-py -3.12 --version
+git clone https://github.com/ruiyangxie434-byte/premier-league-insight-agent.git
+cd .\premier-league-insight-agent
 ```
 
-## 4. Windows 创建命令
+后续命令中的“项目根目录”就是当前包含 `backend`、`frontend` 和 `README.md` 的目录。
 
-如果从完全空白的电脑手动创建，推荐把项目放在不含中文和空格的路径，例如 `D:\Code`。
-
-### 4.1 创建根目录并初始化 Git
-
-运行目录：`D:\Code`
-
-```powershell
-mkdir pl-geo-analytics
-cd pl-geo-analytics
-git init
-git branch -M main
-```
-
-### 4.2 初始化前端
-
-运行目录：`D:\Code\pl-geo-analytics`
-
-```powershell
-npx create-next-app@latest frontend --ts --tailwind --eslint --app --use-npm --import-alias "@/*" --no-src-dir --yes
-```
-
-完成后：
-
-```powershell
-cd frontend
-Copy-Item .env.example .env.local
-npm run dev
-```
-
-如果你使用本仓库已有代码，不需要再次运行 `create-next-app`，只运行 `npm ci`。
-
-### 4.3 初始化后端虚拟环境
-
-运行目录：`D:\Code\pl-geo-analytics`
-
-```powershell
-cd backend
-py -3.12 -m venv .venv
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-Copy-Item .env.example .env
-```
-
-看到命令行开头出现 `(.venv)`，说明虚拟环境已激活。
-
-首次初始化数据库（可选，正常启动后端也会自动完成）：
-
-```powershell
-python -m app.database.init_db
-```
-
-启动后端：
-
-```powershell
-uvicorn app.main:app --reload --port 8000
-```
-
-不要关闭这个 PowerShell 窗口。
-
-### 4.4 启动前端
-
-另开一个 PowerShell。
-
-运行目录：`D:\Code\pl-geo-analytics\frontend`
-
-```powershell
-npm ci
-npm run dev
-```
-
-## 5. 命令与运行目录速查
-
-| 命令 | 运行目录 |
-| --- | --- |
-| `git init` | `pl-geo-analytics/` |
-| `git status` | `pl-geo-analytics/` |
-| `npm ci` | `pl-geo-analytics/frontend/` |
-| `npm run dev` | `pl-geo-analytics/frontend/` |
-| `npm run lint` | `pl-geo-analytics/frontend/` |
-| `npm run build` | `pl-geo-analytics/frontend/` |
-| `.\.venv\Scripts\Activate.ps1` | `pl-geo-analytics/backend/` |
-| `pip install -r requirements.txt` | `pl-geo-analytics/backend/`，且已激活虚拟环境 |
-| `uvicorn app.main:app --reload --port 8000` | `pl-geo-analytics/backend/` |
-| `python -m app.database.init_db` | `pl-geo-analytics/backend/` |
-| `alembic upgrade head` | `pl-geo-analytics/backend/` |
-| `pytest` | `pl-geo-analytics/backend/` |
-
-## 6. 初始化完成后的验证
-
-### 后端
-
-打开 <http://127.0.0.1:8000/api/health>，应看到：
-
-```json
-{
-  "success": true,
-  "message": "Premier League Insight Agent API is running",
-  "data": {
-    "service": "Premier League Insight Agent API",
-    "status": "healthy",
-    "environment": "development",
-    "version": "0.4.0"
-  }
-}
-```
-
-打开 <http://127.0.0.1:8000/docs>，应看到 FastAPI 自动生成的 Swagger 页面，以及：
-
-- `GET /api/health`
-- `GET /api/clubs`
-- `GET /api/clubs/{slug}`
-- `GET /api/standings`
-- `GET /api/agent/players`
-- `GET /api/agent/capabilities`
-- `POST /api/agent/analyze`
-
-在 `backend/` 运行：
-
-```powershell
-pytest
-```
-
-应显示 14 个测试通过。
-
-### 前端
-
-打开 <http://localhost:3000>，应满足：
-
-- 页面显示 `Premier League Insight Agent`。
-- 显示“v0.4.0 · Qwen-ready Hybrid Agent”。
-- 后端运行时显示“后端连接正常”。
-- 显示 2024-25 完整 20 支球队、球场信息和最终积分榜历史快照。
-- 可以选择萨卡与帕尔默并运行高位逼抢分析。
-- 分析结果显示 5 步执行轨迹、指标百分位、证据和结论边界。
-- 未配置千问时显示 `LOCAL SAFE MODE`，分析仍可正常运行。
-- 配置千问后显示模型名称和 `QWEN ENHANCED`。
-- 点击球队卡片时，球场坐标和积分榜高亮同步变化。
-- 停止后端并刷新页面时显示“暂未连接后端”，页面本身不崩溃。
-- 阶段 2 区域显示友好错误提示，并可点击“重新连接”。
-- 手机宽度下页面不出现明显横向溢出。
-
-在 `frontend/` 运行：
-
-```powershell
-npm run lint
-npm run build
-```
-
-两个命令都应以退出码 0 结束。
-
-### Git
+### 2.2 安装后端
 
 在项目根目录运行：
 
 ```powershell
-git status
-git check-ignore frontend\.env.local
-git check-ignore backend\.env
+cd .\backend
+py -3.12 -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
 ```
 
-后两条命令应输出对应文件路径，表示真实环境变量不会被提交。
+命令行开头出现 `(.venv)` 表示虚拟环境已激活。数据库会在首次启动时自动迁移和写入固定快照，无需删除旧库。
 
-## 7. v0.4.0 主要新增文件
+### 2.3 安装前端
 
-### 前端
+回到项目根目录后运行：
 
-- `frontend/components/data/stage-two-data.tsx`
-- `frontend/components/agent/analysis-agent.tsx`
-- `frontend/services/api.ts`
-- `frontend/types/api.ts`
-- `frontend/app/page.tsx`
-- `frontend/app/globals.css`
+```powershell
+cd ..\frontend
+npm ci
+Copy-Item .env.example .env.local
+```
+
+`.env`、`.env.local`、SQLite 数据库和 `node_modules` 都不应提交到 GitHub。
+
+## 3. 每次启动
+
+需要同时保持两个终端运行。
+
+### 终端 1：后端
+
+从项目根目录运行：
+
+```powershell
+cd .\backend
+.\.venv\Scripts\Activate.ps1
+python -m uvicorn app.main:app
+```
+
+成功标志：
+
+```text
+Application startup complete
+Uvicorn running on http://127.0.0.1:8000
+```
+
+### 终端 2：前端
+
+从项目根目录运行：
+
+```powershell
+cd .\frontend
+npm run dev
+```
+
+成功标志：
+
+```text
+Local: http://localhost:3000
+Ready
+```
+
+然后打开 <http://localhost:3000>。也可以使用 <http://127.0.0.1:3000>；前端会自动选择同名后端地址，开发环境后端同时允许这两个来源。旧 `.env` 中即使只写了 `localhost`，`v0.13.0` 也会补齐本地别名。
+
+## 4. 地址速查
+
+| 用途 | 地址 |
+|---|---|
+| 前端 | <http://localhost:3000> |
+| 后端健康检查 | <http://127.0.0.1:8000/api/health> |
+| Swagger API 文档 | <http://127.0.0.1:8000/docs> |
+| 球员中心 | <http://localhost:3000/players> |
+| League Copilot | <http://localhost:3000/copilot> |
+
+健康检查应包含：
+
+```json
+{
+  "success": true,
+  "data": {
+    "status": "healthy",
+    "version": "0.13.0"
+  }
+}
+```
+
+Similarity Scout 可以直接用浏览器或 Swagger 验证：
+
+```text
+http://127.0.0.1:8000/api/players/bukayo-saka/similar?minimum_minutes=450&limit=5
+```
+
+## 5. 常见问题
+
+### `No module named uvicorn`
+
+原因通常是后端虚拟环境没有激活，或终端不在 `backend` 目录。
+
+```powershell
+cd .\backend
+.\.venv\Scripts\Activate.ps1
+python -m uvicorn app.main:app
+```
+
+### `ENOENT ... package.json`
+
+原因是 npm 在项目根目录或 `backend` 目录执行。切换到前端：
+
+```powershell
+cd .\frontend
+npm run dev
+```
+
+如果当前已经在 `backend`，使用：
+
+```powershell
+cd ..\frontend
+npm run dev
+```
+
+### `WinError 10048` 或 8000 端口被占用
+
+先只读确认占用进程：
+
+```powershell
+$serverPid = (Get-NetTCPConnection -LocalPort 8000 -State Listen).OwningProcess
+Get-Process -Id $serverPid
+```
+
+确认它是旧的 Python 后端后再停止：
+
+```powershell
+Stop-Process -Id $serverPid
+python -m uvicorn app.main:app
+```
+
+不要在未确认进程名称时批量结束所有 Python 进程。
+
+### 页面能打开，但显示数据离线
+
+按顺序检查：
+
+1. 打开 `/api/health`，确认后端版本和状态。
+2. 确认后端终端没有退出。
+3. 强制刷新前端页面（`Ctrl + F5`）。
+4. 查看首页“API 地址”，它应与当前浏览器主机名一致。
+
+`v0.13.0` 已兼容 `localhost:3000` 和 `127.0.0.1:3000`，不需要为了跨域问题反复重启项目。
+
+## 6. 完整验收
 
 ### 后端
 
-- `backend/app/models/` 中 6 个关系模型
-- `backend/app/database/session.py`
-- `backend/app/database/seed.py`
-- `backend/app/database/init_db.py`
-- `backend/app/api/routes/clubs.py`
-- `backend/app/api/routes/standings.py`
-- `backend/app/api/routes/agent.py`
-- `backend/app/services/analysis_agent.py`
-- `backend/app/services/qwen_service.py`
-- `backend/app/schemas/agent.py`
-- `backend/app/schemas/club.py`
-- `backend/app/schemas/standing.py`
-- `backend/migrations/`
-- `backend/tests/test_data_api.py`
-- `backend/tests/test_agent_api.py`
-- `backend/tests/test_qwen_service.py`
-- `docs/QWEN_INTEGRATION.md`
-
-数据库文件 `backend/pl_geo_analytics.db` 是本地生成文件，已被 `.gitignore`
-排除，不应上传 GitHub。样例数据由幂等初始化脚本写入，说明见
-`data/SAMPLE_DATA.md`。
-
-## 8. Git 分支建议
-
-对个人项目，不建议永久保留很多已经合并的分支。清晰度主要来自提交记录、Pull Request 和版本标签。
-
-推荐：
-
-```text
-main                         始终可运行
-chore/stage-01-init          已完成的初始化工作
-feat/stage-02-data-api       数据库、测试数据和基础 API
-feat/stage-03-agent-mvp      足球分析 Agent MVP
-feat/stage-04-qwen-integration 千问增强回答与安全回退
-feat/stage-05-england-map    英格兰交互地图
-feat/stage-06-full-league    完整 20 队和最终积分榜
-feat/stage-07-player-stats   球员数据
-feat/stage-08-radar          雷达图
-feat/stage-09-match-analysis 示例比赛
-chore/stage-10-polish        测试、文档和适配
-```
-
-如果 Agent MVP 已在 `main`，千问接入阶段的操作：
+在 `backend` 目录且虚拟环境已激活时运行：
 
 ```powershell
-git switch -c feat/stage-04-qwen-integration
-git add .
-git status
-git commit -m "feat: add grounded Qwen response layer"
-git switch main
-git merge --no-ff feat/stage-04-qwen-integration
-git tag v0.4.0
+python -m pytest
 ```
 
-如果当前修改已经直接发生在 `main`，也可以直接提交，不需要为了形式重新复制分支。
+当前应显示 `55 passed`。测试覆盖数据快照、迁移、球员分页、Similarity Scout、转会分段、Agent、Copilot 五工具和异常输入。
 
-## 9. Qwen 接入提交信息
+### 前端
 
-推荐唯一主提交：
+在 `frontend` 目录运行：
 
-```text
-feat: add grounded Qwen response layer
+```powershell
+npm run lint
+npx tsc --noEmit
+npm run build
 ```
 
-如果希望拆成两个更清楚的提交：
+三个命令都应以退出码 `0` 结束。页面验收重点：
 
-```text
-feat: add Qwen configuration and grounded response service
-feat: show hybrid Agent mode and safe fallback status
+- 首页显示 `v0.13.0 · Similarity Scout`；
+- 后端状态显示 `healthy` 和 `0.13.0`；
+- 球员详情能切换相似球员分钟门槛；
+- 推荐卡能带着指定两名球员进入雷达图；
+- 门将详情明确说明专属指标不足，不输出相似排行；
+- 手机宽度下没有明显横向溢出。
+
+## 7. Git 检查
+
+在项目根目录运行：
+
+```powershell
+git status -sb
+git check-ignore frontend\.env.local
+git check-ignore backend\.env
+git check-ignore backend\pl_geo_analytics.db
 ```
 
-提交前一定先运行前端构建、后端测试和 `git status`，确认没有 `.env`、数据库文件或 `node_modules`。
+后三条应输出对应路径，说明密钥、个人配置和本地数据库不会进入提交。
+
+提交或推送前至少完成：
+
+```powershell
+git diff --check
+git status -sb
+```
+
+不要提交真实 API Key、`.env`、SQLite 数据库、`.next` 或 `node_modules`。

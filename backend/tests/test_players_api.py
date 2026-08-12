@@ -120,6 +120,79 @@ def test_player_lab_keeps_transfer_spells_separate(
     assert villa_data["id"] != united_data["id"]
 
 
+def test_similarity_scout_ranks_same_position_profiles(
+    api_client: TestClient,
+) -> None:
+    response = api_client.get("/api/players/bukayo-saka/similar?limit=5")
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["target"]["slug"] == "bukayo-saka"
+    assert data["position"] == "FWD"
+    assert data["minimum_minutes"] == 450
+    assert data["candidate_total"] == 98
+    assert data["is_supported"] is True
+    assert data["unavailable_reason"] is None
+    assert len(data["items"]) == 5
+    assert data["items"][0]["player"]["slug"] == "son-heung-min"
+    assert data["items"][0]["similarity_score"] == 85
+    assert data["items"][0]["closest_metrics"] == ["关键传球", "助攻"]
+    assert [item["similarity_score"] for item in data["items"]] == sorted(
+        [item["similarity_score"] for item in data["items"]],
+        reverse=True,
+    )
+    assert sum(item["weight"] for item in data["metric_weights"]) == 1
+    assert "同位置" in data["method_notice"]
+
+
+def test_similarity_scout_excludes_other_transfer_spell(
+    api_client: TestClient,
+) -> None:
+    response = api_client.get(
+        "/api/players/marcus-rashford-aston-villa/similar?limit=10"
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["target"]["totals"]["minutes"] == 444
+    assert all(
+        item["player"]["full_name"] != "Marcus Rashford"
+        for item in data["items"]
+    )
+    assert data["items"][0]["player"]["slug"] == "bukayo-saka"
+
+
+def test_similarity_scout_explains_unsupported_goalkeeper_metrics(
+    api_client: TestClient,
+) -> None:
+    response = api_client.get("/api/players/alisson/similar")
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["position"] == "GK"
+    assert data["is_supported"] is False
+    assert data["items"] == []
+    assert data["metric_weights"] == []
+    assert "门将指标" in data["unavailable_reason"]
+
+
+def test_similarity_scout_validates_query_and_unknown_player(
+    api_client: TestClient,
+) -> None:
+    invalid_limit = api_client.get(
+        "/api/players/bukayo-saka/similar?limit=11"
+    )
+    invalid_minutes = api_client.get(
+        "/api/players/bukayo-saka/similar?minimum_minutes=449"
+    )
+    missing = api_client.get("/api/players/not-a-player/similar")
+
+    assert invalid_limit.status_code == 422
+    assert invalid_minutes.status_code == 422
+    assert missing.status_code == 404
+    assert missing.json()["message"] == "未找到该球员或赛季数据"
+
+
 def test_player_api_validates_filters_and_unknown_player(
     api_client: TestClient,
 ) -> None:

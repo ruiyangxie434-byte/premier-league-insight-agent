@@ -2,28 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { LeagueCopilot } from "../../components/copilot/league-copilot";
+import { SiteHeader } from "../../components/system/site-header";
 
 export const metadata: Metadata = {
   title: "League Copilot | Premier League Insight Agent",
-  description: "用受控函数调用查询英超积分榜、球队状态、球员比较与单场射门证据。",
+  description: "用受控函数调用查询英超积分榜、球队状态、球员比较、相似画像与单场射门证据。",
 };
 
 export default function CopilotPage() {
   return (
     <main>
       <div className="page-shell copilot-page-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">
-              AI
-            </span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader />
 
         <section className="copilot-hero" aria-labelledby="copilot-hero-title">
           <div>
@@ -39,8 +29,8 @@ export default function CopilotPage() {
           </div>
           <div className="copilot-hero-proof" aria-label="Copilot 约束摘要">
             <span>01</span>
-            <strong>4 个受控工具</strong>
-            <p>积分榜、球队状态、球员比较、单场射门。</p>
+            <strong>5 个受控工具</strong>
+            <p>积分榜、球队状态、球员比较、相似画像、单场射门。</p>
             <span>02</span>
             <strong>0 个实时猜测</strong>
             <p>超出历史快照范围的问题会明确拒绝。</p>

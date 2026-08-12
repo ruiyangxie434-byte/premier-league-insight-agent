@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-APP_VERSION = "0.12.0"
+APP_VERSION = "0.13.0"
 
 
 class Settings(BaseSettings):
@@ -10,7 +10,9 @@ class Settings(BaseSettings):
     app_env: str = "development"
     debug: bool = True
     api_prefix: str = "/api"
-    frontend_origins: str = "http://localhost:3000"
+    frontend_origins: str = (
+        "http://localhost:3000,http://127.0.0.1:3000"
+    )
     database_url: str = "sqlite:///./pl_geo_analytics.db"
     auto_create_database: bool = True
     seed_sample_data: bool = True
@@ -30,11 +32,19 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> list[str]:
-        return [
+        origins = [
             origin.strip()
             for origin in self.frontend_origins.split(",")
             if origin.strip()
         ]
+        if self.app_env.casefold() == "development":
+            for local_origin in (
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+            ):
+                if local_origin not in origins:
+                    origins.append(local_origin)
+        return origins
 
     @property
     def app_version(self) -> str:

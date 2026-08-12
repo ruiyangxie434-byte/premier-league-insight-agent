@@ -56,6 +56,7 @@ class PlannedToolCall:
 SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
     "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
+    "并可对外场球员执行同位置可解释相似度检索，"
     "以及 2003-04 Arsenal 4–2 Liverpool 单场事件；"
     "不联网查询实时新闻、伤病、转会或比分。"
 )
@@ -69,9 +70,10 @@ PLANNER_SYSTEM_PROMPT = """
 2. 2024-25 只可用于最终积分榜、完整赛果和固定球员历史快照。
    同名跨队球员必须使用俱乐部或完整 slug 消除歧义。
 3. 2003-04 只可用于 source_match_id=3749448 的单场射门事件，不能与 2024-25 混算。
-4. 比较两支球队时，可以分别调用两次 get_club_form；同时询问排名时再调用 get_league_table。
-5. 最多调用四个工具。参数使用工具声明允许的值。
-6. 问题超出数据范围时不要编造工具。
+4. 询问一名球员的相似风格、同类型或替代画像时，调用 find_similar_players；这不是转会建议。
+5. 比较两支球队时，可以分别调用两次 get_club_form；同时询问排名时再调用 get_league_table。
+6. 最多调用四个工具。参数使用工具声明允许的值。
+7. 问题超出数据范围时不要编造工具。
 """.strip()
 
 NARRATIVE_SYSTEM_PROMPT = """
@@ -114,6 +116,14 @@ FORM_KEYWORDS = (
     "away",
 )
 COMPARISON_KEYWORDS = ("对比", "比较", "差异", "谁更", "哪个好")
+SIMILARITY_KEYWORDS = (
+    "相似",
+    "类似",
+    "同类型",
+    "风格接近",
+    "替代画像",
+    "similar",
+)
 
 
 def _focus_from_question(question: str) -> AgentFocus:
@@ -175,6 +185,27 @@ def build_local_tool_plan(
         add("get_match_shot_summary", {"source_match_id": "3749448"})
         return calls
 
+    asks_for_similarity = any(
+        keyword in folded for keyword in SIMILARITY_KEYWORDS
+    )
+    if len(players) == 1 and asks_for_similarity:
+        if "2700" in folded or "2,700" in folded:
+            minimum_minutes = 2700
+        elif "1800" in folded or "1,800" in folded:
+            minimum_minutes = 1800
+        else:
+            minimum_minutes = DEFAULT_MINIMUM_MINUTES
+        add(
+            "find_similar_players",
+            {
+                "player": players[0],
+                "season": request.season,
+                "minimum_minutes": minimum_minutes,
+                "limit": 5,
+            },
+        )
+        return calls
+
     if len(players) >= 2:
         add(
             "compare_players",
@@ -215,8 +246,9 @@ def build_local_tool_plan(
     if not calls:
         raise CopilotInputError(
             "当前问题无法落到可用数据工具。请询问积分榜、球队状态、"
-            "两名 450+ 分钟球员记录的比较，或 2004 年 Arsenal 4–2 "
-            "Liverpool 的射门；同名跨队记录请同时写明俱乐部。"
+            "两名 450+ 分钟球员记录的比较、一名外场球员的相似画像，"
+            "或 2004 年 Arsenal 4–2 Liverpool 的射门；同名跨队记录"
+            "请同时写明俱乐部。"
         )
     return calls
 
@@ -411,6 +443,21 @@ def _local_narrative(
             headline=str(payload["headline"]),
             answer=results[0].trace.summary,
         )
+    if tools == ["find_similar_players"]:
+        payload = results[0].payload
+        target = payload["target"]
+        if not payload["is_supported"]:
+            return QwenCopilotNarrative(
+                headline=f"{target['name']}：当前不生成相似球员排名",
+                answer=results[0].trace.summary,
+            )
+        first = payload["items"][0]
+        return QwenCopilotNarrative(
+            headline=(
+                f"{target['name']} 的首位相似画像：{first['name']}"
+            ),
+            answer=results[0].trace.summary,
+        )
     if tools == ["get_match_shot_summary"]:
         payload = results[0].payload
         return QwenCopilotNarrative(
@@ -473,6 +520,8 @@ def _suggestions(results: list[CopilotToolResult]) -> list[str]:
         suggestions.append("比较利物浦和阿森纳的主客场表现与最近五场状态")
     if "compare_players" not in tools:
         suggestions.append("萨卡和帕尔默谁更适合承担创造任务？")
+    if "find_similar_players" not in tools:
+        suggestions.append("找出和萨卡统计画像最相似的球员")
     if "get_match_shot_summary" not in tools:
         suggestions.append("2004 年 Arsenal 4–2 Liverpool 的射门质量如何？")
     if "get_league_table" not in tools:
@@ -580,6 +629,27 @@ def _qwen_plan_matches_question_scope(
         if result.trace.tool == "compare_players"
     }
     if expected_focuses != actual_focuses:
+        return False
+
+    expected_similarity = {
+        (
+            str(call.arguments["player"]),
+            int(call.arguments["minimum_minutes"]),
+            int(call.arguments["limit"]),
+        )
+        for call in expected
+        if call.name == "find_similar_players"
+    }
+    actual_similarity = {
+        (
+            str(result.trace.arguments["player"]),
+            int(result.trace.arguments["minimum_minutes"]),
+            int(result.trace.arguments["limit"]),
+        )
+        for result in results
+        if result.trace.tool == "find_similar_players"
+    }
+    if expected_similarity != actual_similarity:
         return False
 
     expected_table_clubs = {

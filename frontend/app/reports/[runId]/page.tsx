@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { SiteHeader } from "../../../components/system/site-header";
 import { getAgentRun } from "../../../services/api";
 import type { AgentRunDetailData } from "../../../types/api";
 
@@ -52,16 +53,7 @@ export default function AgentReportPage() {
   return (
     <main className="report-page">
       <div className="page-shell report-shell">
-        <header className="site-header report-site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">AI</span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">v0.12.0 · Player Intelligence Atlas</span>
-        </header>
+        <SiteHeader className="report-site-header" />
 
         <div className="report-toolbar">
           <Link href="/#analysis-agent">← 返回 Agent 工作台</Link>

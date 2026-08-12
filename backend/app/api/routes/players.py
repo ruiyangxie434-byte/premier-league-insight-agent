@@ -10,11 +10,13 @@ from app.schemas.player import (
     PlayerLabData,
     PlayerLabItem,
     PlayerPosition,
+    PlayerSimilarityData,
     PlayerSortKey,
     PlayerSortOrder,
 )
 from app.services.player_lab import (
     DEFAULT_MINIMUM_MINUTES,
+    find_similar_players,
     get_player_lab_item,
     list_player_lab,
 )
@@ -69,3 +71,32 @@ def get_player(
     if player is None:
         raise HTTPException(status_code=404, detail="未找到该球员或赛季数据")
     return ApiResponse(message="球员详情获取成功", data=player)
+
+
+@router.get(
+    "/{slug}/similar",
+    response_model=ApiResponse[PlayerSimilarityData],
+)
+def get_similar_players(
+    slug: str,
+    season: Annotated[
+        str,
+        Query(pattern=r"^\d{4}-\d{2}$"),
+    ] = SAMPLE_SEASON,
+    minimum_minutes: Annotated[
+        int,
+        Query(ge=450, le=4000),
+    ] = DEFAULT_MINIMUM_MINUTES,
+    limit: Annotated[int, Query(ge=1, le=10)] = 5,
+    db: Session = Depends(get_db),
+) -> ApiResponse[PlayerSimilarityData]:
+    data = find_similar_players(
+        db,
+        slug=slug,
+        season=season,
+        minimum_minutes=minimum_minutes,
+        limit=limit,
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail="未找到该球员或赛季数据")
+    return ApiResponse(message="同位置相似球员获取成功", data=data)

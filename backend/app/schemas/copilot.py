@@ -7,6 +7,7 @@ CopilotToolName = Literal[
     "get_league_table",
     "get_club_form",
     "compare_players",
+    "find_similar_players",
     "get_match_shot_summary",
 ]
 CopilotMode = Literal["local_tool_router", "qwen_tool_calling"]

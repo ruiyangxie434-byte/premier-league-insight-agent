@@ -4,12 +4,13 @@ import { AnalysisAgent } from "../components/agent/analysis-agent";
 import { StageTwoData } from "../components/data/stage-two-data";
 import { EnglandClubMap } from "../components/map/england-club-map";
 import { BackendStatus } from "../components/system/backend-status";
+import { SiteHeader } from "../components/system/site-header";
 
 const futureModules = [
   {
-    phase: "v0.12 已上线",
-    title: "Player Intelligence Atlas",
-    description: "574 条球员—球队记录、位置百分位、完整球队阵容与 Agent 球员覆盖已经打通。",
+    phase: "v0.13 已上线",
+    title: "Similarity Scout",
+    description: "同位置相似球员、位置权重、画像差异与一键双人对比已经打通。",
   },
   {
     phase: "数据下一步",
@@ -27,20 +28,7 @@ export default function Home() {
   return (
     <main>
       <div className="page-shell">
-        <header className="site-header">
-          <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
-            <span className="brand-mark" aria-hidden="true">
-              AI
-            </span>
-            <span>
-              <strong>英超智析 Agent</strong>
-              <small>Premier League Insight Agent</small>
-            </span>
-          </Link>
-          <span className="phase-badge">
-            v0.12.0 · Player Intelligence Atlas
-          </span>
-        </header>
+        <SiteHeader />
 
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-copy">
@@ -92,7 +80,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、完整球员快照、赛季赛果、单场事件、分析记录与真实工具调用已经打通，下一步面向多赛季与 v1.0 发布。</p>
+            <p>地图、完整球员快照、相似球员引擎、赛季赛果、单场事件、分析记录与真实工具调用已经打通，下一步面向多赛季与 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import or_, select
@@ -32,13 +32,16 @@ from app.services.analysis_agent import (
     AgentInputError,
     analyze_players,
 )
+from app.services.player_lab import (
+    DEFAULT_MINIMUM_MINUTES,
+    find_similar_players,
+)
+from app.services.player_metrics import load_player_snapshots
 from app.services.season_form import (
     build_record,
     longest_unbeaten_run,
     recent_form,
 )
-from app.services.player_lab import DEFAULT_MINIMUM_MINUTES
-from app.services.player_metrics import load_player_snapshots
 
 
 class CopilotToolError(ValueError):
@@ -62,6 +65,13 @@ class PlayerCompareArguments(BaseModel):
     player_b: str = Field(min_length=2, max_length=120)
     season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
     focus: AgentFocus = "balanced"
+
+
+class PlayerSimilarityArguments(BaseModel):
+    player: str = Field(min_length=2, max_length=120)
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+    minimum_minutes: Literal[450, 1800, 2700] = 450
+    limit: int = Field(default=5, ge=1, le=5)
 
 
 class MatchShotArguments(BaseModel):
@@ -96,6 +106,12 @@ TOOL_CAPABILITIES = [
         data_scope="2024-25 共 400 条达到 450 分钟的球员—球队记录",
     ),
     CopilotToolCapability(
+        name="find_similar_players",
+        label="相似球员检索",
+        description="按同位置百分位画像查找相似记录并解释主要差异。",
+        data_scope="2024-25 的 450+ 分钟外场球员与三档候选池",
+    ),
+    CopilotToolCapability(
         name="get_match_shot_summary",
         label="单场射门复盘",
         description="查询公开历史比赛的射门数、进球与 xG。",
@@ -126,6 +142,36 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     "club": {"type": "string"},
                 },
                 "required": ["season"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_similar_players",
+            "description": (
+                "为一名 2024-25 达到 450 分钟的外场球员查找同位置"
+                "统计画像最接近的"
+                "球员记录。相似分来自七项每90百分位及位置权重，不是"
+                "能力排名或转会建议；门将因缺少专属指标只返回边界说明。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "player": {"type": "string"},
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                    "minimum_minutes": {
+                        "type": "integer",
+                        "enum": [450, 1800, 2700],
+                    },
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 5},
+                },
+                "required": [
+                    "player",
+                    "season",
+                    "minimum_minutes",
+                    "limit",
+                ],
             },
         },
     },
@@ -779,6 +825,145 @@ def _compare_players(
     )
 
 
+def _find_similar_player_profiles(
+    db: Session,
+    arguments: PlayerSimilarityArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    player = _resolve_player(db, arguments.player)
+    profile = find_similar_players(
+        db,
+        slug=player.slug,
+        season=arguments.season,
+        minimum_minutes=arguments.minimum_minutes,
+        limit=arguments.limit,
+    )
+    if profile is None:
+        raise CopilotToolError("未找到该球员或赛季数据")
+
+    normalized_arguments = arguments.model_copy(
+        update={"player": player.slug}
+    )
+    target_link = CopilotLink(
+        label=f"查看 {player.full_name} 的 Similarity Scout",
+        href=f"/players/{player.slug}#similarity-scout-title",
+    )
+    if not profile.is_supported:
+        reason = profile.unavailable_reason or "当前数据不足以计算相似度。"
+        return CopilotToolResult(
+            trace=_trace(
+                call_id=call_id,
+                tool="find_similar_players",
+                arguments=normalized_arguments,
+                summary=f"{player.full_name} 暂不生成相似球员排名：{reason}",
+                evidence=[
+                    CopilotEvidence(
+                        label="相似度数据边界",
+                        value="未生成排名",
+                        detail=reason,
+                        tool="find_similar_players",
+                    )
+                ],
+                source=PLAYER_SOURCE,
+            ),
+            payload={
+                "target": {
+                    "slug": player.slug,
+                    "name": player.full_name,
+                    "position": player.position,
+                },
+                "is_supported": False,
+                "unavailable_reason": reason,
+                "candidate_total": profile.candidate_total,
+                "minimum_minutes": profile.minimum_minutes,
+                "items": [],
+            },
+            links=[target_link],
+            limitations=[reason, profile.method_notice],
+        )
+
+    candidates = profile.items
+    evidence = [
+        CopilotEvidence(
+            label=f"相似候选 #{index}",
+            value=(
+                f"{item.player.full_name} · {item.similarity_score}/100"
+            ),
+            detail=(
+                f"{item.player.club.short_name}，最接近指标为"
+                f"{'、'.join(item.closest_metrics)}；最大画像差异是"
+                f"{item.key_difference.label}（Δ {item.key_difference.gap}）。"
+            ),
+            tool="find_similar_players",
+        )
+        for index, item in enumerate(candidates, start=1)
+    ]
+    summary = (
+        f"在 {profile.candidate_total} 条达到 {profile.minimum_minutes} 分钟的"
+        f"同位置候选中，{player.full_name} 最接近的记录为 "
+        + "、".join(
+            f"{item.player.full_name}（{item.similarity_score}/100）"
+            for item in candidates[:3]
+        )
+        + "。"
+    )
+    top_candidate = candidates[0]
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="find_similar_players",
+            arguments=normalized_arguments,
+            summary=summary,
+            evidence=evidence,
+            source=PLAYER_SOURCE,
+        ),
+        payload={
+            "target": {
+                "slug": player.slug,
+                "name": player.full_name,
+                "position": player.position,
+            },
+            "is_supported": True,
+            "candidate_total": profile.candidate_total,
+            "minimum_minutes": profile.minimum_minutes,
+            "metric_weights": [
+                item.model_dump() for item in profile.metric_weights
+            ],
+            "items": [
+                {
+                    "slug": item.player.slug,
+                    "name": item.player.full_name,
+                    "club": item.player.club.short_name,
+                    "similarity_score": item.similarity_score,
+                    "closest_metrics": item.closest_metrics,
+                    "key_difference": item.key_difference.model_dump(),
+                }
+                for item in candidates
+            ],
+        },
+        links=[
+            target_link,
+            CopilotLink(
+                label=f"查看 {top_candidate.player.full_name} 球员资料",
+                href=f"/players/{top_candidate.player.slug}",
+            ),
+            CopilotLink(
+                label="打开首位候选双人雷达",
+                href=(
+                    f"/players?compare={player.slug},"
+                    f"{top_candidate.player.slug}#player-radar"
+                ),
+            ),
+        ],
+        limitations=[
+            profile.method_notice,
+            "相似度不包含身体条件、传球方向、触球区域、合同价值或战术"
+            "角色，不能直接解释为转会建议。",
+        ],
+    )
+
+
 def _get_match_shot_summary(
     db: Session,
     arguments: MatchShotArguments,
@@ -896,6 +1081,12 @@ def execute_copilot_tool(
             return _compare_players(
                 db,
                 PlayerCompareArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "find_similar_players":
+            return _find_similar_player_profiles(
+                db,
+                PlayerSimilarityArguments.model_validate(arguments),
                 call_id,
             )
         if name == "get_match_shot_summary":

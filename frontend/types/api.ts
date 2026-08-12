@@ -377,6 +377,41 @@ export interface PlayerLabQuery {
   offset?: number;
 }
 
+export interface PlayerSimilarityMetricWeight {
+  key: keyof PlayerPer90Metrics;
+  label: string;
+  weight: number;
+}
+
+export interface PlayerSimilarityDifference {
+  key: keyof PlayerPer90Metrics;
+  label: string;
+  target_percentile: number;
+  candidate_percentile: number;
+  gap: number;
+}
+
+export interface PlayerSimilarityCandidate {
+  player: PlayerLabItem;
+  similarity_score: number;
+  closest_metrics: string[];
+  key_difference: PlayerSimilarityDifference;
+}
+
+export interface PlayerSimilarityData {
+  target: PlayerLabItem;
+  items: PlayerSimilarityCandidate[];
+  candidate_total: number;
+  season: string;
+  minimum_minutes: number;
+  position: PlayerPosition;
+  is_supported: boolean;
+  unavailable_reason: string | null;
+  metric_weights: PlayerSimilarityMetricWeight[];
+  method_notice: string;
+  sample_notice: string;
+}
+
 export type AgentFocus =
   | "balanced"
   | "scoring"
@@ -536,6 +571,7 @@ export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
   | "compare_players"
+  | "find_similar_players"
   | "get_match_shot_summary";
 
 export type CopilotMode = "local_tool_router" | "qwen_tool_calling";

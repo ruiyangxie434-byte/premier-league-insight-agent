@@ -109,3 +109,38 @@ class PlayerLabData(BaseModel):
     license_url: str
     sample_notice: str
     percentile_notice: str
+
+
+class PlayerSimilarityMetricWeight(BaseModel):
+    key: str
+    label: str
+    weight: float
+
+
+class PlayerSimilarityDifference(BaseModel):
+    key: str
+    label: str
+    target_percentile: int
+    candidate_percentile: int
+    gap: int
+
+
+class PlayerSimilarityCandidate(BaseModel):
+    player: PlayerLabItem
+    similarity_score: int
+    closest_metrics: list[str]
+    key_difference: PlayerSimilarityDifference
+
+
+class PlayerSimilarityData(BaseModel):
+    target: PlayerLabItem
+    items: list[PlayerSimilarityCandidate]
+    candidate_total: int
+    season: str
+    minimum_minutes: int
+    position: PlayerPosition
+    is_supported: bool
+    unavailable_reason: str | None
+    metric_weights: list[PlayerSimilarityMetricWeight]
+    method_notice: str
+    sample_notice: str

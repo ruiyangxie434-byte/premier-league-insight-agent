@@ -14,7 +14,10 @@ export function SiteHeader({ className }: { className?: string }) {
           <small>Premier League Insight Agent</small>
         </span>
       </Link>
-      <span className="phase-badge">{RELEASE_LABEL}</span>
+      <nav className="site-utility-nav" aria-label="项目工具">
+        <Link href="/evidence">数据证据</Link>
+        <span className="phase-badge">{RELEASE_LABEL}</span>
+      </nav>
     </header>
   );
 }

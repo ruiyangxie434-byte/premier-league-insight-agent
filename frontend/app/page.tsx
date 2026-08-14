@@ -8,9 +8,9 @@ import { SiteHeader } from "../components/system/site-header";
 
 const futureModules = [
   {
-    phase: "v0.13 已上线",
-    title: "Similarity Scout",
-    description: "同位置相似球员、位置权重、画像差异与一键双人对比已经打通。",
+    phase: "v0.14 已上线",
+    title: "Evidence Center",
+    description: "数据来源、覆盖规模、许可、快照日期和使用边界现在可以统一核验。",
   },
   {
     phase: "数据下一步",
@@ -59,6 +59,9 @@ export default function Home() {
               <Link className="secondary-button" href="/copilot">
                 体验 League Copilot
               </Link>
+              <Link className="secondary-button" href="/evidence">
+                核验数据证据
+              </Link>
               <a className="secondary-button" href="#analysis-agent">
                 体验分析 Agent
               </a>
@@ -80,7 +83,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、完整球员快照、相似球员引擎、赛季赛果、单场事件、分析记录与真实工具调用已经打通，下一步面向多赛季与 v1.0 发布。</p>
+            <p>地图、球员分析、赛季赛果、单场事件、相似度、真实工具调用与统一证据目录已经打通，下一步面向多赛季与 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

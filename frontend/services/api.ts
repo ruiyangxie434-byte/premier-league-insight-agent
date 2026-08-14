@@ -13,6 +13,7 @@ import type {
   CopilotAnswerData,
   CopilotCapabilitiesData,
   CopilotQueryRequest,
+  EvidenceCatalogData,
   HealthData,
   MatchDetailData,
   MatchListData,
@@ -42,6 +43,12 @@ export function getApiBaseUrl(): string {
     return `http://${hostname}:8000/api`;
   }
   return "http://localhost:8000/api";
+}
+
+export function getEvidenceCatalog(
+  signal?: AbortSignal,
+): Promise<ApiResponse<EvidenceCatalogData>> {
+  return getApiData<EvidenceCatalogData>("/evidence", signal);
 }
 
 export async function getApiHealth(

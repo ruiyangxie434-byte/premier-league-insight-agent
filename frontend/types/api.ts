@@ -11,6 +11,31 @@ export interface HealthData {
   version: string;
 }
 
+export interface EvidenceSourceData {
+  id: string;
+  name: string;
+  provider: string;
+  source_url: string;
+  license: string;
+  coverage: string;
+  snapshot_date: string;
+  record_count: number;
+  record_label: string;
+  powers: string[];
+  limitations: string[];
+  status: "ready" | "limited";
+}
+
+export interface EvidenceCatalogData {
+  generated_at: string;
+  season_focus: string;
+  sources: EvidenceSourceData[];
+  source_count: number;
+  ready_count: number;
+  total_records: number;
+  methodology: string[];
+}
+
 export interface StadiumData {
   name: string;
   latitude: number;

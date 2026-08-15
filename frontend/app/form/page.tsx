@@ -117,6 +117,9 @@ export default function SeasonFormPage() {
           <span aria-hidden="true">←</span>
           返回地图首页
         </Link>
+        <Link className="secondary-button form-matchup-link" href="/matchup">
+          打开 Matchup Lab →
+        </Link>
 
         <section className="form-hero" aria-labelledby="form-page-title">
           <div>

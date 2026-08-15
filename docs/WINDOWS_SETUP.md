@@ -189,7 +189,7 @@ python -m uvicorn app.main:app
 python -m pytest
 ```
 
-当前应显示 `55 passed`。测试覆盖数据快照、迁移、球员分页、Similarity Scout、转会分段、Agent、Copilot 五工具和异常输入。
+当前应显示 `60 passed`。测试覆盖数据快照、迁移、球员分页、Similarity Scout、Matchup Lab、转会分段、Agent、Copilot 六工具和异常输入。
 
 ### 前端
 

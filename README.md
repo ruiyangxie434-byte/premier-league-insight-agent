@@ -3,7 +3,7 @@
 > 面向中文英超球迷与内容创作者的垂直足球数据分析助手  
 > 将球队、球员与比赛数据转化为可查询、可比较、可解释的分析结论。
 
-**当前版本：`v0.14.0 · Evidence Center`**
+**当前版本：`v0.15.0 · Matchup Lab`**
 
 **项目状态：MVP 开发中**
 
@@ -30,11 +30,12 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 | 球员可视化 | 后端统一计算每 90 分钟指标、位置感知百分位与单人/双人雷达图 |
 | Similarity Scout | 同位置相似画像、位置权重、最大差异解释与一键双人对比 |
 | Evidence Center | 统一核验数据来源、覆盖规模、许可、快照日期与使用边界 |
+| Matchup Lab | 任意两队的赛季画像、八维优势矩阵与两回合直接交锋 |
 | 球员分析 | 双球员比较、四种分析侧重点与 Player Lab 选择联动 |
 | 比赛数据管道 | StatsBomb Open Data 清洗脚本、坐标归一化、来源 ID 与幂等导入 |
 | Match Lab | Arsenal 4–2 Liverpool 的 28 次射门、xG 对比、筛选、进球时间线与事件清单 |
 | Agent 工具链 | 意图识别、数据查询、指标计算、证据排序与结论生成 |
-| League Copilot | 积分榜、球队状态、球员比较、相似画像、单场射门五工具调度 |
+| League Copilot | 积分榜、球队状态、球队对阵、球员比较、相似画像、单场射门六工具调度 |
 | 函数调用 | 千问 OpenAI-compatible `tool_calls`、后端参数校验与可视化执行轨迹 |
 | Agent Notebook | 自动保存分析、最近记录、历史恢复、父子追问链与上下文轨迹 |
 | 球探报告 | 独立报告页、指标表、证据链、来源边界及打印 / 保存 PDF |
@@ -187,7 +188,7 @@ Similarity Scout 使用七项每90指标的同位置百分位差异，并根据�
 访问 `http://localhost:3000/copilot` 可以：
 
 - 用自然语言查询 2024-25 最终积分榜；
-- 同时调用积分榜与两支球队状态工具完成跨模块对比；
+- 调用球队对阵工具完成八维历史比较与两回合直接交锋；
 - 复用既有球员每90指标与证据排序工具；
 - 查询一名外场球员的同位置相似画像，并解释接近项和主要差异；
 - 调用 2003-04 历史比赛射门与 xG 工具，并保持赛季隔离；
@@ -230,7 +231,7 @@ npm run lint
 npm run build
 ```
 
-`v0.14.0` 在 v0.13.0 全部能力上新增 Evidence Center，阶段验收项目：
+`v0.15.0` 在 v0.14.0 全部能力上新增 Matchup Lab，阶段验收项目：
 
 - 后端：55/55 测试通过，覆盖相似度排序、Copilot 相似检索、门将边界、转会分段排除、全量球员快照、迁移、Agent 与范围门控
 - 前端：Lint 通过
@@ -258,6 +259,7 @@ npm run build
 - [x] `v0.12.0` 2024-25 全联赛球员快照、分页、位置百分位与转会记录消歧
 - [x] `v0.13.0` 同位置相似球员、位置权重、画像差异解释与本地连接可靠性
 - [x] `v0.14.0` 统一数据证据 API、来源目录、覆盖统计与限制说明页面
+- [x] `v0.15.0` 两队对阵 API、八维历史比较、直接交锋与非预测边界
 - [ ] 多赛季历史分析
 - [ ] 在线部署与移动端优化
 
@@ -265,7 +267,7 @@ npm run build
 
 当前版本的球队范围、2024-25 最终积分榜、380 场赛果和 574 条球员—球队记录均为历史快照。球员快照覆盖 562 个姓名；12 条跨队附加记录按俱乐部分别保留。Match Lab 单独使用 StatsBomb Open Data 的 2003/2004 历史比赛事件。
 
-积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
+积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球队对阵见 [`docs/MATCHUP_LAB.md`](docs/MATCHUP_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
 
 ## 当前边界
 

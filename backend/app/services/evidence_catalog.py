@@ -26,7 +26,7 @@ SOURCES = [
         snapshot_date="2025-05-25",
         record_count=380,
         record_label="场比赛",
-        powers=["赛季状态实验室", "主客场拆分", "38 轮积分走势"],
+        powers=["赛季状态实验室", "Matchup Lab", "主客场拆分", "38 轮积分走势"],
         limitations=["只包含赛果，不包含 xG 和事件坐标", "不用于未来赛果预测"],
         status="ready",
     ),
@@ -63,7 +63,7 @@ SOURCES = [
 
 def get_evidence_catalog() -> EvidenceCatalogData:
     return EvidenceCatalogData(
-        generated_at="2026-08-14",
+        generated_at="2026-08-15",
         season_focus="2024-25",
         sources=SOURCES,
         source_count=len(SOURCES),

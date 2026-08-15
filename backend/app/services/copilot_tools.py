@@ -60,6 +60,12 @@ class ClubFormArguments(BaseModel):
     recent_matches: int = Field(default=5, ge=1, le=10)
 
 
+class ClubCompareArguments(BaseModel):
+    club_a: str = Field(min_length=2, max_length=120)
+    club_b: str = Field(min_length=2, max_length=120)
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+
+
 class PlayerCompareArguments(BaseModel):
     player_a: str = Field(min_length=2, max_length=120)
     player_b: str = Field(min_length=2, max_length=120)
@@ -98,6 +104,12 @@ TOOL_CAPABILITIES = [
         label="球队赛季状态",
         description="查询球队主客场拆分、近况与最长不败。",
         data_scope="2024-25 完整 38 场比分计算结果",
+    ),
+    CopilotToolCapability(
+        name="compare_clubs",
+        label="球队对阵简报",
+        description="比较两队八项历史赛季指标与两回合直接交锋，不输出胜率。",
+        data_scope="2024-25 完整 380 场赛果的确定性计算",
     ),
     CopilotToolCapability(
         name="compare_players",
@@ -195,6 +207,25 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     },
                 },
                 "required": ["club", "season"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "compare_clubs",
+            "description": (
+                "比较两支球队的 2024-25 最终排名、积分、进失球、主客场、"
+                "末五场、最长不败和两回合直接交锋。这是历史复盘，不是预测。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "club_a": {"type": "string"},
+                    "club_b": {"type": "string"},
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                },
+                "required": ["club_a", "club_b", "season"],
             },
         },
     },
@@ -729,6 +760,202 @@ def _get_club_form(
     )
 
 
+def _compare_clubs(
+    db: Session,
+    arguments: ClubCompareArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    club_a = _resolve_club(db, arguments.club_a)
+    club_b = _resolve_club(db, arguments.club_b)
+    if club_a.id == club_b.id:
+        raise CopilotToolError("请选择两支不同的球队")
+
+    first = _get_club_form(
+        db,
+        ClubFormArguments(
+            club=club_a.slug,
+            season=arguments.season,
+            recent_matches=5,
+        ),
+        f"{call_id}_a",
+    ).payload
+    second = _get_club_form(
+        db,
+        ClubFormArguments(
+            club=club_b.slug,
+            season=arguments.season,
+            recent_matches=5,
+        ),
+        f"{call_id}_b",
+    ).payload
+    meetings = list(
+        db.scalars(
+            select(Match)
+            .options(
+                selectinload(Match.home_club),
+                selectinload(Match.away_club),
+            )
+            .where(
+                Match.season == arguments.season,
+                Match.source_kind == SEASON_RESULTS_SOURCE_KIND,
+                or_(
+                    (Match.home_club_id == club_a.id)
+                    & (Match.away_club_id == club_b.id),
+                    (Match.home_club_id == club_b.id)
+                    & (Match.away_club_id == club_a.id),
+                ),
+            )
+            .order_by(Match.kickoff_at, Match.matchweek)
+        ).all()
+    )
+    if len(meetings) != 2:
+        raise CopilotToolError("两队的赛季直接交锋尚未完整初始化")
+
+    def edge(left: int, right: int, *, lower: bool = False) -> str:
+        if left == right:
+            return "even"
+        left_better = left < right if lower else left > right
+        return "club_a" if left_better else "club_b"
+
+    raw_dimensions = [
+        ("最终排名", first["final_position"], second["final_position"], True),
+        ("赛季积分", first["overall"]["points"], second["overall"]["points"], False),
+        ("赛季进球", first["overall"]["goals_for"], second["overall"]["goals_for"], False),
+        ("赛季失球", first["overall"]["goals_against"], second["overall"]["goals_against"], True),
+        ("主场积分", first["home"]["points"], second["home"]["points"], False),
+        ("客场积分", first["away"]["points"], second["away"]["points"], False),
+        ("末五场积分", first["recent_points"], second["recent_points"], False),
+        ("最长不败", first["longest_unbeaten"], second["longest_unbeaten"], False),
+    ]
+    dimensions = [
+        {
+            "label": label,
+            "club_a": left,
+            "club_b": right,
+            "advantage": edge(left, right, lower=lower),
+        }
+        for label, left, right, lower in raw_dimensions
+    ]
+    first_edges = sum(item["advantage"] == "club_a" for item in dimensions)
+    second_edges = sum(item["advantage"] == "club_b" for item in dimensions)
+    first_goals = sum(
+        (match.home_score or 0)
+        if match.home_club_id == club_a.id
+        else (match.away_score or 0)
+        for match in meetings
+    )
+    second_goals = sum(
+        (match.home_score or 0)
+        if match.home_club_id == club_b.id
+        else (match.away_score or 0)
+        for match in meetings
+    )
+    meeting_payload = [
+        {
+            "matchweek": match.matchweek,
+            "home": match.home_club.short_name,
+            "away": match.away_club.short_name,
+            "home_score": match.home_score,
+            "away_score": match.away_score,
+        }
+        for match in meetings
+    ]
+    evidence = [
+        CopilotEvidence(
+            label=f"{first['club']} 赛季画像",
+            value=(
+                f"第 {first['final_position']} 名 · "
+                f"{first['overall']['points']} 分"
+            ),
+            detail=(
+                f"进 {first['overall']['goals_for']} 球、失 "
+                f"{first['overall']['goals_against']} 球，末五场 "
+                f"{first['recent_points']} 分。"
+            ),
+            tool="compare_clubs",
+        ),
+        CopilotEvidence(
+            label=f"{second['club']} 赛季画像",
+            value=(
+                f"第 {second['final_position']} 名 · "
+                f"{second['overall']['points']} 分"
+            ),
+            detail=(
+                f"进 {second['overall']['goals_for']} 球、失 "
+                f"{second['overall']['goals_against']} 球，末五场 "
+                f"{second['recent_points']} 分。"
+            ),
+            tool="compare_clubs",
+        ),
+        CopilotEvidence(
+            label="八维历史优势",
+            value=(
+                f"{first['club']} {first_edges} / "
+                f"{second['club']} {second_edges}"
+            ),
+            detail=(
+                f"另有 {8 - first_edges - second_edges} 个维度持平；"
+                "优势数量不是胜率。"
+            ),
+            tool="compare_clubs",
+        ),
+        CopilotEvidence(
+            label="赛季两回合总比分",
+            value=(
+                f"{first['club']} {first_goals}–{second_goals} "
+                f"{second['club']}"
+            ),
+            detail="；".join(
+                f"MW {item['matchweek']} {item['home']} "
+                f"{item['home_score']}–{item['away_score']} {item['away']}"
+                for item in meeting_payload
+            ),
+            tool="compare_clubs",
+        ),
+    ]
+    summary = (
+        f"{first['club']} 最终第 {first['final_position']}、"
+        f"{first['overall']['points']} 分，{second['club']} 最终第 "
+        f"{second['final_position']}、{second['overall']['points']} 分；"
+        f"八个历史维度优势数为 {first_edges} 比 {second_edges}，"
+        f"两回合总比分 {first_goals}–{second_goals}。"
+        "这些结果不是未来比赛预测。"
+    )
+    normalized = arguments.model_copy(
+        update={"club_a": club_a.slug, "club_b": club_b.slug}
+    )
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="compare_clubs",
+            arguments=normalized,
+            summary=summary,
+            evidence=evidence,
+            source=FORM_SOURCE,
+        ),
+        payload={
+            "club_a": first,
+            "club_b": second,
+            "dimensions": dimensions,
+            "meetings": meeting_payload,
+            "aggregate": {"club_a": first_goals, "club_b": second_goals},
+        },
+        links=[
+            CopilotLink(
+                label="打开 Matchup Lab",
+                href="/matchup",
+            ),
+            CopilotLink(label="核验数据证据", href="/evidence"),
+        ],
+        limitations=[
+            "球队对阵只使用 2024-25 最终比分快照，不包含实时阵容、"
+            "伤病、xG 或控球率。",
+            "历史维度占优和两回合比分都不是下一场比赛的胜率或预测。",
+        ],
+    )
+
+
 def _compare_players(
     db: Session,
     arguments: PlayerCompareArguments,
@@ -1075,6 +1302,12 @@ def execute_copilot_tool(
             return _get_club_form(
                 db,
                 ClubFormArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "compare_clubs":
+            return _compare_clubs(
+                db,
+                ClubCompareArguments.model_validate(arguments),
                 call_id,
             )
         if name == "compare_players":

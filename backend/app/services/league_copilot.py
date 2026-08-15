@@ -56,6 +56,7 @@ class PlannedToolCall:
 SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
     "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
+    "并可用完整赛果生成两队八维历史对阵简报，"
     "并可对外场球员执行同位置可解释相似度检索，"
     "以及 2003-04 Arsenal 4–2 Liverpool 单场事件；"
     "不联网查询实时新闻、伤病、转会或比分。"
@@ -71,7 +72,7 @@ PLANNER_SYSTEM_PROMPT = """
    同名跨队球员必须使用俱乐部或完整 slug 消除歧义。
 3. 2003-04 只可用于 source_match_id=3749448 的单场射门事件，不能与 2024-25 混算。
 4. 询问一名球员的相似风格、同类型或替代画像时，调用 find_similar_players；这不是转会建议。
-5. 比较两支球队时，可以分别调用两次 get_club_form；同时询问排名时再调用 get_league_table。
+5. 比较两支球队时调用 compare_clubs，一次返回八维历史比较与两回合交锋；这不是预测。
 6. 最多调用四个工具。参数使用工具声明允许的值。
 7. 问题超出数据范围时不要编造工具。
 """.strip()
@@ -115,7 +116,16 @@ FORM_KEYWORDS = (
     "home",
     "away",
 )
-COMPARISON_KEYWORDS = ("对比", "比较", "差异", "谁更", "哪个好")
+COMPARISON_KEYWORDS = (
+    "对比",
+    "比较",
+    "对阵",
+    "差异",
+    "谁更",
+    "哪个好",
+    " vs ",
+    "versus",
+)
 SIMILARITY_KEYWORDS = (
     "相似",
     "类似",
@@ -223,6 +233,16 @@ def build_local_tool_plan(
         len(clubs) >= 2
         and any(keyword in folded for keyword in COMPARISON_KEYWORDS)
     )
+    if compares_clubs:
+        add(
+            "compare_clubs",
+            {
+                "club_a": clubs[0],
+                "club_b": clubs[1],
+                "season": request.season,
+            },
+        )
+        return calls
     if asks_for_table:
         add(
             "get_league_table",
@@ -245,7 +265,7 @@ def build_local_tool_plan(
 
     if not calls:
         raise CopilotInputError(
-            "当前问题无法落到可用数据工具。请询问积分榜、球队状态、"
+            "当前问题无法落到可用数据工具。请询问积分榜、球队状态或两队对阵、"
             "两名 450+ 分钟球员记录的比较、一名外场球员的相似画像，"
             "或 2004 年 Arsenal 4–2 Liverpool 的射门；同名跨队记录"
             "请同时写明俱乐部。"
@@ -467,6 +487,15 @@ def _local_narrative(
             ),
             answer=results[0].trace.summary,
         )
+    if tools == ["compare_clubs"]:
+        payload = results[0].payload
+        return QwenCopilotNarrative(
+            headline=(
+                f"{payload['club_a']['club']} vs "
+                f"{payload['club_b']['club']}：八维历史对阵简报"
+            ),
+            answer=results[0].trace.summary,
+        )
     if len(form_results) >= 2:
         first, second = form_results[:2]
         first_data, second_data = first.payload, second.payload
@@ -516,7 +545,7 @@ def _local_narrative(
 def _suggestions(results: list[CopilotToolResult]) -> list[str]:
     tools = {result.trace.tool for result in results}
     suggestions: list[str] = []
-    if "get_league_table" in tools or "get_club_form" in tools:
+    if "get_league_table" in tools or "get_club_form" in tools or "compare_clubs" in tools:
         suggestions.append("比较利物浦和阿森纳的主客场表现与最近五场状态")
     if "compare_players" not in tools:
         suggestions.append("萨卡和帕尔默谁更适合承担创造任务？")
@@ -599,6 +628,24 @@ def _qwen_plan_matches_question_scope(
         if result.trace.tool == "get_club_form"
     }
     if expected_forms != actual_forms:
+        return False
+
+    expected_club_comparisons = {
+        frozenset((str(call.arguments["club_a"]), str(call.arguments["club_b"])))
+        for call in expected
+        if call.name == "compare_clubs"
+    }
+    actual_club_comparisons = {
+        frozenset(
+            (
+                str(result.trace.arguments["club_a"]),
+                str(result.trace.arguments["club_b"]),
+            )
+        )
+        for result in results
+        if result.trace.tool == "compare_clubs"
+    }
+    if expected_club_comparisons != actual_club_comparisons:
         return False
 
     expected_players = {

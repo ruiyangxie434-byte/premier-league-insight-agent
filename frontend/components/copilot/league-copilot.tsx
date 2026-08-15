@@ -24,6 +24,7 @@ const promptExamples = [
 const toolMeta: Record<CopilotToolName, { code: string; className: string }> = {
   get_league_table: { code: "TAB", className: "table" },
   get_club_form: { code: "FRM", className: "form" },
+  compare_clubs: { code: "VS", className: "matchup" },
   compare_players: { code: "CMP", className: "compare" },
   find_similar_players: { code: "SIM", className: "similarity" },
   get_match_shot_summary: { code: "xG", className: "match" },
@@ -110,7 +111,7 @@ export function LeagueCopilot() {
         <div className="copilot-console-topline">
           <div>
             <p className="eyebrow">CONTROLLED FUNCTION CALLING</p>
-            <h2 id="copilot-console-title">用一句话调度五类足球数据工具</h2>
+            <h2 id="copilot-console-title">用一句话调度六类足球数据工具</h2>
           </div>
           <span
             className="copilot-mode-badge"

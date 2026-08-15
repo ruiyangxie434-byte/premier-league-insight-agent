@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 CopilotToolName = Literal[
     "get_league_table",
     "get_club_form",
+    "compare_clubs",
     "compare_players",
     "find_similar_players",
     "get_match_shot_summary",

@@ -22,7 +22,7 @@ def use_local_copilot(monkeypatch) -> None:
     monkeypatch.setattr(copilot_route, "get_settings", local_settings)
 
 
-def test_copilot_capabilities_expose_five_controlled_tools(
+def test_copilot_capabilities_expose_six_controlled_tools(
     api_client: TestClient,
     monkeypatch,
 ) -> None:
@@ -36,6 +36,7 @@ def test_copilot_capabilities_expose_five_controlled_tools(
     assert [item["name"] for item in data["tools"]] == [
         "get_league_table",
         "get_club_form",
+        "compare_clubs",
         "compare_players",
         "find_similar_players",
         "get_match_shot_summary",
@@ -63,7 +64,7 @@ def test_copilot_reads_final_table_with_local_tool_router(
     assert "2025-05-25" in data["limitations"][0]
 
 
-def test_copilot_combines_table_and_two_club_form_calls(
+def test_copilot_uses_grounded_club_matchup_tool(
     api_client: TestClient,
     monkeypatch,
 ) -> None:
@@ -80,15 +81,15 @@ def test_copilot_combines_table_and_two_club_form_calls(
     assert response.status_code == 200
     data = response.json()["data"]
     assert [item["tool"] for item in data["tool_calls"]] == [
-        "get_league_table",
-        "get_club_form",
-        "get_club_form",
+        "compare_clubs",
     ]
-    assert data["tool_calls"][1]["arguments"]["club"] == "liverpool"
-    assert data["tool_calls"][2]["arguments"]["club"] == "arsenal"
+    assert data["tool_calls"][0]["arguments"]["club_a"] == "liverpool"
+    assert data["tool_calls"][0]["arguments"]["club_b"] == "arsenal"
     assert "Liverpool vs Arsenal" in data["headline"]
-    assert "赛季积分高出 10 分" in data["answer"]
-    assert len(data["evidence"]) == 9
+    assert "两回合总比分 4–4" in data["answer"]
+    assert len(data["evidence"]) == 4
+    assert any("Matchup Lab" in link["label"] for link in data["links"])
+    assert any("不是下一场比赛" in item for item in data["limitations"])
 
 
 def test_copilot_reuses_grounded_player_comparison_tool(
@@ -239,7 +240,7 @@ def test_qwen_selects_tool_before_grounded_narrative() -> None:
         calls.append(payload)
         assert request.headers["Authorization"] == "Bearer test-key"
         if "tools" in payload:
-            assert len(payload["tools"]) == 5
+            assert len(payload["tools"]) == 6
             return httpx.Response(
                 200,
                 json={

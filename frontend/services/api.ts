@@ -8,6 +8,7 @@ import type {
   AgentRunListData,
   ApiResponse,
   ClubDetailData,
+  ClubMatchupData,
   ClubSeasonFormData,
   ClubListData,
   CopilotAnswerData,
@@ -151,6 +152,20 @@ export function getClubSeasonForm(
     `/form/clubs/${encodeURIComponent(slug)}?season=${encodeURIComponent(season)}`,
     signal,
   );
+}
+
+export function getClubMatchup(
+  clubA: string,
+  clubB: string,
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<ClubMatchupData>> {
+  const search = new URLSearchParams({
+    club_a: clubA,
+    club_b: clubB,
+    season,
+  });
+  return getApiData<ClubMatchupData>(`/form/matchup?${search.toString()}`, signal);
 }
 
 export function getPlayers(

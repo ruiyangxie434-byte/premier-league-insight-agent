@@ -284,6 +284,63 @@ export interface ClubSeasonFormData {
   sample_notice: string;
 }
 
+export interface MatchupClubSnapshot {
+  club: FormClubData;
+  final_position: number;
+  overall: FormRecordData;
+  home: FormRecordData;
+  away: FormRecordData;
+  recent_form: FormResult[];
+  recent_points: number;
+  longest_unbeaten: number;
+}
+
+export interface MatchupMeetingData {
+  source_match_id: string;
+  matchweek: number;
+  kickoff_at: string | null;
+  home_club: FormClubData;
+  away_club: FormClubData;
+  home_score: number;
+  away_score: number;
+  winner_slug: string | null;
+}
+
+export interface MatchupHeadToHeadData {
+  meetings: MatchupMeetingData[];
+  club_a_wins: number;
+  draws: number;
+  club_b_wins: number;
+  club_a_goals: number;
+  club_b_goals: number;
+}
+
+export interface MatchupDimensionData {
+  key: string;
+  label: string;
+  club_a_value: string;
+  club_b_value: string;
+  advantage: "club_a" | "club_b" | "even";
+  note: string;
+}
+
+export interface ClubMatchupData {
+  competition: string;
+  season: string;
+  snapshot_date: string;
+  club_a: MatchupClubSnapshot;
+  club_b: MatchupClubSnapshot;
+  head_to_head: MatchupHeadToHeadData;
+  dimensions: MatchupDimensionData[];
+  summary: string[];
+  source_name: string;
+  source_url: string;
+  license_name: string;
+  license_url: string;
+  source_commit: string;
+  sample_notice: string;
+}
+
 export type PlayerPosition = "FWD" | "MID" | "DEF" | "GK";
 
 export type PlayerSortKey =
@@ -595,6 +652,7 @@ export interface AgentRunDetailData {
 export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
+  | "compare_clubs"
   | "compare_players"
   | "find_similar_players"
   | "get_match_shot_summary";

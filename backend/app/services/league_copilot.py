@@ -57,6 +57,7 @@ SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
     "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
     "并可用完整赛果生成两队八维历史对阵简报，"
+    "并可拆解单队的位置分钟与队内贡献领跑者，"
     "并可对外场球员执行同位置可解释相似度检索，"
     "以及 2003-04 Arsenal 4–2 Liverpool 单场事件；"
     "不联网查询实时新闻、伤病、转会或比分。"
@@ -73,8 +74,9 @@ PLANNER_SYSTEM_PROMPT = """
 3. 2003-04 只可用于 source_match_id=3749448 的单场射门事件，不能与 2024-25 混算。
 4. 询问一名球员的相似风格、同类型或替代画像时，调用 find_similar_players；这不是转会建议。
 5. 比较两支球队时调用 compare_clubs，一次返回八维历史比较与两回合交锋；这不是预测。
-6. 最多调用四个工具。参数使用工具声明允许的值。
-7. 问题超出数据范围时不要编造工具。
+6. 询问单支球队的阵容结构、位置贡献或队内核心时，调用 analyze_club_squad；这不是实时名单。
+7. 最多调用四个工具。参数使用工具声明允许的值。
+8. 问题超出数据范围时不要编造工具。
 """.strip()
 
 NARRATIVE_SYSTEM_PROMPT = """
@@ -133,6 +135,16 @@ SIMILARITY_KEYWORDS = (
     "风格接近",
     "替代画像",
     "similar",
+)
+SQUAD_KEYWORDS = (
+    "阵容",
+    "位置结构",
+    "位置贡献",
+    "队内核心",
+    "队内领跑",
+    "出场负荷",
+    "squad",
+    "roster",
 )
 
 
@@ -227,6 +239,26 @@ def build_local_tool_plan(
             },
         )
 
+    asks_for_squad = any(keyword in folded for keyword in SQUAD_KEYWORDS)
+    if len(clubs) == 1 and asks_for_squad:
+        if "1800" in folded or "1,800" in folded:
+            minimum_minutes = 1800
+        elif "900" in folded:
+            minimum_minutes = 900
+        elif "全部" in folded or "所有" in folded:
+            minimum_minutes = 0
+        else:
+            minimum_minutes = DEFAULT_MINIMUM_MINUTES
+        add(
+            "analyze_club_squad",
+            {
+                "club": clubs[0],
+                "season": request.season,
+                "minimum_minutes": minimum_minutes,
+            },
+        )
+        return calls
+
     asks_for_table = any(keyword in folded for keyword in STANDINGS_KEYWORDS)
     asks_for_form = any(keyword in folded for keyword in FORM_KEYWORDS)
     compares_clubs = (
@@ -266,6 +298,7 @@ def build_local_tool_plan(
     if not calls:
         raise CopilotInputError(
             "当前问题无法落到可用数据工具。请询问积分榜、球队状态或两队对阵、"
+            "单队阵容结构、"
             "两名 450+ 分钟球员记录的比较、一名外场球员的相似画像，"
             "或 2004 年 Arsenal 4–2 Liverpool 的射门；同名跨队记录"
             "请同时写明俱乐部。"
@@ -496,6 +529,12 @@ def _local_narrative(
             ),
             answer=results[0].trace.summary,
         )
+    if tools == ["analyze_club_squad"]:
+        payload = results[0].payload
+        return QwenCopilotNarrative(
+            headline=f"{payload['club']['short_name']}：2024-25 阵容透镜",
+            answer=results[0].trace.summary,
+        )
     if len(form_results) >= 2:
         first, second = form_results[:2]
         first_data, second_data = first.payload, second.payload
@@ -547,6 +586,8 @@ def _suggestions(results: list[CopilotToolResult]) -> list[str]:
     suggestions: list[str] = []
     if "get_league_table" in tools or "get_club_form" in tools or "compare_clubs" in tools:
         suggestions.append("比较利物浦和阿森纳的主客场表现与最近五场状态")
+    if "analyze_club_squad" not in tools:
+        suggestions.append("分析利物浦的阵容结构与队内核心")
     if "compare_players" not in tools:
         suggestions.append("萨卡和帕尔默谁更适合承担创造任务？")
     if "find_similar_players" not in tools:
@@ -646,6 +687,22 @@ def _qwen_plan_matches_question_scope(
         if result.trace.tool == "compare_clubs"
     }
     if expected_club_comparisons != actual_club_comparisons:
+        return False
+
+    expected_squads = {
+        (str(call.arguments["club"]), int(call.arguments["minimum_minutes"]))
+        for call in expected
+        if call.name == "analyze_club_squad"
+    }
+    actual_squads = {
+        (
+            str(result.trace.arguments["club"]),
+            int(result.trace.arguments["minimum_minutes"]),
+        )
+        for result in results
+        if result.trace.tool == "analyze_club_squad"
+    }
+    if expected_squads != actual_squads:
         return False
 
     expected_players = {

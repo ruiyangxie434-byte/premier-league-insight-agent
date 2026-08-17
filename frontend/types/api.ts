@@ -84,6 +84,79 @@ export interface ClubDetailData extends ClubSummary {
   featured_matches: ClubMatchPreview[];
 }
 
+export type SquadPosition = "GK" | "DEF" | "MID" | "FWD";
+export type SquadLeaderMetric =
+  | "minutes"
+  | "goals"
+  | "assists"
+  | "key_passes"
+  | "defensive_actions";
+
+export interface SquadClubData {
+  id: number;
+  name: string;
+  short_name: string;
+  slug: string;
+  primary_color: string;
+}
+
+export interface SquadPlayerData {
+  full_name: string;
+  slug: string;
+  position: SquadPosition;
+  nationality: string;
+  appearances: number;
+  starts: number;
+  minutes: number;
+  goals: number;
+  assists: number;
+  minutes_share: number;
+}
+
+export interface SquadPositionGroup {
+  position: SquadPosition;
+  label: string;
+  record_count: number;
+  minutes: number;
+  minutes_share: number;
+  goals: number;
+  assists: number;
+  goal_contributions: number;
+}
+
+export interface SquadLeaderData {
+  metric: SquadLeaderMetric;
+  label: string;
+  value: number;
+  unit: string;
+  player: SquadPlayerData;
+}
+
+export interface SquadLensData {
+  club: SquadClubData;
+  season: string;
+  minimum_minutes: number;
+  record_total: number;
+  qualified_total: number;
+  excluded_total: number;
+  total_minutes: number;
+  total_goals: number;
+  total_assists: number;
+  unique_nationalities: number;
+  top_five_minutes_share: number;
+  position_groups: SquadPositionGroup[];
+  leaders: SquadLeaderData[];
+  core_players: SquadPlayerData[];
+  summary: string[];
+  source_name: string;
+  source_url: string;
+  source_version: number;
+  license_name: string;
+  license_url: string;
+  sample_notice: string;
+  method_notice: string;
+}
+
 export interface ClubMatchPreview {
   source_match_id: string;
   season: string;
@@ -652,6 +725,7 @@ export interface AgentRunDetailData {
 export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
+  | "analyze_club_squad"
   | "compare_clubs"
   | "compare_players"
   | "find_similar_players"

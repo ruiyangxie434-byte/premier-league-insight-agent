@@ -14,6 +14,8 @@ from app.schemas.club import (
     StadiumData,
 )
 from app.schemas.common import ApiResponse
+from app.schemas.squad import SquadLensData
+from app.services.squad_lens import get_squad_lens
 
 router = APIRouter(prefix="/clubs", tags=["clubs"])
 
@@ -147,3 +149,27 @@ def get_club(
             ),
         ),
     )
+
+
+@router.get(
+    "/{slug}/squad-lens",
+    response_model=ApiResponse[SquadLensData],
+)
+def get_club_squad_lens(
+    slug: str,
+    season: str = Query(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$"),
+    minimum_minutes: int = Query(default=450, ge=0, le=4000),
+    db: Session = Depends(get_db),
+) -> ApiResponse[SquadLensData]:
+    data = get_squad_lens(
+        db,
+        club_slug=slug,
+        season=season,
+        minimum_minutes=minimum_minutes,
+    )
+    if data is None:
+        raise HTTPException(
+            status_code=404,
+            detail="未找到该球队或符合分钟门槛的赛季阵容数据",
+        )
+    return ApiResponse(message="球队阵容透镜获取成功", data=data)

@@ -3,7 +3,7 @@
 > 面向中文英超球迷与内容创作者的垂直足球数据分析助手  
 > 将球队、球员与比赛数据转化为可查询、可比较、可解释的分析结论。
 
-**当前版本：`v0.15.0 · Matchup Lab`**
+**当前版本：`v0.16.0 · Squad Lens`**
 
 **项目状态：MVP 开发中**
 
@@ -31,11 +31,12 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 | Similarity Scout | 同位置相似画像、位置权重、最大差异解释与一键双人对比 |
 | Evidence Center | 统一核验数据来源、覆盖规模、许可、快照日期与使用边界 |
 | Matchup Lab | 任意两队的赛季画像、八维优势矩阵与两回合直接交锋 |
+| Squad Lens | 单队位置分钟结构、队内统计领跑者、核心负荷与可调门槛 |
 | 球员分析 | 双球员比较、四种分析侧重点与 Player Lab 选择联动 |
 | 比赛数据管道 | StatsBomb Open Data 清洗脚本、坐标归一化、来源 ID 与幂等导入 |
 | Match Lab | Arsenal 4–2 Liverpool 的 28 次射门、xG 对比、筛选、进球时间线与事件清单 |
 | Agent 工具链 | 意图识别、数据查询、指标计算、证据排序与结论生成 |
-| League Copilot | 积分榜、球队状态、球队对阵、球员比较、相似画像、单场射门六工具调度 |
+| League Copilot | 积分榜、球队状态、阵容透镜、球队对阵、球员比较、相似画像、单场射门七工具调度 |
 | 函数调用 | 千问 OpenAI-compatible `tool_calls`、后端参数校验与可视化执行轨迹 |
 | Agent Notebook | 自动保存分析、最近记录、历史恢复、父子追问链与上下文轨迹 |
 | 球探报告 | 独立报告页、指标表、证据链、来源边界及打印 / 保存 PDF |
@@ -145,6 +146,18 @@ NEXT_PUBLIC_MAP_TILE_URL=https://tile.openstreetmap.org/{z}/{x}/{y}.png
 
 Similarity Scout 使用七项每90指标的同位置百分位差异，并根据前锋、中场、后卫分别设置可见权重。它排除目标球员的其他转会分段；由于当前快照缺少扑救、失球与零封字段，门将页面会明确停用推荐，而不是输出误导性相似分。算法、权重与 API 见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)。
 
+## Squad Lens
+
+访问 `http://localhost:3000/squad` 可以：
+
+- 在 20 支球队之间切换，并选择全部、450、900 或 1800 分钟门槛；
+- 查看门将、后卫、中场与前锋的记录数、分钟占比和进球助攻；
+- 核对出场时间、进球、助攻、关键传球与防守动作领跑者；
+- 查看队内出场前八记录与前五分钟负荷；
+- 跳转到球员详情，并核验数据来源、许可与统计边界。
+
+接口为 `GET /api/clubs/{slug}/squad-lens`。所有汇总均来自固定历史快照；位置分钟不代表阵型，进球与助攻汇总也不替代球队赛果统计。口径见 [`docs/SQUAD_LENS.md`](docs/SQUAD_LENS.md)。
+
 ## 比赛实验室
 
 访问 `http://localhost:3000/matches` 可以：
@@ -188,6 +201,7 @@ Similarity Scout 使用七项每90指标的同位置百分位差异，并根据�
 访问 `http://localhost:3000/copilot` 可以：
 
 - 用自然语言查询 2024-25 最终积分榜；
+- 查询单支球队的位置结构、队内领跑者与核心负荷；
 - 调用球队对阵工具完成八维历史比较与两回合直接交锋；
 - 复用既有球员每90指标与证据排序工具；
 - 查询一名外场球员的同位置相似画像，并解释接近项和主要差异；
@@ -231,9 +245,9 @@ npm run lint
 npm run build
 ```
 
-`v0.15.0` 在 v0.14.0 全部能力上新增 Matchup Lab，阶段验收项目：
+`v0.16.0` 在 v0.15.0 全部能力上新增 Squad Lens，阶段验收项目：
 
-- 后端：55/55 测试通过，覆盖相似度排序、Copilot 相似检索、门将边界、转会分段排除、全量球员快照、迁移、Agent 与范围门控
+- 后端：64/64 测试通过，覆盖阵容结构、分钟门槛、Copilot 阵容路由、相似度、球队对阵、迁移、Agent 与范围门控
 - 前端：Lint 通过
 - 前端：TypeScript 通过
 - 前端：Production Build 通过
@@ -241,7 +255,7 @@ npm run build
 - 相似球员可从详情页一键带入双人雷达，球员搜索使用 250 ms 防抖且筛选时保留当前结果
 - Alembic 可从空库顺序升级至 `20260811_0004`，旧数据无需删除
 - v0.11.0 数据库可无损补入 574 条球员记录，并保留既有球员 ID、完整生日与球衣号码
-- 首页、League Copilot、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
+- 首页、Squad Lens、League Copilot、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
 
 ## 版本进度
 
@@ -260,6 +274,7 @@ npm run build
 - [x] `v0.13.0` 同位置相似球员、位置权重、画像差异解释与本地连接可靠性
 - [x] `v0.14.0` 统一数据证据 API、来源目录、覆盖统计与限制说明页面
 - [x] `v0.15.0` 两队对阵 API、八维历史比较、直接交锋与非预测边界
+- [x] `v0.16.0` 单队阵容结构 API、可调分钟门槛、队内领跑者与 Copilot 第七工具
 - [ ] 多赛季历史分析
 - [ ] 在线部署与移动端优化
 
@@ -267,7 +282,7 @@ npm run build
 
 当前版本的球队范围、2024-25 最终积分榜、380 场赛果和 574 条球员—球队记录均为历史快照。球员快照覆盖 562 个姓名；12 条跨队附加记录按俱乐部分别保留。Match Lab 单独使用 StatsBomb Open Data 的 2003/2004 历史比赛事件。
 
-积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球队对阵见 [`docs/MATCHUP_LAB.md`](docs/MATCHUP_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
+积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，阵容口径见 [`docs/SQUAD_LENS.md`](docs/SQUAD_LENS.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球队对阵见 [`docs/MATCHUP_LAB.md`](docs/MATCHUP_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
 
 ## 当前边界
 

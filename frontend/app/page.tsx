@@ -8,9 +8,9 @@ import { SiteHeader } from "../components/system/site-header";
 
 const futureModules = [
   {
-    phase: "v0.15 已上线",
-    title: "Matchup Lab",
-    description: "任意两队的赛季画像、八维优势和两回合直接交锋已经打通。",
+    phase: "v0.16 已上线",
+    title: "Squad Lens",
+    description: "单队位置结构、贡献领跑者和核心出场负荷已经打通。",
   },
   {
     phase: "数据下一步",
@@ -59,6 +59,9 @@ export default function Home() {
               <Link className="secondary-button" href="/matchup">
                 打开球队对阵实验室
               </Link>
+              <Link className="secondary-button" href="/squad">
+                打开阵容透镜
+              </Link>
               <Link className="secondary-button" href="/copilot">
                 体验 League Copilot
               </Link>
@@ -86,7 +89,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、球员分析、赛季赛果、单场事件、相似度、球队对阵、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
+            <p>地图、球员分析、赛季赛果、单场事件、相似度、球队对阵、阵容透镜、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

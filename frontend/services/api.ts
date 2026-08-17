@@ -24,6 +24,7 @@ import type {
   PlayerSimilarityData,
   SeasonFormOverviewData,
   StandingTableData,
+  SquadLensData,
 } from "../types/api";
 
 const CONFIGURED_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(
@@ -103,6 +104,22 @@ export function getClub(
 ): Promise<ApiResponse<ClubDetailData>> {
   return getApiData<ClubDetailData>(
     `/clubs/${encodeURIComponent(slug)}`,
+    signal,
+  );
+}
+
+export function getSquadLens(
+  slug: string,
+  minimumMinutes = 450,
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<SquadLensData>> {
+  const search = new URLSearchParams({
+    season,
+    minimum_minutes: String(minimumMinutes),
+  });
+  return getApiData<SquadLensData>(
+    `/clubs/${encodeURIComponent(slug)}/squad-lens?${search.toString()}`,
     signal,
   );
 }

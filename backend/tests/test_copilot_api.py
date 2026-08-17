@@ -22,7 +22,7 @@ def use_local_copilot(monkeypatch) -> None:
     monkeypatch.setattr(copilot_route, "get_settings", local_settings)
 
 
-def test_copilot_capabilities_expose_six_controlled_tools(
+def test_copilot_capabilities_expose_seven_controlled_tools(
     api_client: TestClient,
     monkeypatch,
 ) -> None:
@@ -36,11 +36,39 @@ def test_copilot_capabilities_expose_six_controlled_tools(
     assert [item["name"] for item in data["tools"]] == [
         "get_league_table",
         "get_club_form",
+        "analyze_club_squad",
         "compare_clubs",
         "compare_players",
         "find_similar_players",
         "get_match_shot_summary",
     ]
+
+
+def test_copilot_analyzes_grounded_club_squad(
+    api_client: TestClient,
+    monkeypatch,
+) -> None:
+    use_local_copilot(monkeypatch)
+    response = api_client.post(
+        "/api/copilot/query",
+        json={"question": "分析利物浦的阵容结构与队内核心"},
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert [item["tool"] for item in data["tool_calls"]] == [
+        "analyze_club_squad"
+    ]
+    assert data["tool_calls"][0]["arguments"] == {
+        "club": "liverpool",
+        "season": "2024-25",
+        "minimum_minutes": 450,
+    }
+    assert "Liverpool：2024-25 阵容透镜" == data["headline"]
+    assert "19 条可分析记录" in data["answer"]
+    assert data["evidence"][0]["value"] == "19/24 条记录 · 450+ 分钟"
+    assert any("Squad Lens" in link["label"] for link in data["links"])
+    assert any("不是当前实时名单" in item for item in data["limitations"])
 
 
 def test_copilot_reads_final_table_with_local_tool_router(
@@ -240,7 +268,7 @@ def test_qwen_selects_tool_before_grounded_narrative() -> None:
         calls.append(payload)
         assert request.headers["Authorization"] == "Bearer test-key"
         if "tools" in payload:
-            assert len(payload["tools"]) == 6
+            assert len(payload["tools"]) == 7
             return httpx.Response(
                 200,
                 json={

@@ -42,6 +42,7 @@ from app.services.season_form import (
     longest_unbeaten_run,
     recent_form,
 )
+from app.services.squad_lens import get_squad_lens
 
 
 class CopilotToolError(ValueError):
@@ -64,6 +65,12 @@ class ClubCompareArguments(BaseModel):
     club_a: str = Field(min_length=2, max_length=120)
     club_b: str = Field(min_length=2, max_length=120)
     season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+
+
+class ClubSquadArguments(BaseModel):
+    club: str = Field(min_length=2, max_length=120)
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+    minimum_minutes: Literal[0, 450, 900, 1800] = 450
 
 
 class PlayerCompareArguments(BaseModel):
@@ -104,6 +111,12 @@ TOOL_CAPABILITIES = [
         label="球队赛季状态",
         description="查询球队主客场拆分、近况与最长不败。",
         data_scope="2024-25 完整 38 场比分计算结果",
+    ),
+    CopilotToolCapability(
+        name="analyze_club_squad",
+        label="球队阵容透镜",
+        description="拆解一队的位置分钟、队内统计领跑者与核心负荷。",
+        data_scope="2024-25 球员—俱乐部历史快照与可调分钟门槛",
     ),
     CopilotToolCapability(
         name="compare_clubs",
@@ -154,6 +167,28 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     "club": {"type": "string"},
                 },
                 "required": ["season"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_club_squad",
+            "description": (
+                "分析一支球队在 2024-25 历史快照中的阵容结构：位置分钟"
+                "占比、进球助攻、队内领跑者与前五出场负荷。不是实时名单。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "club": {"type": "string"},
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                    "minimum_minutes": {
+                        "type": "integer",
+                        "enum": [0, 450, 900, 1800],
+                    },
+                },
+                "required": ["club", "season", "minimum_minutes"],
             },
         },
     },
@@ -956,6 +991,97 @@ def _compare_clubs(
     )
 
 
+def _analyze_club_squad(
+    db: Session,
+    arguments: ClubSquadArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    club = _resolve_club(db, arguments.club)
+    squad = get_squad_lens(
+        db,
+        club_slug=club.slug,
+        season=arguments.season,
+        minimum_minutes=arguments.minimum_minutes,
+    )
+    if squad is None:
+        raise CopilotToolError("该球队在当前门槛下没有可分析的阵容记录")
+
+    dominant = max(squad.position_groups, key=lambda item: item.minutes)
+    attack = max(
+        squad.position_groups,
+        key=lambda item: (item.goal_contributions, item.goals),
+    )
+    minutes_leader, goals_leader, assists_leader = squad.leaders[:3]
+    evidence = [
+        CopilotEvidence(
+            label="阵容分析池",
+            value=(
+                f"{squad.qualified_total}/{squad.record_total} 条记录 · "
+                f"{squad.minimum_minutes}+ 分钟"
+            ),
+            detail=(
+                f"共 {squad.total_minutes} 分钟，覆盖 "
+                f"{squad.unique_nationalities} 个国籍。"
+            ),
+            tool="analyze_club_squad",
+        ),
+        CopilotEvidence(
+            label="位置分钟最高",
+            value=f"{dominant.label} · {dominant.minutes_share:.1f}%",
+            detail=(
+                f"{dominant.record_count} 条记录、{dominant.minutes} 分钟。"
+            ),
+            tool="analyze_club_squad",
+        ),
+        CopilotEvidence(
+            label="位置进球 + 助攻最高",
+            value=f"{attack.label} · {attack.goal_contributions} 次",
+            detail=f"{attack.goals} 球、{attack.assists} 次助攻。",
+            tool="analyze_club_squad",
+        ),
+        CopilotEvidence(
+            label="队内统计领跑",
+            value=(
+                f"{goals_leader.player.full_name} · "
+                f"{goals_leader.value} 球"
+            ),
+            detail=(
+                f"出场时间：{minutes_leader.player.full_name} "
+                f"{minutes_leader.value} 分钟；助攻："
+                f"{assists_leader.player.full_name} {assists_leader.value} 次。"
+            ),
+            tool="analyze_club_squad",
+        ),
+    ]
+    summary = (
+        f"{club.short_name} 在 {arguments.minimum_minutes}+ 分钟门槛下有 "
+        f"{squad.qualified_total} 条可分析记录；{dominant.label}占分析池分钟"
+        f" {dominant.minutes_share:.1f}%，{attack.label}贡献 "
+        f"{attack.goal_contributions} 次进球或助攻。队内前五名合计占"
+        f" {squad.top_five_minutes_share:.1f}% 的分析池分钟。"
+    )
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="analyze_club_squad",
+            arguments=arguments.model_copy(update={"club": club.slug}),
+            summary=summary,
+            evidence=evidence,
+            source=PLAYER_SOURCE,
+        ),
+        payload=squad.model_dump(),
+        links=[
+            CopilotLink(
+                label=f"打开 {club.short_name} Squad Lens",
+                href=f"/squad?club={club.slug}",
+            ),
+            CopilotLink(label="核验球员数据证据", href="/evidence"),
+        ],
+        limitations=[squad.sample_notice, squad.method_notice],
+    )
+
+
 def _compare_players(
     db: Session,
     arguments: PlayerCompareArguments,
@@ -1302,6 +1428,12 @@ def execute_copilot_tool(
             return _get_club_form(
                 db,
                 ClubFormArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "analyze_club_squad":
+            return _analyze_club_squad(
+                db,
+                ClubSquadArguments.model_validate(arguments),
                 call_id,
             )
         if name == "compare_clubs":

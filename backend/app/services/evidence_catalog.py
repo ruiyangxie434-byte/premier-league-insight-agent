@@ -45,13 +45,16 @@ SOURCES = [
             "Squad Lens",
             "百分位雷达",
             "Similarity Scout",
+            "Transfer Signal",
             "分析 Agent",
             "Copilot 阵容查询",
+            "Copilot 候选信号",
         ],
         limitations=[
             "转会球员可能有多条俱乐部分段",
             "门将缺少专属扑救指标",
             "相似度不是身价或转会建议",
+            "候选信号不包含合同、工资、伤病或实时可用性",
         ],
         status="limited",
     ),
@@ -74,7 +77,7 @@ SOURCES = [
 
 def get_evidence_catalog() -> EvidenceCatalogData:
     return EvidenceCatalogData(
-        generated_at="2026-08-17",
+        generated_at="2026-08-18",
         season_focus="2024-25",
         sources=SOURCES,
         source_count=len(SOURCES),
@@ -83,7 +86,7 @@ def get_evidence_catalog() -> EvidenceCatalogData:
         methodology=[
             "运行时优先查询本地结构化快照，不让模型猜测可计算结论。",
             "不同赛季与不同粒度的数据保持隔离，回答中明确标注适用范围。",
-            "每90、百分位、相似度、阵容结构和积分走势均由后端确定性计算。",
+            "每90、百分位、相似度、阵容结构、候选信号和积分走势均由后端确定性计算。",
             "数据不足时返回限制说明，不用零值或生成内容填补缺口。",
         ],
     )

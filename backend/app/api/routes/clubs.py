@@ -15,7 +15,9 @@ from app.schemas.club import (
 )
 from app.schemas.common import ApiResponse
 from app.schemas.squad import SquadLensData
+from app.schemas.transfer import TransferPosition, TransferSignalData
 from app.services.squad_lens import get_squad_lens
+from app.services.transfer_signal import get_transfer_signals
 
 router = APIRouter(prefix="/clubs", tags=["clubs"])
 
@@ -173,3 +175,28 @@ def get_club_squad_lens(
             detail="未找到该球队或符合分钟门槛的赛季阵容数据",
         )
     return ApiResponse(message="球队阵容透镜获取成功", data=data)
+
+
+@router.get(
+    "/{slug}/transfer-signals",
+    response_model=ApiResponse[TransferSignalData],
+)
+def get_club_transfer_signals(
+    slug: str,
+    season: str = Query(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$"),
+    position: TransferPosition = Query(default="MID"),
+    minimum_minutes: int = Query(default=900, ge=450, le=3000),
+    limit: int = Query(default=6, ge=1, le=12),
+    db: Session = Depends(get_db),
+) -> ApiResponse[TransferSignalData]:
+    data = get_transfer_signals(
+        db,
+        club_slug=slug,
+        season=season,
+        position=position,
+        minimum_minutes=minimum_minutes,
+        limit=limit,
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail="未找到该球队")
+    return ApiResponse(message="球队候选信号获取成功", data=data)

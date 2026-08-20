@@ -157,6 +157,76 @@ export interface SquadLensData {
   method_notice: string;
 }
 
+export type TransferPosition = SquadPosition;
+export type TransferMetricKey =
+  | "goals_per90"
+  | "assists_per90"
+  | "shots_per90"
+  | "key_passes_per90"
+  | "tackles_per90"
+  | "interceptions_per90"
+  | "expected_goals_per90";
+
+export interface TransferClubData {
+  name: string;
+  short_name: string;
+  slug: string;
+  primary_color: string;
+}
+
+export interface TransferNeedMetric {
+  key: TransferMetricKey;
+  label: string;
+  club_percentile: number;
+  priority: number;
+}
+
+export interface TransferMetricGap {
+  key: TransferMetricKey;
+  label: string;
+  club_percentile: number;
+  candidate_percentile: number;
+  gap: number;
+}
+
+export interface TransferCandidateData {
+  full_name: string;
+  slug: string;
+  position: TransferPosition;
+  nationality: string;
+  birth_year: number | null;
+  club: TransferClubData;
+  appearances: number;
+  minutes: number;
+  signal_score: number;
+  confidence_score: number;
+  key_lifts: TransferMetricGap[];
+  tradeoffs: TransferMetricGap[];
+}
+
+export interface TransferSignalData {
+  club: TransferClubData;
+  season: string;
+  position: TransferPosition;
+  minimum_minutes: number;
+  limit: number;
+  is_supported: boolean;
+  unavailable_reason: string | null;
+  club_record_count: number;
+  peer_record_count: number;
+  candidate_total: number;
+  needs: TransferNeedMetric[];
+  candidates: TransferCandidateData[];
+  source_name: string;
+  source_url: string;
+  source_version: number;
+  license_name: string;
+  license_url: string;
+  sample_notice: string;
+  method_notice: string;
+  decision_notice: string;
+}
+
 export interface ClubMatchPreview {
   source_match_id: string;
   season: string;
@@ -726,6 +796,7 @@ export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
   | "analyze_club_squad"
+  | "scout_transfer_signals"
   | "compare_clubs"
   | "compare_players"
   | "find_similar_players"

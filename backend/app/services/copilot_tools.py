@@ -43,6 +43,7 @@ from app.services.season_form import (
     recent_form,
 )
 from app.services.squad_lens import get_squad_lens
+from app.services.transfer_signal import get_transfer_signals
 
 
 class CopilotToolError(ValueError):
@@ -71,6 +72,14 @@ class ClubSquadArguments(BaseModel):
     club: str = Field(min_length=2, max_length=120)
     season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
     minimum_minutes: Literal[0, 450, 900, 1800] = 450
+
+
+class TransferSignalArguments(BaseModel):
+    club: str = Field(min_length=2, max_length=120)
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+    position: Literal["GK", "DEF", "MID", "FWD"] = "MID"
+    minimum_minutes: Literal[450, 900, 1800] = 900
+    limit: int = Field(default=5, ge=1, le=5)
 
 
 class PlayerCompareArguments(BaseModel):
@@ -117,6 +126,12 @@ TOOL_CAPABILITIES = [
         label="球队阵容透镜",
         description="拆解一队的位置分钟、队内统计领跑者与核心负荷。",
         data_scope="2024-25 球员—俱乐部历史快照与可调分钟门槛",
+    ),
+    CopilotToolCapability(
+        name="scout_transfer_signals",
+        label="候选补强信号",
+        description="按球队同位置基线识别弱项，并排序外队历史统计候选。",
+        data_scope="2024-25 同位置每90百分位；不含身价、合同或实时可用性",
     ),
     CopilotToolCapability(
         name="compare_clubs",
@@ -189,6 +204,40 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     },
                 },
                 "required": ["club", "season", "minimum_minutes"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "scout_transfer_signals",
+            "description": (
+                "为一支球队按位置生成 2024-25 历史统计补强信号。先计算"
+                "球队同位置基线，再返回外队候选的正向百分位提升与权衡项。"
+                "信号分不是转会建议、成交概率或能力总评。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "club": {"type": "string"},
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                    "position": {
+                        "type": "string",
+                        "enum": ["GK", "DEF", "MID", "FWD"],
+                    },
+                    "minimum_minutes": {
+                        "type": "integer",
+                        "enum": [450, 900, 1800],
+                    },
+                    "limit": {"type": "integer", "minimum": 1, "maximum": 5},
+                },
+                "required": [
+                    "club",
+                    "season",
+                    "position",
+                    "minimum_minutes",
+                    "limit",
+                ],
             },
         },
     },
@@ -1082,6 +1131,136 @@ def _analyze_club_squad(
     )
 
 
+def _scout_transfer_signals(
+    db: Session,
+    arguments: TransferSignalArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    club = _resolve_club(db, arguments.club)
+    signals = get_transfer_signals(
+        db,
+        club_slug=club.slug,
+        season=arguments.season,
+        position=arguments.position,
+        minimum_minutes=arguments.minimum_minutes,
+        limit=arguments.limit,
+    )
+    if signals is None:
+        raise CopilotToolError("没有找到目标球队")
+
+    normalized = arguments.model_copy(update={"club": club.slug})
+    if not signals.is_supported:
+        return CopilotToolResult(
+            trace=_trace(
+                call_id=call_id,
+                tool="scout_transfer_signals",
+                arguments=normalized,
+                summary=str(signals.unavailable_reason),
+                evidence=[
+                    CopilotEvidence(
+                        label="数据边界",
+                        value=f"{club.short_name} · {arguments.position}",
+                        detail=str(signals.unavailable_reason),
+                        tool="scout_transfer_signals",
+                    )
+                ],
+                source=PLAYER_SOURCE,
+            ),
+            payload=signals.model_dump(),
+            links=[
+                CopilotLink(
+                    label=f"打开 {club.short_name} Transfer Signal",
+                    href=(
+                        f"/transfer?club={club.slug}"
+                        f"&position={arguments.position}"
+                    ),
+                )
+            ],
+            limitations=[signals.sample_notice, signals.decision_notice],
+        )
+
+    first = signals.candidates[0] if signals.candidates else None
+    needs_text = "、".join(
+        f"{item.label} P{item.club_percentile}" for item in signals.needs
+    )
+    if first is None:
+        summary = (
+            f"{club.short_name} 的 {arguments.position} 位置已建立基线，"
+            "但当前门槛下没有产生正向候选信号。"
+        )
+    else:
+        lift = first.key_lifts[0]
+        summary = (
+            f"{club.short_name} 的 {arguments.position} 位置优先观察 {needs_text}。"
+            f"首位统计候选为 {first.full_name}（{first.club.short_name}），"
+            f"信号分 {first.signal_score}；其 {lift.label} 比球队同位置基线"
+            f"高 {lift.gap} 个百分位。"
+        )
+
+    evidence = [
+        CopilotEvidence(
+            label="球队位置基线",
+            value=(
+                f"{club.short_name} · {arguments.position} · "
+                f"{signals.club_record_count} 条记录"
+            ),
+            detail=(
+                f"同位置比较池 {signals.peer_record_count} 条，"
+                f"门槛 {signals.minimum_minutes}+ 分钟。"
+            ),
+            tool="scout_transfer_signals",
+        ),
+        CopilotEvidence(
+            label="优先观察指标",
+            value=needs_text,
+            detail="优先级由位置权重与球队同位置百分位缺口共同确定。",
+            tool="scout_transfer_signals",
+        ),
+    ]
+    if first is not None:
+        evidence.append(
+            CopilotEvidence(
+                label="首位历史统计候选",
+                value=(
+                    f"{first.full_name} · {first.signal_score} 分 · "
+                    f"{first.club.short_name}"
+                ),
+                detail=(
+                    f"{first.minutes} 分钟，样本置信度 "
+                    f"{first.confidence_score}。"
+                ),
+                tool="scout_transfer_signals",
+            )
+        )
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="scout_transfer_signals",
+            arguments=normalized,
+            summary=summary,
+            evidence=evidence,
+            source=PLAYER_SOURCE,
+        ),
+        payload=signals.model_dump(),
+        links=[
+            CopilotLink(
+                label=f"打开 {club.short_name} Transfer Signal",
+                href=(
+                    f"/transfer?club={club.slug}"
+                    f"&position={arguments.position}"
+                ),
+            ),
+            CopilotLink(label="核验球员数据证据", href="/evidence"),
+        ],
+        limitations=[
+            signals.sample_notice,
+            signals.method_notice,
+            signals.decision_notice,
+        ],
+    )
+
+
 def _compare_players(
     db: Session,
     arguments: PlayerCompareArguments,
@@ -1434,6 +1613,12 @@ def execute_copilot_tool(
             return _analyze_club_squad(
                 db,
                 ClubSquadArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "scout_transfer_signals":
+            return _scout_transfer_signals(
+                db,
+                TransferSignalArguments.model_validate(arguments),
                 call_id,
             )
         if name == "compare_clubs":

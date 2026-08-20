@@ -15,6 +15,7 @@ export function SiteHeader({ className }: { className?: string }) {
         </span>
       </Link>
       <nav className="site-utility-nav" aria-label="项目工具">
+        <Link href="/transfer">候选信号</Link>
         <Link href="/squad">阵容透镜</Link>
         <Link href="/matchup">球队对阵</Link>
         <Link href="/evidence">数据证据</Link>

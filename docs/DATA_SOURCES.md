@@ -38,7 +38,7 @@
 - 数据库标记：`source_kind = kaggle-fbref`。
 - 数据性质：固定历史快照，不是实时名单、转会、伤病或比赛状态数据。
 
-`scripts/build_player_snapshot.py` 固定 Kaggle v1 压缩包和 CSV 校验和，只保留姓名、球队、位置、国籍、出生年份、出场时间和本项目使用的累计表现字段。应用运行时只读取提交的紧凑 JSON，不访问 Kaggle。Similarity Scout 只是对同一快照的每90百分位做确定性比较，不引入新的外部数据。每90分钟、百分位、分页和转会记录见 [`PLAYER_LAB.md`](PLAYER_LAB.md)，相似度权重与边界见 [`SIMILARITY_SCOUT.md`](SIMILARITY_SCOUT.md)。
+`scripts/build_player_snapshot.py` 固定 Kaggle v1 压缩包和 CSV 校验和，只保留姓名、球队、位置、国籍、出生年份、出场时间和本项目使用的累计表现字段。应用运行时只读取提交的紧凑 JSON，不访问 Kaggle。Similarity Scout 与 Transfer Signal 都只对同一快照的每90百分位做确定性计算，不引入新的外部数据。每90分钟、百分位、分页和转会记录见 [`PLAYER_LAB.md`](PLAYER_LAB.md)，相似度权重与边界见 [`SIMILARITY_SCOUT.md`](SIMILARITY_SCOUT.md)，候选信号方法见 [`TRANSFER_SIGNAL.md`](TRANSFER_SIGNAL.md)。
 
 ## 历史比赛事件
 
@@ -62,7 +62,7 @@
 ## League Copilot 工具边界
 
 - Copilot 不引入新的足球数据源，只调度本页已经说明的积分榜、完整赛果、球员快照和历史比赛事件。
-- `get_league_table`、`get_club_form` 与 `compare_clubs` 使用 2024-25 数据；球队对阵工具从完整赛果计算八维历史比较与两回合交锋，不输出预测。`analyze_club_squad` 使用球员—俱乐部分段汇总单队位置分钟与队内贡献，不代表阵型或实时名单。`compare_players` 使用 400 条 450+ 分钟记录；`find_similar_players` 使用同一球员快照的同位置百分位画像；`get_match_shot_summary` 只使用 2003-04 的 Match ID `3749448`。
+- `get_league_table`、`get_club_form` 与 `compare_clubs` 使用 2024-25 数据；球队对阵工具从完整赛果计算八维历史比较与两回合交锋，不输出预测。`analyze_club_squad` 使用球员—俱乐部分段汇总单队位置分钟与队内贡献，不代表阵型或实时名单。`scout_transfer_signals` 使用目标球队同位置平均百分位建立基线，只返回历史统计候选和权衡项，不读取身价、合同、工资或实时新闻。`compare_players` 使用 400 条 450+ 分钟记录；`find_similar_players` 使用同一球员快照的同位置百分位画像；`get_match_shot_summary` 只使用 2003-04 的 Match ID `3749448`。
 - 同一姓名对应多个俱乐部记录时，用户必须提供俱乐部上下文；系统不会猜测要比较哪段记录。
 - 千问返回的工具名称和参数必须经过后端白名单与 Pydantic 校验，模型不能直接访问数据库。
 - 页面展示每次调用的规范化参数、结构化证据、来源与限制；千问或本地模板生成的文字不是新的统计事实。

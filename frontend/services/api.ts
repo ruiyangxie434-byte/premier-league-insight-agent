@@ -25,6 +25,8 @@ import type {
   SeasonFormOverviewData,
   StandingTableData,
   SquadLensData,
+  TransferPosition,
+  TransferSignalData,
 } from "../types/api";
 
 const CONFIGURED_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(
@@ -120,6 +122,26 @@ export function getSquadLens(
   });
   return getApiData<SquadLensData>(
     `/clubs/${encodeURIComponent(slug)}/squad-lens?${search.toString()}`,
+    signal,
+  );
+}
+
+export function getTransferSignals(
+  slug: string,
+  position: TransferPosition = "MID",
+  minimumMinutes = 900,
+  limit = 6,
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<TransferSignalData>> {
+  const search = new URLSearchParams({
+    season,
+    position,
+    minimum_minutes: String(minimumMinutes),
+    limit: String(limit),
+  });
+  return getApiData<TransferSignalData>(
+    `/clubs/${encodeURIComponent(slug)}/transfer-signals?${search.toString()}`,
     signal,
   );
 }

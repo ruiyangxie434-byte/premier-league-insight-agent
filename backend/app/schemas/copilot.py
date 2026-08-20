@@ -7,6 +7,7 @@ CopilotToolName = Literal[
     "get_league_table",
     "get_club_form",
     "analyze_club_squad",
+    "scout_transfer_signals",
     "compare_clubs",
     "compare_players",
     "find_similar_players",

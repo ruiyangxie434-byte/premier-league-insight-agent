@@ -6,7 +6,7 @@ import { SiteHeader } from "../../components/system/site-header";
 
 export const metadata: Metadata = {
   title: "League Copilot | Premier League Insight Agent",
-  description: "用受控函数调用查询积分榜、阵容结构、球队对阵、球员比较、相似画像与单场射门证据。",
+  description: "用受控函数调用查询积分榜、阵容结构、候选信号、球队对阵、球员比较、相似画像与单场射门证据。",
 };
 
 export default function CopilotPage() {
@@ -29,8 +29,8 @@ export default function CopilotPage() {
           </div>
           <div className="copilot-hero-proof" aria-label="Copilot 约束摘要">
             <span>01</span>
-            <strong>7 个受控工具</strong>
-            <p>积分榜、球队状态、阵容透镜、球队对阵、球员比较、相似画像、单场射门。</p>
+            <strong>8 个受控工具</strong>
+            <p>积分榜、球队状态、阵容透镜、候选信号、球队对阵、球员比较、相似画像、单场射门。</p>
             <span>02</span>
             <strong>0 个实时猜测</strong>
             <p>超出历史快照范围的问题会明确拒绝。</p>
@@ -43,6 +43,7 @@ export default function CopilotPage() {
           <Link href="/form">赛季状态实验室</Link>
           <Link href="/matchup">球队对阵实验室</Link>
           <Link href="/squad">阵容透镜</Link>
+          <Link href="/transfer">候选信号</Link>
           <Link href="/players">球员实验室</Link>
           <Link href="/matches">比赛实验室</Link>
           <Link href="/#analysis-agent">Agent Notebook</Link>

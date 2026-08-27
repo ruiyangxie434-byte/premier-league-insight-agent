@@ -32,6 +32,10 @@ from app.services.analysis_agent import (
     AgentInputError,
     analyze_players,
 )
+from app.services.club_briefing import (
+    ClubBriefingUnavailable,
+    get_club_briefing,
+)
 from app.services.player_lab import (
     DEFAULT_MINIMUM_MINUTES,
     find_similar_players,
@@ -60,6 +64,12 @@ class ClubFormArguments(BaseModel):
     club: str = Field(min_length=2, max_length=120)
     season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
     recent_matches: int = Field(default=5, ge=1, le=10)
+
+
+class ClubBriefingArguments(BaseModel):
+    club: str = Field(min_length=2, max_length=120)
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+    minimum_minutes: Literal[450, 900, 1800] = 900
 
 
 class ClubCompareArguments(BaseModel):
@@ -122,6 +132,12 @@ TOOL_CAPABILITIES = [
         data_scope="2024-25 完整 38 场比分计算结果",
     ),
     CopilotToolCapability(
+        name="build_club_briefing",
+        label="球队情报简报",
+        description="汇总单队赛季状态、阵容负荷和三条位置候选信号。",
+        data_scope="2024-25 赛果与球员历史快照的可打印组合简报",
+    ),
+    CopilotToolCapability(
         name="analyze_club_squad",
         label="球队阵容透镜",
         description="拆解一队的位置分钟、队内统计领跑者与核心负荷。",
@@ -182,6 +198,30 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     "club": {"type": "string"},
                 },
                 "required": ["season"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "build_club_briefing",
+            "description": (
+                "为一支球队生成 2024-25 完整情报简报，组合赛季终态、"
+                "主客场与末五场、阵容结构、队内领跑者，以及后卫、中场、"
+                "前锋三条历史候选信号。适用于完整球队报告或情报室问题；"
+                "不是实时信息、预测或签约建议。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "club": {"type": "string"},
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                    "minimum_minutes": {
+                        "type": "integer",
+                        "enum": [450, 900, 1800],
+                    },
+                },
+                "required": ["club", "season", "minimum_minutes"],
             },
         },
     },
@@ -427,6 +467,14 @@ PLAYER_SOURCE = CopilotSource(
     license_name=PLAYER_SNAPSHOT["source"]["license_name"],
     license_url=PLAYER_SNAPSHOT["source"]["license_url"],
     data_scope="574 条历史记录中的 400 条 450+ 分钟分析池",
+)
+BRIEFING_SOURCE = CopilotSource(
+    name="Premier League Insight Agent grounded briefing bundle",
+    url=(
+        "https://github.com/ruiyangxie434-byte/"
+        "premier-league-insight-agent/blob/main/docs/CLUB_BRIEFING.md"
+    ),
+    data_scope="2024-25 最终积分榜、380 场赛果与球员—俱乐部历史快照",
 )
 MATCH_SNAPSHOT = load_match_snapshot()
 MATCH_SOURCE = CopilotSource(
@@ -841,6 +889,104 @@ def _get_club_form(
         limitations=[
             "球队状态只由最终比分计算，不包含 xG、控球率、伤病或比赛过程。"
         ],
+    )
+
+
+def _build_club_briefing(
+    db: Session,
+    arguments: ClubBriefingArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    club = _resolve_club(db, arguments.club)
+    try:
+        briefing = get_club_briefing(
+            db,
+            club_slug=club.slug,
+            season=arguments.season,
+            minimum_minutes=arguments.minimum_minutes,
+        )
+    except ClubBriefingUnavailable as exc:
+        raise CopilotToolError(str(exc)) from exc
+    if briefing is None:
+        raise CopilotToolError("没有找到目标球队")
+
+    season = briefing.season_summary
+    squad = briefing.squad
+    needs_text = "；".join(
+        (
+            f"{panel.label}：{panel.needs[0].label} "
+            f"P{panel.needs[0].club_percentile}"
+        )
+        for panel in briefing.recruitment
+        if panel.needs
+    )
+    candidates_text = "；".join(
+        (
+            f"{panel.label}：{panel.top_candidate.full_name} "
+            f"{panel.top_candidate.signal_score} 分"
+        )
+        for panel in briefing.recruitment
+        if panel.top_candidate is not None
+    )
+    evidence = [
+        CopilotEvidence(
+            label="赛季终态",
+            value=(
+                f"第 {season.final_position} 名 · {season.overall.points} 分 · "
+                f"净胜球 {season.overall.goal_difference:+d}"
+            ),
+            detail=(
+                f"主场每场 {season.home.points_per_game:.2f} 分，客场每场 "
+                f"{season.away.points_per_game:.2f} 分。"
+            ),
+            tool="build_club_briefing",
+        ),
+        CopilotEvidence(
+            label="近况与不败",
+            value=(
+                f"{'-'.join(season.recent_form)} · "
+                f"末五场 {season.recent_points}/15 分"
+            ),
+            detail=f"赛季最长不败 {season.longest_unbeaten} 场。",
+            tool="build_club_briefing",
+        ),
+        CopilotEvidence(
+            label="阵容分析池",
+            value=(
+                f"{squad.qualified_total}/{squad.record_total} 条记录 · "
+                f"前五负荷 {squad.top_five_minutes_share:.1f}%"
+            ),
+            detail=f"统一使用 {arguments.minimum_minutes}+ 分钟门槛。",
+            tool="build_club_briefing",
+        ),
+        CopilotEvidence(
+            label="三条位置观察队列",
+            value=needs_text,
+            detail=candidates_text or "当前门槛没有产生首位候选信号。",
+            tool="build_club_briefing",
+        ),
+    ]
+    summary = " ".join(briefing.headlines[:4])
+    normalized = arguments.model_copy(update={"club": club.slug})
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="build_club_briefing",
+            arguments=normalized,
+            summary=summary,
+            evidence=evidence,
+            source=BRIEFING_SOURCE,
+        ),
+        payload=briefing.model_dump(),
+        links=[
+            CopilotLink(
+                label=f"打开 {club.short_name} Club Briefing",
+                href=f"/briefing?club={club.slug}",
+            ),
+            CopilotLink(label="核验数据证据", href="/evidence"),
+        ],
+        limitations=briefing.limitations,
     )
 
 
@@ -1607,6 +1753,12 @@ def execute_copilot_tool(
             return _get_club_form(
                 db,
                 ClubFormArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "build_club_briefing":
+            return _build_club_briefing(
+                db,
+                ClubBriefingArguments.model_validate(arguments),
                 call_id,
             )
         if name == "analyze_club_squad":

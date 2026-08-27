@@ -29,7 +29,7 @@ export default function CopilotPage() {
           </div>
           <div className="copilot-hero-proof" aria-label="Copilot 约束摘要">
             <span>01</span>
-            <strong>8 个受控工具</strong>
+            <strong>9 个受控工具</strong>
             <p>积分榜、球队状态、阵容透镜、候选信号、球队对阵、球员比较、相似画像、单场射门。</p>
             <span>02</span>
             <strong>0 个实时猜测</strong>

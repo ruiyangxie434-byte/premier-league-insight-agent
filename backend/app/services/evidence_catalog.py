@@ -12,7 +12,7 @@ SOURCES = [
         snapshot_date="2025-05-25",
         record_count=20,
         record_label="球队排名记录",
-        powers=["积分榜", "球队赛季总结", "Copilot 联赛排名查询"],
+        powers=["积分榜", "球队赛季总结", "Club Briefing", "Copilot 联赛排名查询"],
         limitations=["历史快照，不代表当前赛季", "不提供逐场事件或预测"],
         status="ready",
     ),
@@ -26,7 +26,7 @@ SOURCES = [
         snapshot_date="2025-05-25",
         record_count=380,
         record_label="场比赛",
-        powers=["赛季状态实验室", "Matchup Lab", "主客场拆分", "38 轮积分走势"],
+        powers=["赛季状态实验室", "Matchup Lab", "Club Briefing", "主客场拆分", "38 轮积分走势"],
         limitations=["只包含赛果，不包含 xG 和事件坐标", "不用于未来赛果预测"],
         status="ready",
     ),
@@ -46,6 +46,7 @@ SOURCES = [
             "百分位雷达",
             "Similarity Scout",
             "Transfer Signal",
+            "Club Briefing",
             "分析 Agent",
             "Copilot 阵容查询",
             "Copilot 候选信号",
@@ -77,7 +78,7 @@ SOURCES = [
 
 def get_evidence_catalog() -> EvidenceCatalogData:
     return EvidenceCatalogData(
-        generated_at="2026-08-18",
+        generated_at="2026-08-27",
         season_focus="2024-25",
         sources=SOURCES,
         source_count=len(SOURCES),
@@ -86,7 +87,7 @@ def get_evidence_catalog() -> EvidenceCatalogData:
         methodology=[
             "运行时优先查询本地结构化快照，不让模型猜测可计算结论。",
             "不同赛季与不同粒度的数据保持隔离，回答中明确标注适用范围。",
-            "每90、百分位、相似度、阵容结构、候选信号和积分走势均由后端确定性计算。",
+            "每90、百分位、相似度、阵容结构、候选信号、球队简报和积分走势均由后端确定性计算。",
             "数据不足时返回限制说明，不用零值或生成内容填补缺口。",
         ],
     )

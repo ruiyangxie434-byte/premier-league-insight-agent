@@ -227,6 +227,63 @@ export interface TransferSignalData {
   decision_notice: string;
 }
 
+export type BriefingPosition = "DEF" | "MID" | "FWD";
+
+export interface BriefingClubData {
+  id: number;
+  name: string;
+  short_name: string;
+  slug: string;
+  city: string;
+  stadium_name: string;
+  founded_year: number | null;
+  primary_color: string;
+}
+
+export interface BriefingSeasonData {
+  final_position: number;
+  overall: FormRecordData;
+  home: FormRecordData;
+  away: FormRecordData;
+  recent_form: FormResult[];
+  recent_points: number;
+  longest_unbeaten: number;
+}
+
+export interface BriefingRecruitmentData {
+  position: BriefingPosition;
+  label: string;
+  club_record_count: number;
+  peer_record_count: number;
+  candidate_total: number;
+  needs: TransferNeedMetric[];
+  top_candidate: TransferCandidateData | null;
+  note: string;
+}
+
+export interface BriefingSourceData {
+  name: string;
+  url: string;
+  license_name: string | null;
+  license_url: string | null;
+  scope: string;
+}
+
+export interface ClubBriefingData {
+  club: BriefingClubData;
+  competition: string;
+  season: string;
+  snapshot_date: string;
+  minimum_minutes: number;
+  season_summary: BriefingSeasonData;
+  squad: SquadLensData;
+  recruitment: BriefingRecruitmentData[];
+  headlines: string[];
+  sources: BriefingSourceData[];
+  limitations: string[];
+  print_notice: string;
+}
+
 export interface ClubMatchPreview {
   source_match_id: string;
   season: string;
@@ -795,6 +852,7 @@ export interface AgentRunDetailData {
 export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
+  | "build_club_briefing"
   | "analyze_club_squad"
   | "scout_transfer_signals"
   | "compare_clubs"

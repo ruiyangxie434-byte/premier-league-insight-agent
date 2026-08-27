@@ -32,7 +32,7 @@ def get_copilot_capabilities() -> ApiResponse[CopilotCapabilitiesData]:
             ),
             tools=TOOL_CAPABILITIES,
             message=(
-                "千问将从八个受控数据工具中规划调用，所有参数由后端校验。"
+                "千问将从九个受控数据工具中规划调用，所有参数由后端校验。"
                 if configured
                 else "未配置千问，当前由本地路由选择同一组真实数据工具。"
             ),

@@ -13,9 +13,14 @@ from app.schemas.club import (
     PlayerSummary,
     StadiumData,
 )
+from app.schemas.briefing import ClubBriefingData
 from app.schemas.common import ApiResponse
 from app.schemas.squad import SquadLensData
 from app.schemas.transfer import TransferPosition, TransferSignalData
+from app.services.club_briefing import (
+    ClubBriefingUnavailable,
+    get_club_briefing,
+)
 from app.services.squad_lens import get_squad_lens
 from app.services.transfer_signal import get_transfer_signals
 
@@ -200,3 +205,37 @@ def get_club_transfer_signals(
     if data is None:
         raise HTTPException(status_code=404, detail="未找到该球队")
     return ApiResponse(message="球队候选信号获取成功", data=data)
+
+
+@router.get(
+    "/{slug}/briefing",
+    response_model=ApiResponse[ClubBriefingData],
+)
+def get_club_briefing_room(
+    slug: str,
+    season: str = Query(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$"),
+    minimum_minutes: int = Query(default=900, ge=450, le=1800),
+    db: Session = Depends(get_db),
+) -> ApiResponse[ClubBriefingData]:
+    if season != SAMPLE_SEASON:
+        raise HTTPException(
+            status_code=404,
+            detail="当前仅提供 2024-25 赛季球队情报简报",
+        )
+    if minimum_minutes not in {450, 900, 1800}:
+        raise HTTPException(
+            status_code=422,
+            detail="球队情报简报的分钟门槛仅支持 450、900 或 1800",
+        )
+    try:
+        data = get_club_briefing(
+            db,
+            club_slug=slug,
+            season=season,
+            minimum_minutes=minimum_minutes,
+        )
+    except ClubBriefingUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    if data is None:
+        raise HTTPException(status_code=404, detail="未找到该球队")
+    return ApiResponse(message="球队情报简报获取成功", data=data)

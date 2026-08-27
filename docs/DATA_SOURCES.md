@@ -38,7 +38,7 @@
 - 数据库标记：`source_kind = kaggle-fbref`。
 - 数据性质：固定历史快照，不是实时名单、转会、伤病或比赛状态数据。
 
-`scripts/build_player_snapshot.py` 固定 Kaggle v1 压缩包和 CSV 校验和，只保留姓名、球队、位置、国籍、出生年份、出场时间和本项目使用的累计表现字段。应用运行时只读取提交的紧凑 JSON，不访问 Kaggle。Similarity Scout 与 Transfer Signal 都只对同一快照的每90百分位做确定性计算，不引入新的外部数据。每90分钟、百分位、分页和转会记录见 [`PLAYER_LAB.md`](PLAYER_LAB.md)，相似度权重与边界见 [`SIMILARITY_SCOUT.md`](SIMILARITY_SCOUT.md)，候选信号方法见 [`TRANSFER_SIGNAL.md`](TRANSFER_SIGNAL.md)。
+`scripts/build_player_snapshot.py` 固定 Kaggle v1 压缩包和 CSV 校验和，只保留姓名、球队、位置、国籍、出生年份、出场时间和本项目使用的累计表现字段。应用运行时只读取提交的紧凑 JSON，不访问 Kaggle。Similarity Scout 与 Transfer Signal 都只对同一快照的每90百分位做确定性计算，不引入新的外部数据；Club Briefing 只组合赛果、阵容与候选模块，不把组合文本当作新来源。每90分钟、百分位、分页和转会记录见 [`PLAYER_LAB.md`](PLAYER_LAB.md)，相似度权重与边界见 [`SIMILARITY_SCOUT.md`](SIMILARITY_SCOUT.md)，候选信号方法见 [`TRANSFER_SIGNAL.md`](TRANSFER_SIGNAL.md)，球队简报见 [`CLUB_BRIEFING.md`](CLUB_BRIEFING.md)。
 
 ## 历史比赛事件
 

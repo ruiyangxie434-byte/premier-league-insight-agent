@@ -14,6 +14,7 @@ import type {
 } from "../../types/api";
 
 const promptExamples = [
+  "生成利物浦的完整球队情报简报",
   "利物浦和阿森纳的最终排名、主客场表现和近五场状态有什么差异？",
   "分析利物浦的阵容结构与队内核心",
   "为利物浦寻找中场补强的历史统计候选",
@@ -26,6 +27,7 @@ const promptExamples = [
 const toolMeta: Record<CopilotToolName, { code: string; className: string }> = {
   get_league_table: { code: "TAB", className: "table" },
   get_club_form: { code: "FRM", className: "form" },
+  build_club_briefing: { code: "BRF", className: "briefing" },
   analyze_club_squad: { code: "XI", className: "squad" },
   scout_transfer_signals: { code: "SIG", className: "transfer" },
   compare_clubs: { code: "VS", className: "matchup" },

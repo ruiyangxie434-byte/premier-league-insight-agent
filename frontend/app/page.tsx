@@ -8,9 +8,9 @@ import { SiteHeader } from "../components/system/site-header";
 
 const futureModules = [
   {
-    phase: "v0.17 已上线",
-    title: "Transfer Signal",
-    description: "球队位置缺口、外队历史统计候选、提升项与权衡项已经打通。",
+    phase: "v0.18 已上线",
+    title: "Club Briefing Room",
+    description: "赛季、阵容与候选信号已汇成可打印、可核验的球队情报简报。",
   },
   {
     phase: "数据下一步",
@@ -65,6 +65,9 @@ export default function Home() {
               <Link className="secondary-button" href="/transfer">
                 打开候选信号
               </Link>
+              <Link className="secondary-button" href="/briefing">
+                生成球队情报简报
+              </Link>
               <Link className="secondary-button" href="/copilot">
                 体验 League Copilot
               </Link>
@@ -92,7 +95,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、球员分析、赛季赛果、单场事件、相似度、球队对阵、阵容透镜、候选信号、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
+            <p>地图、球员分析、赛季赛果、单场事件、相似度、球队对阵、阵容透镜、候选信号、可打印球队简报、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

@@ -8,6 +8,7 @@ import type {
   AgentRunListData,
   ApiResponse,
   ClubDetailData,
+  ClubBriefingData,
   ClubMatchupData,
   ClubSeasonFormData,
   ClubListData,
@@ -142,6 +143,22 @@ export function getTransferSignals(
   });
   return getApiData<TransferSignalData>(
     `/clubs/${encodeURIComponent(slug)}/transfer-signals?${search.toString()}`,
+    signal,
+  );
+}
+
+export function getClubBriefing(
+  slug: string,
+  minimumMinutes = 900,
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<ClubBriefingData>> {
+  const search = new URLSearchParams({
+    season,
+    minimum_minutes: String(minimumMinutes),
+  });
+  return getApiData<ClubBriefingData>(
+    `/clubs/${encodeURIComponent(slug)}/briefing?${search.toString()}`,
     signal,
   );
 }

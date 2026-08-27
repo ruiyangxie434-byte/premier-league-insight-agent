@@ -57,6 +57,7 @@ SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
     "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
     "并可用完整赛果生成两队八维历史对阵简报，"
+    "并可把单队赛季状态、阵容与位置候选信号汇成可打印情报简报，"
     "并可拆解单队的位置分钟与队内贡献领跑者，"
     "并可基于同位置历史百分位生成可解释候选补强信号，"
     "并可对外场球员执行同位置可解释相似度检索，"
@@ -77,8 +78,9 @@ PLANNER_SYSTEM_PROMPT = """
 5. 比较两支球队时调用 compare_clubs，一次返回八维历史比较与两回合交锋；这不是预测。
 6. 询问单支球队的阵容结构、位置贡献或队内核心时，调用 analyze_club_squad；这不是实时名单。
 7. 询问一支球队某位置的引援、补强或候选画像时，调用 scout_transfer_signals；这不是成交概率或转会建议。
-8. 最多调用四个工具。参数使用工具声明允许的值。
-9. 问题超出数据范围时不要编造工具。
+8. 询问一支球队的完整简报、球队报告或情报室时，调用 build_club_briefing；它会一次组合赛季、阵容与三条位置观察队列。
+9. 最多调用四个工具。参数使用工具声明允许的值。
+10. 问题超出数据范围时不要编造工具。
 """.strip()
 
 NARRATIVE_SYSTEM_PROMPT = """
@@ -158,6 +160,16 @@ TRANSFER_KEYWORDS = (
     "scout",
     "recruit",
     "transfer target",
+)
+BRIEFING_KEYWORDS = (
+    "完整简报",
+    "球队简报",
+    "球队报告",
+    "完整分析",
+    "情报室",
+    "情报简报",
+    "briefing",
+    "dossier",
 )
 
 
@@ -266,6 +278,26 @@ def build_local_tool_plan(
             },
         )
 
+    asks_for_briefing = any(
+        keyword in folded for keyword in BRIEFING_KEYWORDS
+    )
+    if len(clubs) == 1 and asks_for_briefing:
+        if "1800" in folded or "1,800" in folded:
+            minimum_minutes = 1800
+        elif "450" in folded:
+            minimum_minutes = 450
+        else:
+            minimum_minutes = 900
+        add(
+            "build_club_briefing",
+            {
+                "club": clubs[0],
+                "season": request.season,
+                "minimum_minutes": minimum_minutes,
+            },
+        )
+        return calls
+
     asks_for_transfer = any(
         keyword in folded for keyword in TRANSFER_KEYWORDS
     )
@@ -347,7 +379,7 @@ def build_local_tool_plan(
     if not calls:
         raise CopilotInputError(
             "当前问题无法落到可用数据工具。请询问积分榜、球队状态或两队对阵、"
-            "单队阵容结构、球队某位置的历史统计候选信号、"
+            "单队完整情报简报、阵容结构、球队某位置的历史统计候选信号、"
             "两名 450+ 分钟球员记录的比较、一名外场球员的相似画像，"
             "或 2004 年 Arsenal 4–2 Liverpool 的射门；同名跨队记录"
             "请同时写明俱乐部。"
@@ -578,6 +610,14 @@ def _local_narrative(
             ),
             answer=results[0].trace.summary,
         )
+    if tools == ["build_club_briefing"]:
+        payload = results[0].payload
+        return QwenCopilotNarrative(
+            headline=(
+                f"{payload['club']['short_name']}：2024-25 球队情报简报"
+            ),
+            answer=results[0].trace.summary,
+        )
     if tools == ["analyze_club_squad"]:
         payload = results[0].payload
         return QwenCopilotNarrative(
@@ -644,6 +684,8 @@ def _suggestions(results: list[CopilotToolResult]) -> list[str]:
     suggestions: list[str] = []
     if "get_league_table" in tools or "get_club_form" in tools or "compare_clubs" in tools:
         suggestions.append("比较利物浦和阿森纳的主客场表现与最近五场状态")
+    if "build_club_briefing" not in tools:
+        suggestions.append("生成利物浦的完整球队情报简报")
     if "analyze_club_squad" not in tools:
         suggestions.append("分析利物浦的阵容结构与队内核心")
     if "scout_transfer_signals" not in tools:
@@ -729,6 +771,22 @@ def _qwen_plan_matches_question_scope(
         if result.trace.tool == "get_club_form"
     }
     if expected_forms != actual_forms:
+        return False
+
+    expected_briefings = {
+        (str(call.arguments["club"]), int(call.arguments["minimum_minutes"]))
+        for call in expected
+        if call.name == "build_club_briefing"
+    }
+    actual_briefings = {
+        (
+            str(result.trace.arguments["club"]),
+            int(result.trace.arguments["minimum_minutes"]),
+        )
+        for result in results
+        if result.trace.tool == "build_club_briefing"
+    }
+    if expected_briefings != actual_briefings:
         return False
 
     expected_club_comparisons = {

@@ -1,6 +1,6 @@
 # Windows 本地启动与验收
 
-本文适用于 `v0.17.0 · Transfer Signal`。示例使用 PowerShell；每条命令所在目录都明确写出，避免 `package.json`、虚拟环境或端口问题被误判为代码故障。
+本文适用于 `v0.18.0 · Club Briefing Room`。示例使用 PowerShell；每条命令所在目录都明确写出，避免 `package.json`、虚拟环境或端口问题被误判为代码故障。
 
 ## 1. 环境要求
 
@@ -102,6 +102,7 @@ Ready
 | 后端健康检查 | <http://127.0.0.1:8000/api/health> |
 | Swagger API 文档 | <http://127.0.0.1:8000/docs> |
 | 球员中心 | <http://localhost:3000/players> |
+| 球队情报室 | <http://localhost:3000/briefing> |
 | League Copilot | <http://localhost:3000/copilot> |
 
 健康检查应包含：
@@ -111,7 +112,7 @@ Ready
   "success": true,
   "data": {
     "status": "healthy",
-    "version": "0.17.0"
+    "version": "0.18.0"
   }
 }
 ```
@@ -189,7 +190,7 @@ python -m uvicorn app.main:app
 python -m pytest
 ```
 
-当前应显示 `69 passed`。测试覆盖数据快照、迁移、球员分页、Similarity Scout、Matchup Lab、Squad Lens、Transfer Signal、转会分段、Agent、Copilot 八工具和异常输入。
+当前应显示 `73 passed`。测试覆盖数据快照、迁移、球员分页、Similarity Scout、Matchup Lab、Squad Lens、Transfer Signal、Club Briefing、转会分段、Agent、Copilot 九工具和异常输入。
 
 ### 前端
 
@@ -203,12 +204,13 @@ npm run build
 
 三个命令都应以退出码 `0` 结束。页面验收重点：
 
-- 首页显示 `v0.17.0 · Transfer Signal`；
-- 后端状态显示 `healthy` 和 `0.17.0`；
+- 首页显示 `v0.18.0 · Club Briefing Room`；
+- 后端状态显示 `healthy` 和 `0.18.0`；
 - 球员详情能切换相似球员分钟门槛；
 - 推荐卡能带着指定两名球员进入雷达图；
 - 门将详情明确说明专属指标不足，不输出相似排行；
 - 候选信号页能切换球队、位置和分钟门槛，并同时展示提升项与权衡项；
+- 球队情报室能切换球队和统一分钟门槛，刷新后保留上次球队，并可打开打印预览；
 - 手机宽度下没有明显横向溢出。
 
 ## 7. Git 检查

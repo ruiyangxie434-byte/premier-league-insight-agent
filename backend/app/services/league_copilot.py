@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
 from dataclasses import dataclass
 from typing import Any
@@ -57,6 +58,7 @@ SCOPE_NOTICE = (
     "Copilot 只访问项目内的历史快照：2024-25 最终积分榜与 380 场比分、"
     "574 条球员—球队记录（比较工具使用其中 400 条 450+ 分钟记录），"
     "并可用完整赛果生成两队八维历史对阵简报，"
+    "并可重建 38 轮积分榜、榜首变化与单队排名峰谷，"
     "并可把单队赛季状态、阵容与位置候选信号汇成可打印情报简报，"
     "并可拆解单队的位置分钟与队内贡献领跑者，"
     "并可基于同位置历史百分位生成可解释候选补强信号，"
@@ -79,8 +81,9 @@ PLANNER_SYSTEM_PROMPT = """
 6. 询问单支球队的阵容结构、位置贡献或队内核心时，调用 analyze_club_squad；这不是实时名单。
 7. 询问一支球队某位置的引援、补强或候选画像时，调用 scout_transfer_signals；这不是成交概率或转会建议。
 8. 询问一支球队的完整简报、球队报告或情报室时，调用 build_club_briefing；它会一次组合赛季、阵容与三条位置观察队列。
-9. 最多调用四个工具。参数使用工具声明允许的值。
-10. 问题超出数据范围时不要编造工具。
+9. 询问某轮积分榜、排名时间轴、赛季峰值或榜首变化时，调用 trace_season_timeline。
+10. 最多调用四个工具。参数使用工具声明允许的值。
+11. 问题超出数据范围时不要编造工具。
 """.strip()
 
 NARRATIVE_SYSTEM_PROMPT = """
@@ -170,6 +173,22 @@ BRIEFING_KEYWORDS = (
     "情报简报",
     "briefing",
     "dossier",
+)
+TIMELINE_KEYWORDS = (
+    "时间轴",
+    "排名轨迹",
+    "排名变化",
+    "赛季轨迹",
+    "最高排名",
+    "最低排名",
+    "峰值",
+    "低谷",
+    "榜首变化",
+    "榜首更替",
+    "领跑多少轮",
+    "轮次榜",
+    "timeline",
+    "trajectory",
 )
 
 
@@ -278,6 +297,28 @@ def build_local_tool_plan(
             },
         )
 
+    asks_for_timeline = any(
+        keyword in folded for keyword in TIMELINE_KEYWORDS
+    ) or re.search(r"第?\s*([1-9]|[12]\d|3[0-8])\s*轮", folded)
+    if asks_for_timeline:
+        matchweek_match = re.search(
+            r"第?\s*([1-9]|[12]\d|3[0-8])\s*轮",
+            folded,
+        )
+        add(
+            "trace_season_timeline",
+            {
+                "season": request.season,
+                **({"club": clubs[0]} if len(clubs) == 1 else {}),
+                **(
+                    {"matchweek": int(matchweek_match.group(1))}
+                    if matchweek_match is not None
+                    else {}
+                ),
+            },
+        )
+        return calls
+
     asks_for_briefing = any(
         keyword in folded for keyword in BRIEFING_KEYWORDS
     )
@@ -379,6 +420,7 @@ def build_local_tool_plan(
     if not calls:
         raise CopilotInputError(
             "当前问题无法落到可用数据工具。请询问积分榜、球队状态或两队对阵、"
+            "某轮积分榜或单队赛季排名时间轴、"
             "单队完整情报简报、阵容结构、球队某位置的历史统计候选信号、"
             "两名 450+ 分钟球员记录的比较、一名外场球员的相似画像，"
             "或 2004 年 Arsenal 4–2 Liverpool 的射门；同名跨队记录"
@@ -577,6 +619,17 @@ def _local_narrative(
             headline=str(payload["headline"]),
             answer=results[0].trace.summary,
         )
+    if tools == ["trace_season_timeline"]:
+        payload = results[0].payload
+        club = payload.get("club")
+        return QwenCopilotNarrative(
+            headline=(
+                f"{club['short_name']}：2024-25 排名时间轴"
+                if club is not None
+                else "2024-25 英超赛季排名时间轴"
+            ),
+            answer=results[0].trace.summary,
+        )
     if tools == ["find_similar_players"]:
         payload = results[0].payload
         target = payload["target"]
@@ -684,6 +737,8 @@ def _suggestions(results: list[CopilotToolResult]) -> list[str]:
     suggestions: list[str] = []
     if "get_league_table" in tools or "get_club_form" in tools or "compare_clubs" in tools:
         suggestions.append("比较利物浦和阿森纳的主客场表现与最近五场状态")
+    if "trace_season_timeline" not in tools:
+        suggestions.append("回顾利物浦整个赛季的排名轨迹与峰值")
     if "build_club_briefing" not in tools:
         suggestions.append("生成利物浦的完整球队情报简报")
     if "analyze_club_squad" not in tools:
@@ -771,6 +826,33 @@ def _qwen_plan_matches_question_scope(
         if result.trace.tool == "get_club_form"
     }
     if expected_forms != actual_forms:
+        return False
+
+    expected_timelines = {
+        (
+            str(call.arguments["club"])
+            if call.arguments.get("club") is not None
+            else None,
+            int(call.arguments["matchweek"])
+            if call.arguments.get("matchweek") is not None
+            else None,
+        )
+        for call in expected
+        if call.name == "trace_season_timeline"
+    }
+    actual_timelines = {
+        (
+            str(result.trace.arguments["club"])
+            if result.trace.arguments.get("club") is not None
+            else None,
+            int(result.trace.arguments["matchweek"])
+            if result.trace.arguments.get("matchweek") is not None
+            else None,
+        )
+        for result in results
+        if result.trace.tool == "trace_season_timeline"
+    }
+    if expected_timelines != actual_timelines:
         return False
 
     expected_briefings = {

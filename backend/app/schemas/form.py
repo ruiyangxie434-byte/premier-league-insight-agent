@@ -147,3 +147,86 @@ class ClubMatchupData(BaseModel):
     license_url: str
     source_commit: str
     sample_notice: str
+
+
+TimelineZone = Literal["leader", "top_four", "mid_table", "relegation"]
+
+
+class TimelineTableRow(BaseModel):
+    matchweek: int
+    position: int
+    previous_position: int | None
+    position_change: int
+    club: FormClubData
+    played: int
+    won: int
+    drawn: int
+    lost: int
+    goals_for: int
+    goals_against: int
+    goal_difference: int
+    points: int
+    rolling_points: int
+    rolling_points_per_game: float
+    zone: TimelineZone
+
+
+class TimelineRoundSnapshot(BaseModel):
+    matchweek: int
+    leader: FormClubData
+    leader_changed: bool
+    rows: list[TimelineTableRow]
+
+
+class TimelineMovementData(BaseModel):
+    matchweek: int
+    places: int
+
+
+class TimelineFormWindowData(BaseModel):
+    start_matchweek: int
+    end_matchweek: int
+    points: int
+    points_per_game: float
+
+
+class TimelineClubStory(BaseModel):
+    club: FormClubData
+    round_one_position: int
+    final_position: int
+    finish_change: int
+    peak_position: int
+    peak_rounds: list[int]
+    lowest_position: int
+    lowest_rounds: list[int]
+    leader_rounds: int
+    top_four_rounds: int
+    relegation_rounds: int
+    biggest_rise: TimelineMovementData | None
+    biggest_drop: TimelineMovementData | None
+    best_five_match_window: TimelineFormWindowData
+    worst_five_match_window: TimelineFormWindowData
+
+
+class TimelineLeaderChangeData(BaseModel):
+    matchweek: int
+    previous_leader: FormClubData | None
+    leader: FormClubData
+
+
+class SeasonTimelineData(BaseModel):
+    competition: str
+    season: str
+    snapshot_date: str
+    total_matchweeks: int
+    match_count: int
+    rounds: list[TimelineRoundSnapshot]
+    club_stories: list[TimelineClubStory]
+    leader_changes: list[TimelineLeaderChangeData]
+    source_name: str
+    source_url: str
+    license_name: str
+    license_url: str
+    source_commit: str
+    sample_notice: str
+    method_notice: str

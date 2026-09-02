@@ -14,6 +14,7 @@ import type {
 } from "../../types/api";
 
 const promptExamples = [
+  "回顾利物浦第10轮到最终的排名轨迹与最高排名",
   "生成利物浦的完整球队情报简报",
   "利物浦和阿森纳的最终排名、主客场表现和近五场状态有什么差异？",
   "分析利物浦的阵容结构与队内核心",
@@ -27,6 +28,7 @@ const promptExamples = [
 const toolMeta: Record<CopilotToolName, { code: string; className: string }> = {
   get_league_table: { code: "TAB", className: "table" },
   get_club_form: { code: "FRM", className: "form" },
+  trace_season_timeline: { code: "TL", className: "timeline" },
   build_club_briefing: { code: "BRF", className: "briefing" },
   analyze_club_squad: { code: "XI", className: "squad" },
   scout_transfer_signals: { code: "SIG", className: "transfer" },
@@ -117,7 +119,7 @@ export function LeagueCopilot() {
         <div className="copilot-console-topline">
           <div>
             <p className="eyebrow">CONTROLLED FUNCTION CALLING</p>
-            <h2 id="copilot-console-title">用一句话调度八类足球数据工具</h2>
+            <h2 id="copilot-console-title">用一句话调度十个足球数据工具</h2>
           </div>
           <span
             className="copilot-mode-badge"

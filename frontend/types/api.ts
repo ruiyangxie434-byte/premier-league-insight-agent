@@ -448,6 +448,92 @@ export interface SeasonFormOverviewData {
   sample_notice: string;
 }
 
+export type TimelineZone =
+  | "leader"
+  | "top_four"
+  | "mid_table"
+  | "relegation";
+
+export interface TimelineTableRow {
+  matchweek: number;
+  position: number;
+  previous_position: number | null;
+  position_change: number;
+  club: FormClubData;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goals_for: number;
+  goals_against: number;
+  goal_difference: number;
+  points: number;
+  rolling_points: number;
+  rolling_points_per_game: number;
+  zone: TimelineZone;
+}
+
+export interface TimelineRoundSnapshot {
+  matchweek: number;
+  leader: FormClubData;
+  leader_changed: boolean;
+  rows: TimelineTableRow[];
+}
+
+export interface TimelineMovementData {
+  matchweek: number;
+  places: number;
+}
+
+export interface TimelineFormWindowData {
+  start_matchweek: number;
+  end_matchweek: number;
+  points: number;
+  points_per_game: number;
+}
+
+export interface TimelineClubStory {
+  club: FormClubData;
+  round_one_position: number;
+  final_position: number;
+  finish_change: number;
+  peak_position: number;
+  peak_rounds: number[];
+  lowest_position: number;
+  lowest_rounds: number[];
+  leader_rounds: number;
+  top_four_rounds: number;
+  relegation_rounds: number;
+  biggest_rise: TimelineMovementData | null;
+  biggest_drop: TimelineMovementData | null;
+  best_five_match_window: TimelineFormWindowData;
+  worst_five_match_window: TimelineFormWindowData;
+}
+
+export interface TimelineLeaderChangeData {
+  matchweek: number;
+  previous_leader: FormClubData | null;
+  leader: FormClubData;
+}
+
+export interface SeasonTimelineData {
+  competition: string;
+  season: string;
+  snapshot_date: string;
+  total_matchweeks: number;
+  match_count: number;
+  rounds: TimelineRoundSnapshot[];
+  club_stories: TimelineClubStory[];
+  leader_changes: TimelineLeaderChangeData[];
+  source_name: string;
+  source_url: string;
+  license_name: string;
+  license_url: string;
+  source_commit: string;
+  sample_notice: string;
+  method_notice: string;
+}
+
 export interface ClubFormMatchData {
   source_match_id: string;
   matchweek: number;
@@ -852,6 +938,7 @@ export interface AgentRunDetailData {
 export type CopilotToolName =
   | "get_league_table"
   | "get_club_form"
+  | "trace_season_timeline"
   | "build_club_briefing"
   | "analyze_club_squad"
   | "scout_transfer_signals"

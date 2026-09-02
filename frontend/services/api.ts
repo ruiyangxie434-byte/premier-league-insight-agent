@@ -24,6 +24,7 @@ import type {
   PlayerLabQuery,
   PlayerSimilarityData,
   SeasonFormOverviewData,
+  SeasonTimelineData,
   StandingTableData,
   SquadLensData,
   TransferPosition,
@@ -195,6 +196,16 @@ export function getSeasonForm(
 ): Promise<ApiResponse<SeasonFormOverviewData>> {
   return getApiData<SeasonFormOverviewData>(
     `/form?season=${encodeURIComponent(season)}`,
+    signal,
+  );
+}
+
+export function getSeasonTimeline(
+  season = "2024-25",
+  signal?: AbortSignal,
+): Promise<ApiResponse<SeasonTimelineData>> {
+  return getApiData<SeasonTimelineData>(
+    `/form/timeline?season=${encodeURIComponent(season)}`,
     signal,
   );
 }

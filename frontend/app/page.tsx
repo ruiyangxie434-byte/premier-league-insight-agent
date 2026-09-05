@@ -8,9 +8,9 @@ import { SiteHeader } from "../components/system/site-header";
 
 const futureModules = [
   {
-    phase: "v0.18 已上线",
-    title: "Club Briefing Room",
-    description: "赛季、阵容与候选信号已汇成可打印、可核验的球队情报简报。",
+    phase: "v0.19 已上线",
+    title: "Season Timeline Lab",
+    description: "38 轮动态积分榜、排名轨迹、榜首更替与五轮状态已完成历史重建。",
   },
   {
     phase: "数据下一步",
@@ -56,6 +56,9 @@ export default function Home() {
               <Link className="secondary-button" href="/form">
                 打开赛季状态实验室
               </Link>
+              <Link className="secondary-button" href="/timeline">
+                打开赛季时间轴
+              </Link>
               <Link className="secondary-button" href="/matchup">
                 打开球队对阵实验室
               </Link>
@@ -95,7 +98,7 @@ export default function Home() {
               <p className="eyebrow">BUILD ROADMAP</p>
               <h2 id="roadmap-title">接下来做什么</h2>
             </div>
-            <p>地图、球员分析、赛季赛果、单场事件、相似度、球队对阵、阵容透镜、候选信号、可打印球队简报、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
+            <p>地图、球员分析、赛季赛果、38 轮动态排名、单场事件、相似度、球队对阵、阵容透镜、候选信号、可打印球队简报、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
           </div>
 
           <div className="module-grid">

@@ -22,7 +22,7 @@ def use_local_copilot(monkeypatch) -> None:
     monkeypatch.setattr(copilot_route, "get_settings", local_settings)
 
 
-def test_copilot_capabilities_expose_nine_controlled_tools(
+def test_copilot_capabilities_expose_ten_controlled_tools(
     api_client: TestClient,
     monkeypatch,
 ) -> None:
@@ -36,6 +36,7 @@ def test_copilot_capabilities_expose_nine_controlled_tools(
     assert [item["name"] for item in data["tools"]] == [
         "get_league_table",
         "get_club_form",
+        "trace_season_timeline",
         "build_club_briefing",
         "analyze_club_squad",
         "scout_transfer_signals",
@@ -44,6 +45,32 @@ def test_copilot_capabilities_expose_nine_controlled_tools(
         "find_similar_players",
         "get_match_shot_summary",
     ]
+
+
+def test_copilot_traces_club_timeline_and_requested_round(
+    api_client: TestClient,
+    monkeypatch,
+) -> None:
+    use_local_copilot(monkeypatch)
+    response = api_client.post(
+        "/api/copilot/query",
+        json={"question": "回顾利物浦第10轮到最终的排名轨迹与最高排名"},
+    )
+
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert [item["tool"] for item in data["tool_calls"]] == [
+        "trace_season_timeline"
+    ]
+    assert data["tool_calls"][0]["arguments"] == {
+        "season": "2024-25",
+        "club": "liverpool",
+        "matchweek": 10,
+    }
+    assert data["headline"] == "Liverpool：2024-25 排名时间轴"
+    assert any("第 10 轮快照" in item["label"] for item in data["evidence"])
+    assert any("Season Timeline" in link["label"] for link in data["links"])
+    assert any("不是未来排名" in item for item in data["limitations"])
 
 
 def test_copilot_builds_grounded_club_briefing(
@@ -325,7 +352,7 @@ def test_qwen_selects_tool_before_grounded_narrative() -> None:
         calls.append(payload)
         assert request.headers["Authorization"] == "Bearer test-key"
         if "tools" in payload:
-            assert len(payload["tools"]) == 9
+            assert len(payload["tools"]) == 10
             return httpx.Response(
                 200,
                 json={

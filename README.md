@@ -3,7 +3,7 @@
 > 面向中文英超球迷与内容创作者的垂直足球数据分析助手  
 > 将球队、球员与比赛数据转化为可查询、可比较、可解释的分析结论。
 
-**当前版本：`v0.18.0 · Club Briefing Room`**
+**当前版本：`v0.19.0 · Season Timeline Lab`**
 
 **项目状态：MVP 开发中**
 
@@ -26,6 +26,7 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 | 完整积分榜 | 2024-25 最终 20 队积分榜、十列排序、冠军/欧冠/降级标记 |
 | 赛季赛果管道 | OpenFootball 固定提交、CC0 许可、380 场解析校验与幂等导入 |
 | Season Form Lab | 38 轮积分走势、20 队末五场、主客场拆分与球队 38 场赛果 |
+| Season Timeline Lab | 任意轮次完整积分榜、排名升降、四队轨迹、榜首更替与单队赛季故事 |
 | 球员数据中心 | 574 条球员—球队记录、搜索、筛选、排序、分页与详情页 |
 | 球员可视化 | 后端统一计算每 90 分钟指标、位置感知百分位与单人/双人雷达图 |
 | Similarity Scout | 同位置相似画像、位置权重、最大差异解释与一键双人对比 |
@@ -38,7 +39,7 @@ Premier League Insight Agent 是一个结合足球数据工程、Web 开发与�
 | 比赛数据管道 | StatsBomb Open Data 清洗脚本、坐标归一化、来源 ID 与幂等导入 |
 | Match Lab | Arsenal 4–2 Liverpool 的 28 次射门、xG 对比、筛选、进球时间线与事件清单 |
 | Agent 工具链 | 意图识别、数据查询、指标计算、证据排序与结论生成 |
-| League Copilot | 积分榜、球队状态、球队简报、阵容透镜、候选信号、球队对阵、球员比较、相似画像、单场射门九工具调度 |
+| League Copilot | 积分榜、球队状态、赛季时间轴、球队简报、阵容透镜、候选信号、球队对阵、球员比较、相似画像、单场射门十工具调度 |
 | 函数调用 | 千问 OpenAI-compatible `tool_calls`、后端参数校验与可视化执行轨迹 |
 | Agent Notebook | 自动保存分析、最近记录、历史恢复、父子追问链与上下文轨迹 |
 | 球探报告 | 独立报告页、指标表、证据链、来源边界及打印 / 保存 PDF |
@@ -172,6 +173,22 @@ Similarity Scout 使用七项每90指标的同位置百分位差异，并根据�
 
 接口为 `GET /api/clubs/{slug}/briefing`。第九个 Copilot 工具 `build_club_briefing` 复用同一组合结果；简报不查询实时阵容、伤病、身价或转会，也不输出未来预测。组合口径见 [`docs/CLUB_BRIEFING.md`](docs/CLUB_BRIEFING.md)。
 
+## Season Timeline Lab
+
+访问 `http://localhost:3000/timeline` 可以：
+
+- 用滑杆或自动播放查看第 1–38 轮的完整 20 队积分榜；
+- 同时叠加最多四支球队的排名轨迹，并定位当前轮次；
+- 查看每队相对上轮的升降、净胜球、积分和最近五轮拿分；
+- 查看榜首更替记录，以及单队赛季最高 / 最低排名和区间停留；
+- 分析最佳与最低五轮窗口、最大单轮上升和下滑；
+- 通过 URL 恢复指定球队与轮次，方便演示和分享。
+
+接口为 `GET /api/form/timeline`。第十个 Copilot 工具
+`trace_season_timeline` 支持球队和第 1–38 轮参数。时间轴按原始 `matchweek`
+重建，延期比赛归回原轮次，因此是历史轮次复盘，不是当时逐日实时榜或未来预测。
+算法、API 与边界见 [`docs/SEASON_TIMELINE_LAB.md`](docs/SEASON_TIMELINE_LAB.md)。
+
 ## Transfer Signal
 
 访问 `http://localhost:3000/transfer` 可以：
@@ -228,6 +245,7 @@ Similarity Scout 使用七项每90指标的同位置百分位差异，并根据�
 
 - 用自然语言查询 2024-25 最终积分榜；
 - 查询单支球队的位置结构、队内领跑者与核心负荷；
+- 查询某轮积分榜、榜首变化与单队赛季排名峰谷；
 - 查询一支球队某位置的历史统计候选、提升项与权衡项；
 - 调用球队对阵工具完成八维历史比较与两回合直接交锋；
 - 复用既有球员每90指标与证据排序工具；
@@ -272,9 +290,9 @@ npm run lint
 npm run build
 ```
 
-`v0.18.0` 在 v0.17.0 全部能力上新增 Club Briefing Room，阶段验收项目：
+`v0.19.0` 在 v0.18.0 全部能力上新增 Season Timeline Lab，阶段验收项目：
 
-- 后端：73/73 测试通过，覆盖球队简报组合、分钟门槛、Copilot 第九工具、候选信号、阵容结构、相似度、球队对阵、迁移、Agent 与范围门控
+- 后端：77/77 测试通过，覆盖 38 轮时间轴、最终榜对账、单队赛季故事、指定轮次查询、Copilot 第十工具，以及既有全部能力
 - 前端：Lint 通过
 - 前端：TypeScript 通过
 - 前端：Production Build 通过
@@ -282,7 +300,7 @@ npm run build
 - 相似球员可从详情页一键带入双人雷达，球员搜索使用 250 ms 防抖且筛选时保留当前结果
 - Alembic 可从空库顺序升级至 `20260811_0004`，旧数据无需删除
 - v0.11.0 数据库可无损补入 574 条球员记录，并保留既有球员 ID、完整生日与球衣号码
-- 首页、Club Briefing、Transfer Signal、Squad Lens、League Copilot、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
+- 首页、Season Timeline、Club Briefing、Transfer Signal、Squad Lens、League Copilot、赛季状态、报告页、比赛中心、比赛详情、球员中心、球队详情与球员详情路由构建通过
 
 ## 版本进度
 
@@ -304,6 +322,7 @@ npm run build
 - [x] `v0.16.0` 单队阵容结构 API、可调分钟门槛、队内领跑者与 Copilot 第七工具
 - [x] `v0.17.0` 球队位置缺口、外队历史统计候选、权衡项与 Copilot 第八工具
 - [x] `v0.18.0` 可打印球队情报简报、浏览器球队偏好与 Copilot 第九工具
+- [x] `v0.19.0` 38 轮动态积分榜、排名轨迹、榜首更替、单队赛季故事与 Copilot 第十工具
 - [ ] 多赛季历史分析
 - [ ] 在线部署与移动端优化
 
@@ -311,7 +330,7 @@ npm run build
 
 当前版本的球队范围、2024-25 最终积分榜、380 场赛果和 574 条球员—球队记录均为历史快照。球员快照覆盖 562 个姓名；12 条跨队附加记录按俱乐部分别保留。Match Lab 单独使用 StatsBomb Open Data 的 2003/2004 历史比赛事件。
 
-积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，球队简报见 [`docs/CLUB_BRIEFING.md`](docs/CLUB_BRIEFING.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，候选信号方法见 [`docs/TRANSFER_SIGNAL.md`](docs/TRANSFER_SIGNAL.md)，阵容口径见 [`docs/SQUAD_LENS.md`](docs/SQUAD_LENS.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球队对阵见 [`docs/MATCHUP_LAB.md`](docs/MATCHUP_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
+积分榜、赛果和比赛 API 都返回来源、许可与时间边界。Copilot 只调度这些已有数据工具，不把模型表述当作新数据来源；球探报告保存的也是已计算结果快照。球场坐标遵循 OpenStreetMap 署名要求，比赛页保留 StatsBomb 署名。数据边界见 [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md)，赛季时间轴见 [`docs/SEASON_TIMELINE_LAB.md`](docs/SEASON_TIMELINE_LAB.md)，球队简报见 [`docs/CLUB_BRIEFING.md`](docs/CLUB_BRIEFING.md)，函数调用见 [`docs/LEAGUE_COPILOT.md`](docs/LEAGUE_COPILOT.md)，候选信号方法见 [`docs/TRANSFER_SIGNAL.md`](docs/TRANSFER_SIGNAL.md)，阵容口径见 [`docs/SQUAD_LENS.md`](docs/SQUAD_LENS.md)，赛果与状态见 [`docs/SEASON_FORM_LAB.md`](docs/SEASON_FORM_LAB.md)，球队对阵见 [`docs/MATCHUP_LAB.md`](docs/MATCHUP_LAB.md)，球员指标见 [`docs/PLAYER_LAB.md`](docs/PLAYER_LAB.md)，相似度方法见 [`docs/SIMILARITY_SCOUT.md`](docs/SIMILARITY_SCOUT.md)，比赛清洗和解释边界见 [`docs/MATCH_LAB.md`](docs/MATCH_LAB.md)。
 
 ## 当前边界
 

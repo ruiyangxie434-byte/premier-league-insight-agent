@@ -16,10 +16,10 @@
 - 快照日期：2025-05-25。
 - 来源：[OpenFootball English Results](https://github.com/openfootball/eng-england)，固定提交 `4f413c4b20129e51d43439a0f4d2c4d1b1be7482`。
 - 许可：[CC0 1.0 Universal](https://github.com/openfootball/eng-england/blob/4f413c4b20129e51d43439a0f4d2c4d1b1be7482/LICENSE.md)。
-- 用途：赛季总览、38 轮累计积分、主客场记录、末五场状态和球队近期赛果。
+- 用途：赛季总览、38 轮累计积分与排名时间轴、主客场记录、末五场状态和球队近期赛果。
 - 数据性质：已完赛历史比分快照，不是实时赛程、比赛过程数据或预测依据。
 
-赛果以 `source_kind = openfootball` 写入现有比赛表，与 StatsBomb 单场事件的 `open-data` 标记分开。清洗校验、公式与 API 见 [`SEASON_FORM_LAB.md`](SEASON_FORM_LAB.md)。
+赛果以 `source_kind = openfootball` 写入现有比赛表，与 StatsBomb 单场事件的 `open-data` 标记分开。清洗校验、公式与 API 见 [`SEASON_FORM_LAB.md`](SEASON_FORM_LAB.md)，38 轮排名重建见 [`SEASON_TIMELINE_LAB.md`](SEASON_TIMELINE_LAB.md)。
 
 ## 球队与球场
 
@@ -62,7 +62,7 @@
 ## League Copilot 工具边界
 
 - Copilot 不引入新的足球数据源，只调度本页已经说明的积分榜、完整赛果、球员快照和历史比赛事件。
-- `get_league_table`、`get_club_form` 与 `compare_clubs` 使用 2024-25 数据；球队对阵工具从完整赛果计算八维历史比较与两回合交锋，不输出预测。`analyze_club_squad` 使用球员—俱乐部分段汇总单队位置分钟与队内贡献，不代表阵型或实时名单。`scout_transfer_signals` 使用目标球队同位置平均百分位建立基线，只返回历史统计候选和权衡项，不读取身价、合同、工资或实时新闻。`compare_players` 使用 400 条 450+ 分钟记录；`find_similar_players` 使用同一球员快照的同位置百分位画像；`get_match_shot_summary` 只使用 2003-04 的 Match ID `3749448`。
+- `get_league_table`、`get_club_form`、`trace_season_timeline` 与 `compare_clubs` 使用 2024-25 数据；时间轴工具从 380 场赛果重建轮次排名、榜首更替和单队峰谷，按 `matchweek` 归属且不输出预测。球队对阵工具计算八维历史比较与两回合交锋，不输出预测。`analyze_club_squad` 使用球员—俱乐部分段汇总单队位置分钟与队内贡献，不代表阵型或实时名单。`scout_transfer_signals` 使用目标球队同位置平均百分位建立基线，只返回历史统计候选和权衡项，不读取身价、合同、工资或实时新闻。`compare_players` 使用 400 条 450+ 分钟记录；`find_similar_players` 使用同一球员快照的同位置百分位画像；`get_match_shot_summary` 只使用 2003-04 的 Match ID `3749448`。
 - 同一姓名对应多个俱乐部记录时，用户必须提供俱乐部上下文；系统不会猜测要比较哪段记录。
 - 千问返回的工具名称和参数必须经过后端白名单与 Pydantic 校验，模型不能直接访问数据库。
 - 页面展示每次调用的规范化参数、结构化证据、来源与限制；千问或本地模板生成的文字不是新的统计事实。

@@ -46,6 +46,10 @@ from app.services.season_form import (
     longest_unbeaten_run,
     recent_form,
 )
+from app.services.season_timeline import (
+    SeasonTimelineUnavailable,
+    get_season_timeline,
+)
 from app.services.squad_lens import get_squad_lens
 from app.services.transfer_signal import get_transfer_signals
 
@@ -64,6 +68,12 @@ class ClubFormArguments(BaseModel):
     club: str = Field(min_length=2, max_length=120)
     season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
     recent_matches: int = Field(default=5, ge=1, le=10)
+
+
+class SeasonTimelineArguments(BaseModel):
+    season: str = Field(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$")
+    club: str | None = Field(default=None, max_length=120)
+    matchweek: int | None = Field(default=None, ge=1, le=38)
 
 
 class ClubBriefingArguments(BaseModel):
@@ -132,6 +142,12 @@ TOOL_CAPABILITIES = [
         data_scope="2024-25 完整 38 场比分计算结果",
     ),
     CopilotToolCapability(
+        name="trace_season_timeline",
+        label="赛季排名时间轴",
+        description="重建 38 轮积分榜、榜首变化与单队排名峰谷。",
+        data_scope="2024-25 完整 380 场赛果的轮次级历史重建",
+    ),
+    CopilotToolCapability(
         name="build_club_briefing",
         label="球队情报简报",
         description="汇总单队赛季状态、阵容负荷和三条位置候选信号。",
@@ -196,6 +212,30 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
                     "season": {"type": "string", "enum": [SAMPLE_SEASON]},
                     "limit": {"type": "integer", "minimum": 1, "maximum": 20},
                     "club": {"type": "string"},
+                },
+                "required": ["season"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "trace_season_timeline",
+            "description": (
+                "重建 2024-25 英超 38 轮排名时间轴、榜首变化、排名升降"
+                "与五场滚动状态。club 可选；传入球队时返回该队峰值、低谷"
+                "和区间停留轮数。这是按 matchweek 的历史重建，不是实时榜或预测。"
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "season": {"type": "string", "enum": [SAMPLE_SEASON]},
+                    "club": {"type": "string"},
+                    "matchweek": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 38,
+                    },
                 },
                 "required": ["season"],
             },
@@ -888,6 +928,222 @@ def _get_club_form(
         ],
         limitations=[
             "球队状态只由最终比分计算，不包含 xG、控球率、伤病或比赛过程。"
+        ],
+    )
+
+
+def _trace_season_timeline(
+    db: Session,
+    arguments: SeasonTimelineArguments,
+    call_id: str,
+) -> CopilotToolResult:
+    _require_season(arguments.season)
+    highlighted = _resolve_club(db, arguments.club) if arguments.club else None
+    try:
+        timeline = get_season_timeline(db, season=arguments.season)
+    except SeasonTimelineUnavailable as exc:
+        raise CopilotToolError(str(exc)) from exc
+
+    changes = max(0, len(timeline.leader_changes) - 1)
+    selected_round = (
+        timeline.rounds[arguments.matchweek - 1]
+        if arguments.matchweek is not None
+        else None
+    )
+    if highlighted is not None:
+        story = next(
+            item
+            for item in timeline.club_stories
+            if item.club.id == highlighted.id
+        )
+        rise_text = (
+            f"第 {story.biggest_rise.matchweek} 轮上升 "
+            f"{story.biggest_rise.places} 位"
+            if story.biggest_rise is not None
+            else "没有单轮上升"
+        )
+        summary = (
+            f"{highlighted.short_name} 第 1 轮位列第 "
+            f"{story.round_one_position}，最终第 {story.final_position}；"
+            f"赛季最高第 {story.peak_position}、最低第 {story.lowest_position}，"
+            f"榜首停留 {story.leader_rounds} 轮、前四停留 "
+            f"{story.top_four_rounds} 轮。最佳五轮窗口为第 "
+            f"{story.best_five_match_window.start_matchweek}–"
+            f"{story.best_five_match_window.end_matchweek} 轮的 "
+            f"{story.best_five_match_window.points} 分；{rise_text}。"
+        )
+        evidence = [
+            CopilotEvidence(
+                label=f"{highlighted.short_name} 起点 → 终点",
+                value=(
+                    f"第 {story.round_one_position} → "
+                    f"第 {story.final_position}"
+                ),
+                detail=f"相对第 1 轮净变化 {story.finish_change:+d} 位。",
+                tool="trace_season_timeline",
+            ),
+            CopilotEvidence(
+                label="赛季排名边界",
+                value=(
+                    f"最高第 {story.peak_position} / "
+                    f"最低第 {story.lowest_position}"
+                ),
+                detail=(
+                    f"首次最高出现在第 {story.peak_rounds[0]} 轮；"
+                    f"首次最低出现在第 {story.lowest_rounds[0]} 轮。"
+                ),
+                tool="trace_season_timeline",
+            ),
+            CopilotEvidence(
+                label="区间停留",
+                value=(
+                    f"榜首 {story.leader_rounds} 轮 · "
+                    f"前四 {story.top_four_rounds} 轮"
+                ),
+                detail=f"降级区停留 {story.relegation_rounds} 轮。",
+                tool="trace_season_timeline",
+            ),
+            CopilotEvidence(
+                label="五轮窗口",
+                value=(
+                    f"最佳 {story.best_five_match_window.points} 分 / "
+                    f"最低 {story.worst_five_match_window.points} 分"
+                ),
+                detail=(
+                    f"最佳第 {story.best_five_match_window.start_matchweek}–"
+                    f"{story.best_five_match_window.end_matchweek} 轮；"
+                    f"最低第 {story.worst_five_match_window.start_matchweek}–"
+                    f"{story.worst_five_match_window.end_matchweek} 轮。"
+                ),
+                tool="trace_season_timeline",
+            ),
+        ]
+        selected_row = (
+            next(
+                row
+                for row in selected_round.rows
+                if row.club.id == highlighted.id
+            )
+            if selected_round is not None
+            else None
+        )
+        if selected_row is not None:
+            evidence.insert(
+                1,
+                CopilotEvidence(
+                    label=f"第 {selected_row.matchweek} 轮快照",
+                    value=(
+                        f"第 {selected_row.position} 名 · "
+                        f"{selected_row.points} 分"
+                    ),
+                    detail=(
+                        f"净胜球 {selected_row.goal_difference:+d}；"
+                        f"近五轮 {selected_row.rolling_points} 分。"
+                    ),
+                    tool="trace_season_timeline",
+                ),
+            )
+            summary += (
+                f" 指定的第 {selected_row.matchweek} 轮时位列第 "
+                f"{selected_row.position}，得到 {selected_row.points} 分。"
+            )
+        payload = {
+            "club": story.club.model_dump(),
+            "story": story.model_dump(),
+            "leader_changes": changes,
+            "selected_round": (
+                selected_row.model_dump() if selected_row is not None else None
+            ),
+        }
+        query = f"club={highlighted.slug}"
+        if arguments.matchweek is not None:
+            query += f"&matchweek={arguments.matchweek}"
+        link = f"/timeline?{query}"
+    else:
+        most_leader_rounds = max(
+            timeline.club_stories,
+            key=lambda item: (item.leader_rounds, -item.final_position),
+        )
+        clubs_led = {item.leader.slug for item in timeline.leader_changes}
+        snapshot = selected_round or timeline.rounds[-1]
+        leader = snapshot.rows[0]
+        if selected_round is not None:
+            top_three = "、".join(
+                f"{row.club.short_name} {row.points}分"
+                for row in snapshot.rows[:3]
+            )
+            summary = (
+                f"第 {snapshot.matchweek} 轮结束后，"
+                f"{leader.club.short_name} 以 {leader.points} 分领跑；"
+                f"前三为 {top_three}。完整 38 轮共发生 {changes} 次榜首更替。"
+            )
+        else:
+            summary = (
+                f"2024-25 的轮次榜共发生 {changes} 次榜首更替，"
+                f"{len(clubs_led)} 支球队至少领跑一轮。"
+                f"{most_leader_rounds.club.short_name} 领跑最多，共 "
+                f"{most_leader_rounds.leader_rounds} 轮；最终 "
+                f"{leader.club.short_name} 以 {leader.points} 分位列第一。"
+            )
+        evidence = [
+            CopilotEvidence(
+                label="榜首更替",
+                value=f"{changes} 次 · {len(clubs_led)} 队领跑",
+                detail="第 1 轮的初始榜首不计为更替。",
+                tool="trace_season_timeline",
+            ),
+            CopilotEvidence(
+                label="领跑轮数最多",
+                value=(
+                    f"{most_leader_rounds.club.short_name} · "
+                    f"{most_leader_rounds.leader_rounds} 轮"
+                ),
+                detail="按原始 matchweek 归属逐轮重建。",
+                tool="trace_season_timeline",
+            ),
+            CopilotEvidence(
+                label="最终轮榜首",
+                value=(
+                    f"{leader.club.short_name} · {leader.points} 分"
+                    if selected_round is None
+                    else f"第 {snapshot.matchweek} 轮 · {leader.club.short_name}"
+                ),
+                detail=f"净胜球 {leader.goal_difference:+d}。",
+                tool="trace_season_timeline",
+            ),
+        ]
+        payload = {
+            "club": None,
+            "leader_changes": changes,
+            "clubs_led": len(clubs_led),
+            "most_leader_rounds": most_leader_rounds.model_dump(),
+            "selected_round": (
+                snapshot.model_dump() if selected_round is not None else None
+            ),
+        }
+        link = (
+            f"/timeline?matchweek={arguments.matchweek}"
+            if arguments.matchweek is not None
+            else "/timeline"
+        )
+
+    normalized = arguments.model_copy(
+        update={"club": highlighted.slug if highlighted is not None else None}
+    )
+    return CopilotToolResult(
+        trace=_trace(
+            call_id=call_id,
+            tool="trace_season_timeline",
+            arguments=normalized,
+            summary=summary,
+            evidence=evidence,
+            source=FORM_SOURCE,
+        ),
+        payload=payload,
+        links=[CopilotLink(label="打开 Season Timeline Lab", href=link)],
+        limitations=[
+            "时间轴按原始 matchweek 重建；延期比赛归回原轮次，不等于当时每个自然日的实时积分榜。",
+            "排名轨迹是已完赛历史复盘，不是未来排名、夺冠概率或比赛预测。",
         ],
     )
 
@@ -1753,6 +2009,12 @@ def execute_copilot_tool(
             return _get_club_form(
                 db,
                 ClubFormArguments.model_validate(arguments),
+                call_id,
+            )
+        if name == "trace_season_timeline":
+            return _trace_season_timeline(
+                db,
+                SeasonTimelineArguments.model_validate(arguments),
                 call_id,
             )
         if name == "build_club_briefing":

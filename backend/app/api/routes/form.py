@@ -19,6 +19,7 @@ from app.schemas.form import (
     MatchupMeetingData,
     SeasonFormClubItem,
     SeasonFormOverviewData,
+    SeasonTimelineData,
 )
 from app.services.season_form import (
     build_record,
@@ -29,6 +30,10 @@ from app.services.season_form import (
     points_by_matchweek,
     recent_form,
     result_for_club,
+)
+from app.services.season_timeline import (
+    SeasonTimelineUnavailable,
+    get_season_timeline,
 )
 
 router = APIRouter(prefix="/form", tags=["season form"])
@@ -73,6 +78,19 @@ def require_supported_season(season: str) -> None:
             status_code=404,
             detail="当前仅提供 2024-25 赛季完整赛果快照",
         )
+
+
+@router.get("/timeline", response_model=ApiResponse[SeasonTimelineData])
+def get_timeline(
+    season: str = Query(default=SAMPLE_SEASON, pattern=r"^\d{4}-\d{2}$"),
+    db: Session = Depends(get_db),
+) -> ApiResponse[SeasonTimelineData]:
+    require_supported_season(season)
+    try:
+        data = get_season_timeline(db, season=season)
+    except SeasonTimelineUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return ApiResponse(message="赛季时间轴获取成功", data=data)
 
 
 def matchup_snapshot(

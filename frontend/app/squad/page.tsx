@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { SiteHeader } from "../../components/system/site-header";
+import { PlayerPortrait } from "../../components/players/player-portrait";
 import { getClubs, getSquadLens } from "../../services/api";
 import type {
   ClubSummary,
@@ -153,7 +154,7 @@ export default function SquadPage() {
             <div className="squad-leader-grid">
               {data.leaders.map((leader) => <article key={leader.metric}>
                 <span>{leader.label}</span><strong>{formatNumber(leader.value)}<small>{leader.unit}</small></strong>
-                <Link href={`/players/${leader.player.slug}`}>{leader.player.full_name}<small>{leader.player.position} · {leader.player.nationality}</small></Link>
+                <Link className="squad-leader-player" href={`/players/${leader.player.slug}`}><PlayerPortrait color={data.club.primary_color} name={leader.player.full_name} size="sm" slug={leader.player.slug} /><span>{leader.player.full_name}<small>{leader.player.position} · {leader.player.nationality}</small></span></Link>
               </article>)}
             </div>
           </section>
@@ -162,6 +163,7 @@ export default function SquadPage() {
             <div><p className="eyebrow">CORE LOAD</p><h2>出场核心记录</h2><p>按球员分钟从高到低展示前八名，用于观察赛季负荷集中度。</p></div>
             <ol>{data.core_players.map((player, index) => <li key={player.slug}>
               <span>{String(index + 1).padStart(2, "0")}</span>
+              <PlayerPortrait color={data.club.primary_color} name={player.full_name} size="sm" slug={player.slug} />
               <Link href={`/players/${player.slug}`}><strong>{player.full_name}</strong><small>{player.position} · {player.nationality}</small></Link>
               <div><strong>{formatNumber(player.minutes)}</strong><small>分钟 · {player.minutes_share.toFixed(1)}%</small></div>
               <div><strong>{player.goals + player.assists}</strong><small>进球 + 助攻</small></div>

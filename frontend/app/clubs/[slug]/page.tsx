@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { SiteHeader } from "../../../components/system/site-header";
+import { PlayerPortrait } from "../../../components/players/player-portrait";
 import { getClub, getClubSeasonForm } from "../../../services/api";
 import type {
   ClubDetailData,
@@ -253,9 +254,7 @@ export default function ClubDetailPage() {
                       href={`/players/${player.slug}`}
                       key={player.slug}
                     >
-                      <span className="player-shirt-number">
-                        {player.shirt_number ?? "—"}
-                      </span>
+                      <PlayerPortrait color={club.primary_color} name={player.full_name} size="sm" slug={player.slug} />
                       <div>
                         <small>
                           {positionLabels[player.position] ?? player.position}

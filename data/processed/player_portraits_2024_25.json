@@ -1,0 +1,6221 @@
+{
+  "schema_version": 1,
+  "season": "2024-25",
+  "source_url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/59c767596750f554ba464de94cf4fce8664a6cbe/data/2024-25/players_raw.csv",
+  "source_commit": "59c767596750f554ba464de94cf4fce8664a6cbe",
+  "source_sha256": "75686051b265cbe7755ac71213ecaad21b26ee1cc46a8bafbba19c39ce894b05",
+  "image_origin": "https://resources.premierleague.com",
+  "notice": "照片来自英超公开图片服务，服装可能随来源更新；不用于推断当前所属球队。图片权利归原权利人，统计数据的 CC0 许可不涵盖照片。",
+  "record_count": 574,
+  "identity_count": 562,
+  "players": {
+    "aaron-cresswell": 55459,
+    "aaron-ramsdale": 225321,
+    "aaron-wan-bissaka": 214590,
+    "abdoulaye-doucoure": 121599,
+    "abdukodir-khusanov": 578153,
+    "abdul-fatawu-issahaku": 531442,
+    "adam-armstrong": 155511,
+    "adam-lallana": 39155,
+    "adam-smith": 54469,
+    "adam-webster": 110735,
+    "adam-wharton": 496221,
+    "adama-traore": 159533,
+    "albert-grnbaek": 494779,
+    "alejandro-garnacho": 493105,
+    "alex-iwobi": 153133,
+    "alex-mccarthy": 58376,
+    "alex-moreno": 106468,
+    "alex-palmer": 112520,
+    "alex-scott": 503139,
+    "alexander-isak": 219168,
+    "alexis-mac-allister": 243016,
+    "alfie-dorrington": 519321,
+    "alfie-pond": 517179,
+    "ali-al-hamadi": 462387,
+    "alisson": 116535,
+    "alphonse-areola": 84182,
+    "altay-bayndr": 451302,
+    "amad-diallo": 493250,
+    "amadou-onana": 449871,
+    "andre": 509291,
+    "andre-onana": 202641,
+    "andreas-pereira": 156689,
+    "andres-garcia": 606798,
+    "andrew-robertson": 122798,
+    "andy-irving": 229384,
+    "anthony-elanga": 449434,
+    "anthony-gordon": 232826,
+    "antoine-semenyo": 437730,
+    "antonee-robinson": 169528,
+    "antonin-kinsky": 485055,
+    "antony": 467169,
+    "archie-gray": 547701,
+    "arijanet-muric": 232917,
+    "armando-broja": 440323,
+    "armel-bella-kotchap": 477386,
+    "asher-agbinone": 579075,
+    "ashley-young": 18892,
+    "axel-disasi-aston-villa": 220362,
+    "axel-disasi-chelsea": 220362,
+    "axel-tuanzebe": 180804,
+    "ayden-heaven": 606745,
+    "bart-verbruggen": 489639,
+    "ben-brereton": 204814,
+    "ben-chilwell": 172850,
+    "ben-davies": 115556,
+    "ben-godfrey": 198826,
+    "ben-johnson": 222018,
+    "ben-mee": 51927,
+    "ben-white": 198869,
+    "ben-winterburn": 606775,
+    "benoit-badiashile": 242880,
+    "bernardo-silva": 165809,
+    "bernd-leno": 80201,
+    "beto": 486385,
+    "bilal-el-khannouss": 513527,
+    "billy-gilmour": 243568,
+    "bobby-de-cordova-reid": 96994,
+    "boubacar-kamara": 226944,
+    "boubacar-traore": 476502,
+    "boubakary-soumare": 225902,
+    "brajan-gruda": 513433,
+    "brandon-austin": 214572,
+    "brennan-johnson": 242898,
+    "bruno-fernandes": 141746,
+    "bruno-guimaraes": 208706,
+    "bryan-mbeumo": 446008,
+    "bukayo-saka": 223340,
+    "caleb-kporha": 590012,
+    "caleb-okoli": 473341,
+    "callum-hudson-odoi": 209046,
+    "callum-wilson": 75115,
+    "calvin-bassey": 232892,
+    "cameron-archer": 433979,
+    "cameron-burgess": 122411,
+    "caoimhin-kelleher": 200720,
+    "carlos-alcaraz-everton": 502697,
+    "carlos-alcaraz-southampton": 502697,
+    "carlos-baleba": 535301,
+    "carlos-forbs": 463212,
+    "carlos-soler": 224860,
+    "carlos-vinicius": 245824,
+    "casemiro": 61256,
+    "chadi-riad": 515621,
+    "charlie-taylor": 103914,
+    "cheick-doucoure": 438464,
+    "chidozie-obi-martin": 596047,
+    "chiedozie-ogbene": 229164,
+    "chiquinho": 510363,
+    "chris-richards": 427623,
+    "chris-wood": 60689,
+    "christian-eriksen": 80607,
+    "christian-nrgaard": 128295,
+    "christian-walton": 108813,
+    "christopher-nkunku": 213198,
+    "claudio-echeverri": 575204,
+    "cody-gakpo": 243298,
+    "cole-palmer": 244851,
+    "conor-bradley": 492777,
+    "conor-chaplin": 196411,
+    "conor-coady": 94147,
+    "conor-townsend": 108053,
+    "craig-dawson": 60232,
+    "cristian-romero": 221632,
+    "crysencio-summerville": 450070,
+    "curtis-jones": 206915,
+    "daichi-kamada": 209400,
+    "dan-burn": 78916,
+    "dane-scarlett": 490145,
+    "dango-ouattara": 533463,
+    "daniel-bentley": 79602,
+    "daniel-jebbison": 523700,
+    "daniel-munoz": 247348,
+    "daniel-podence": 200600,
+    "danilo": 513046,
+    "danny-ings": 84939,
+    "danny-ward": 95463,
+    "danny-welbeck": 50175,
+    "dara-o-shea": 216616,
+    "darwin-nunez": 447203,
+    "david-brooks": 111317,
+    "david-raya": 154561,
+    "dean-henderson": 172649,
+    "dean-huijsen": 554605,
+    "declan-rice": 204480,
+    "dejan-kulusevski": 445044,
+    "destiny-udogie": 487053,
+    "diego-carlos": 165659,
+    "diego-gomez": 514254,
+    "diogo-dalot": 216051,
+    "diogo-jota": 194634,
+    "divin-mubama": 487837,
+    "djed-spence": 232859,
+    "dominic-calvert-lewin": 177815,
+    "dominic-solanke": 154566,
+    "dominik-szoboszlai": 424876,
+    "donyell-malen": 204646,
+    "dwight-mcneil": 433154,
+    "eberechi-eze": 232413,
+    "eddie-nketiah": 205533,
+    "ederson": 121160,
+    "edmond-paris-maghoma": 220695,
+    "edson-alvarez": 213999,
+    "eiran-cashin": 439135,
+    "elliot-anderson": 215379,
+    "emerson-palmieri": 109533,
+    "emi-buendia": 195546,
+    "emil-krafth": 111773,
+    "emile-smith-rowe": 209289,
+    "emiliano-martinez": 98980,
+    "emmanuel-agbadou": 516939,
+    "enes-unal": 168636,
+    "enzo-fernandez": 448047,
+    "eric-da-silva-moreira": 569014,
+    "erling-haaland": 223094,
+    "ethan-nwaneri": 499175,
+    "ethan-pinnock": 231065,
+    "evan-ferguson-brighton-and-hove-albion": 487117,
+    "evan-ferguson-west-ham-united": 487117,
+    "evanilson": 444102,
+    "ezri-konsa": 199798,
+    "fabian-schar": 119471,
+    "fabio-carvalho": 244858,
+    "facundo-buonanotte": 536916,
+    "federico-chiesa": 223541,
+    "ferdi-kadioglu": 231416,
+    "filip-jrgensen": 508479,
+    "flynn-downes": 220585,
+    "frank-onyeka": 428580,
+    "fraser-forster": 40383,
+    "gabriel-jesus": 205651,
+    "gabriel-magalhaes": 226597,
+    "gabriel-martinelli": 444145,
+    "george-edmundson": 214964,
+    "george-hirst": 222625,
+    "georginio-rutter": 463067,
+    "goncalo-guedes": 181284,
+    "guglielmo-vicario": 184254,
+    "guido-rodriguez": 197024,
+    "gustavo-nunes": 626464,
+    "hakon-valdimarsson": 507433,
+    "hamza-choudhury": 197469,
+    "harrison-armstrong": 609873,
+    "harrison-reed": 153366,
+    "harry-amass": 577974,
+    "harry-clarke": 232228,
+    "harry-howell": 597320,
+    "harry-maguire": 95658,
+    "harry-toffolo": 114241,
+    "harry-wilson": 153682,
+    "harry-winks": 157668,
+    "harvey-barnes": 201666,
+    "harvey-elliott": 444884,
+    "hwang-hee-chan": 184754,
+    "ian-maatsen": 441302,
+    "ibrahim-sangare": 210462,
+    "ibrahima-konate": 204716,
+    "idrissa-gana-gueye": 80801,
+    "igor": 223434,
+    "iliman-ndiaye": 440993,
+    "ilkay-gundogan": 59859,
+    "illia-zabarnyi": 477580,
+    "ismaila-sarr": 232185,
+    "issa-diop": 219924,
+    "jack-clarke": 443261,
+    "jack-grealish": 114283,
+    "jack-harrison": 221399,
+    "jack-hinshelwood": 532529,
+    "jack-stephens": 88900,
+    "jack-taylor": 231899,
+    "jacob-greaves": 449429,
+    "jacob-murphy": 114243,
+    "jacob-ramsey": 232653,
+    "jaden-philogene-bidace-aston-villa": 481624,
+    "jaden-philogene-bidace-ipswich-town": 481624,
+    "jader-duran": 476344,
+    "jadon-sancho": 209243,
+    "jahmai-simpson-pusey": 554194,
+    "jake-evans": 630664,
+    "jake-o-brien": 512462,
+    "jakub-kiwior": 440854,
+    "jakub-moder": 243505,
+    "jakub-stolarczyk": 436680,
+    "james-bree": 184386,
+    "james-garner": 232928,
+    "james-hill": 463981,
+    "james-justin": 220627,
+    "james-maddison": 172780,
+    "james-mcatee": 432714,
+    "james-milner": 15157,
+    "james-tarkowski": 17761,
+    "james-ward-prowse-nottingham-forest": 101178,
+    "james-ward-prowse-west-ham-united": 101178,
+    "jamie-vardy": 101668,
+    "jan-bednarek": 171771,
+    "jan-paul-van-hecke": 469142,
+    "jannik-vestergaard": 93100,
+    "jarell-quansah": 441428,
+    "jarrad-branthwaite": 480455,
+    "jarrod-bowen": 178186,
+    "jason-steele": 49262,
+    "jay-robinson": 495024,
+    "jay-stansfield": 490146,
+    "jayden-danns": 500058,
+    "jayden-meghoma": 499717,
+    "jean-clair-todibo": 462116,
+    "jean-philippe-mateta": 231747,
+    "jean-ricner-bellegarde": 231057,
+    "jefferson-lerma": 152551,
+    "jeffrey-schlupp": 86417,
+    "jens-cajuste": 454667,
+    "jeremy-doku": 248875,
+    "jeremy-monga": 649208,
+    "jeremy-sarmiento": 441192,
+    "jesper-lindstrm": 463903,
+    "joachim-andersen-crystal-palace": 174874,
+    "joachim-andersen-fulham": 174874,
+    "joachim-kayi-sanda": 620408,
+    "joao-felix": 428399,
+    "joao-gomes": 448089,
+    "joao-pedro": 475168,
+    "joe-aribo": 193204,
+    "joe-gomez": 171287,
+    "joe-lumley": 167888,
+    "joe-willock": 200089,
+    "joel-veltman": 111478,
+    "joel-ward": 55494,
+    "joelinton": 180974,
+    "john-mcginn": 122806,
+    "john-stones": 97299,
+    "jonny-evans": 37642,
+    "jordan-ayew-crystal-palace": 80146,
+    "jordan-ayew-leicester-city": 80146,
+    "jordan-pickford": 111234,
+    "jorge-cuenca": 246301,
+    "jorginho": 85955,
+    "jose-sa": 149065,
+    "joshua-acheampong": 577016,
+    "joshua-king": 577725,
+    "joshua-zirkzee": 458249,
+    "josko-gvardiol": 477424,
+    "jota-silva": 510500,
+    "jrgen-strand-larsen": 247412,
+    "julian-araujo": 436893,
+    "julio-enciso-brighton-and-hove-albion": 474120,
+    "julio-enciso-ipswich-town": 474120,
+    "julio-soler": 575901,
+    "jurrien-timber": 445122,
+    "justin-devenny": 489706,
+    "justin-kluivert": 222683,
+    "kaelan-casey": 518438,
+    "kai-havertz": 219847,
+    "kalvin-phillips": 155405,
+    "kamaldeen-sulemana": 504783,
+    "kaoru-mitoma": 451340,
+    "kasey-mcateer": 461587,
+    "keane-lewis-potter": 249231,
+    "kenny-tete": 167074,
+    "kepa-arrizabalaga": 109745,
+    "kevin-danso": 135720,
+    "kevin-de-bruyne": 61366,
+    "kevin-schade": 513418,
+    "kieran-tierney": 192895,
+    "kieran-trippier": 77794,
+    "kiernan-dewsbury-hall": 215413,
+    "kim-jisoo": 570241,
+    "kobbie-mainoo": 516895,
+    "konstantinos-mavropanos": 233963,
+    "kosta-nedeljkovic": 578545,
+    "kostas-tsimikas": 214285,
+    "kristoffer-ajer": 191866,
+    "kyle-walker": 58621,
+    "kyle-walker-peters": 158534,
+    "lamare-bogarde": 515597,
+    "leandro-trossard": 116216,
+    "leif-davis": 455084,
+    "leny-yoro": 550864,
+    "leon-bailey": 215711,
+    "lesley-ugochukwu": 503714,
+    "levi-colwill": 460028,
+    "lewis-cook": 155408,
+    "lewis-dunk": 83299,
+    "lewis-hall": 487838,
+    "lewis-miley": 547719,
+    "lewis-orford": 518442,
+    "liam-delap": 463034,
+    "lisandro-martinez": 221820,
+    "lloyd-kelly": 235530,
+    "lucas-bergvall": 570526,
+    "lucas-digne": 101188,
+    "lucas-paqueta": 224024,
+    "luis-diaz": 244731,
+    "luis-guilherme": 577114,
+    "luis-sinisterra": 224995,
+    "luke-shaw": 106760,
+    "luke-thomas": 244619,
+    "luke-woolfenden": 220583,
+    "mads-hermansen": 467189,
+    "mads-roerslev": 226956,
+    "malo-gusto": 482609,
+    "manuel-akanji": 211975,
+    "manuel-ugarte": 232112,
+    "marc-cucurella": 179268,
+    "marc-guehi": 209036,
+    "marc-guiu": 499309,
+    "marco-asensio": 174292,
+    "marcos-senesi": 221466,
+    "marcus-harness": 167191,
+    "marcus-rashford-aston-villa": 176297,
+    "marcus-rashford-manchester-united": 176297,
+    "marcus-tavernier": 201658,
+    "mario-lemina": 151086,
+    "mark-flekken": 118342,
+    "mark-travers": 229600,
+    "marshall-munetsi": 433312,
+    "martial-godo": 573062,
+    "martin-degaard": 184029,
+    "martin-dubravka": 67089,
+    "mason-holgate": 194164,
+    "mason-mount": 184341,
+    "massimo-luongo": 106606,
+    "mateo-kovacic": 91651,
+    "mateus-fernandes": 551226,
+    "mateus-mane": 647671,
+    "matheus-cunha": 430871,
+    "matheus-franca": 536694,
+    "matheus-nunes": 465351,
+    "mathias-jensen": 207283,
+    "mathis-amougou": 609640,
+    "mathys-tel": 511499,
+    "mats-wieffer": 467779,
+    "matt-doherty": 87835,
+    "matt-o-riley": 219249,
+    "matt-targett": 169359,
+    "matthijs-de-ligt": 209365,
+    "matty-cash": 199796,
+    "matz-sels": 85633,
+    "max-aarons": 232980,
+    "max-kilman": 214048,
+    "maxence-lacroix": 437499,
+    "maxwel-cornet": 149519,
+    "michael-golding": 549640,
+    "michael-kayode": 607464,
+    "michael-keane": 106611,
+    "michail-antonio": 57531,
+    "micky-van-de-ven": 491279,
+    "miguel-almiron": 179018,
+    "mikel-merino": 195384,
+    "mikey-moore": 499721,
+    "mikkel-damsgaard": 440089,
+    "milos-kerkez": 544877,
+    "mohamed-salah": 118748,
+    "mohammed-kudus": 460842,
+    "moises-caicedo": 486672,
+    "morato": 485047,
+    "morgan-gibbs-white": 222531,
+    "morgan-rogers": 244850,
+    "murillo": 575476,
+    "mykhailo-mudryk": 465920,
+    "myles-lewis-skelly": 499169,
+    "nasser-djiga": 531170,
+    "nathan-ake": 126184,
+    "nathan-broadhead": 173818,
+    "nathan-butler-oyedeji": 461025,
+    "nathan-collins": 432830,
+    "nathan-patterson": 243571,
+    "nathan-wood-gordon": 244845,
+    "nathaniel-clyne": 57328,
+    "neco-williams": 215136,
+    "nelson-semedo": 200402,
+    "neto": 69752,
+    "nick-pope": 98747,
+    "niclas-fullkrug": 91889,
+    "nico-oreilly": 472769,
+    "nicolas-dominguez": 250199,
+    "nicolas-gonzalez": 465694,
+    "nicolas-jackson": 517052,
+    "nikola-milenkovic": 227444,
+    "noni-madueke": 248857,
+    "noussair-mazraoui": 230001,
+    "odsonne-edouard-crystal-palace": 199670,
+    "odsonne-edouard-leicester-city": 199670,
+    "ola-aina": 159506,
+    "olabade-aluko": 619146,
+    "oleksandr-zinchenko": 206325,
+    "oliver-scarles": 536109,
+    "oliver-skipp": 209042,
+    "ollie-watkins": 178301,
+    "omar-marmoush": 438234,
+    "omari-hutchinson": 503301,
+    "orel-mangala": 179519,
+    "oscar-bobb": 477555,
+    "pablo-sarabia": 88484,
+    "pape-matar-sarr": 482442,
+    "patrick-dorgu": 596777,
+    "patson-daka": 245419,
+    "pau-torres": 244954,
+    "paul-onuachu": 147611,
+    "pedro-lima": 641221,
+    "pedro-neto": 247632,
+    "pedro-porro": 441164,
+    "pervis-estupinan": 204214,
+    "phil-foden": 209244,
+    "philip-billing": 168991,
+    "radu-dragusin": 493125,
+    "raheem-sterling": 103955,
+    "ramon-sosa": 502222,
+    "rasmus-hjlund": 497894,
+    "raul-jimenez": 102057,
+    "rayan-ait-nouri": 448514,
+    "reece-james": 225796,
+    "reiss-nelson-arsenal": 200641,
+    "reiss-nelson-fulham": 200641,
+    "remy-rees-dottin": 606774,
+    "renato-veiga": 551230,
+    "ricardo-pereira": 111931,
+    "riccardo-calafiori": 466075,
+    "richarlison": 212319,
+    "rico-henry": 194010,
+    "rico-lewis": 477064,
+    "robert-sanchez": 215059,
+    "robin-olsen": 111782,
+    "rodri": 220566,
+    "rodrigo-bentancur": 202993,
+    "rodrigo-gomes": 483081,
+    "rodrigo-muniz": 244042,
+    "romain-esse": 606921,
+    "roman-dixon": 496178,
+    "romeo-lavia": 514356,
+    "ronnie-edwards": 500926,
+    "ross-barkley": 88894,
+    "ross-stewart": 230348,
+    "ruben-dias": 171314,
+    "ryan-christie": 158499,
+    "ryan-fraser": 90105,
+    "ryan-gravenberch": 441266,
+    "ryan-manning": 204863,
+    "ryan-sessegnon": 184349,
+    "ryan-trevitt": 591357,
+    "ryan-yates": 204968,
+    "sam-johnstone": 101982,
+    "sam-morsy": 74944,
+    "sammie-szmodics": 172453,
+    "samuel-amo-ameyaw": 499724,
+    "samuel-edozie": 490503,
+    "sander-berge": 207189,
+    "sandro-tonali": 432422,
+    "santiago-bueno": 231480,
+    "sasa-lukic": 212314,
+    "savio": 510281,
+    "scott-mctominay": 195851,
+    "seamus-coleman": 59949,
+    "sean-longstaff": 180135,
+    "sepp-van-den-berg": 444765,
+    "sergio-reguilon": 199249,
+    "shumaira-mheuka": 567119,
+    "simon-adingra": 535818,
+    "solly-march": 109345,
+    "son-heung-min": 85971,
+    "stefan-ortega": 88248,
+    "stephy-mavididi": 154048,
+    "sven-botman": 220237,
+    "taiwo-awoniyi": 210156,
+    "takehiro-tomiyasu": 223723,
+    "tariq-lamptey": 232792,
+    "taylor-harwood-bellis": 245719,
+    "thiago": 502500,
+    "thomas-partey": 167199,
+    "tim-iroegbunam": 490094,
+    "timo-werner": 165153,
+    "timothy-castagne": 166477,
+    "toby-collyer": 490881,
+    "tom-cairney": 76357,
+    "tom-king": 138001,
+    "tomas-soucek": 215439,
+    "tommy-doyle": 220394,
+    "tosin-adarabioyo": 109646,
+    "toti-gomes": 510362,
+    "trent-alexander-arnold": 169187,
+    "trevoh-chalobah-chelsea": 180736,
+    "trevoh-chalobah-crystal-palace": 180736,
+    "tyler-adams": 200785,
+    "tyler-dibling": 496661,
+    "tyler-fredricson": 547676,
+    "tyrell-malacia": 222690,
+    "tyrick-mitchell": 244723,
+    "tyrique-george": 550615,
+    "tyrone-mings": 149484,
+    "ukasz-fabianski": 37096,
+    "valentino-livramento": 441191,
+    "victor-bernth-kristiansen": 481510,
+    "victor-lindelof": 184667,
+    "virgil-van-dijk": 97032,
+    "vitaliy-mykolenko": 224967,
+    "vitaly-janelt": 204580,
+    "vitezslav-jaros": 432987,
+    "vitor-reis": 616222,
+    "vladimir-coufal": 164555,
+    "wataru-endo": 158983,
+    "welington": 500016,
+    "wes-burns": 149929,
+    "wesley-fofana": 444463,
+    "wilfred-ndidi": 203341,
+    "will-alves": 532534,
+    "will-hughes": 108413,
+    "will-lankshear": 552427,
+    "william-osula": 538207,
+    "william-saliba": 462424,
+    "william-smallbone": 214466,
+    "willian": 47431,
+    "willy-boly": 90585,
+    "wilson-odobert": 550839,
+    "wout-faes": 218218,
+    "woyo-coulibaly": 488439,
+    "yankuba-minteh": 592031,
+    "yasin-ayari": 509416,
+    "yehor-yarmoliuk": 508395,
+    "yerson-mosquera": 501837,
+    "yoane-wissa": 216646,
+    "youri-tielemans": 166989,
+    "youssef-chermiti": 491012,
+    "yukinari-sugawara": 219279,
+    "yunus-emre-konak": 628204,
+    "yves-bissouma": 227127,
+    "zain-silcott-duberry": 530121
+  },
+  "identities": {
+    "Aaron Cresswell": {
+      "code": 55459,
+      "source_name": "Aaron Cresswell",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1989-12-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "aaron-cresswell"
+      ]
+    },
+    "Aaron Ramsdale": {
+      "code": 225321,
+      "source_name": "Aaron Ramsdale",
+      "source_club": "southampton",
+      "source_birth_date": "1998-05-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "aaron-ramsdale"
+      ]
+    },
+    "Aaron Wan-Bissaka": {
+      "code": 214590,
+      "source_name": "Aaron Wan-Bissaka",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-11-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "aaron-wan-bissaka"
+      ]
+    },
+    "Abdoulaye Doucouré": {
+      "code": 121599,
+      "source_name": "Abdoulaye Doucouré",
+      "source_club": "everton",
+      "source_birth_date": "1993-01-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "abdoulaye-doucoure"
+      ]
+    },
+    "Abdukodir Khusanov": {
+      "code": 578153,
+      "source_name": "Abdukodir Khusanov",
+      "source_club": "manchester-city",
+      "source_birth_date": "2004-02-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "abdukodir-khusanov"
+      ]
+    },
+    "Abdul Fatawu Issahaku": {
+      "code": 531442,
+      "source_name": "Abdul Fatawu",
+      "source_club": "leicester-city",
+      "source_birth_date": "2004-03-08",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "abdul-fatawu-issahaku"
+      ]
+    },
+    "Adam Armstrong": {
+      "code": 155511,
+      "source_name": "Adam Armstrong",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "adam-armstrong"
+      ]
+    },
+    "Adam Lallana": {
+      "code": 39155,
+      "source_name": "Adam Lallana",
+      "source_club": "southampton",
+      "source_birth_date": "1988-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "adam-lallana"
+      ]
+    },
+    "Adam Smith": {
+      "code": 54469,
+      "source_name": "Adam Smith",
+      "source_club": "bournemouth",
+      "source_birth_date": "1991-04-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "adam-smith"
+      ]
+    },
+    "Adam Webster": {
+      "code": 110735,
+      "source_name": "Adam Webster",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1995-01-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "adam-webster"
+      ]
+    },
+    "Adam Wharton": {
+      "code": 496221,
+      "source_name": "Adam Wharton",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2004-02-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "adam-wharton"
+      ]
+    },
+    "Adama Traoré": {
+      "code": 159533,
+      "source_name": "Adama Traoré",
+      "source_club": "fulham",
+      "source_birth_date": "1996-01-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "adama-traore"
+      ]
+    },
+    "Albert Grønbaek": {
+      "code": 494779,
+      "source_name": "Albert Grønbæk",
+      "source_club": "southampton",
+      "source_birth_date": "2001-05-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "albert-grnbaek"
+      ]
+    },
+    "Alejandro Garnacho": {
+      "code": 493105,
+      "source_name": "Alejandro Garnacho",
+      "source_club": "manchester-united",
+      "source_birth_date": "2004-07-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "alejandro-garnacho"
+      ]
+    },
+    "Alex Iwobi": {
+      "code": 153133,
+      "source_name": "Alex Iwobi",
+      "source_club": "fulham",
+      "source_birth_date": "1996-05-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "alex-iwobi"
+      ]
+    },
+    "Alex McCarthy": {
+      "code": 58376,
+      "source_name": "Alex McCarthy",
+      "source_club": "southampton",
+      "source_birth_date": "1989-12-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "alex-mccarthy"
+      ]
+    },
+    "Alex Palmer": {
+      "code": 112520,
+      "source_name": "Alex Palmer",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1996-08-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "alex-palmer"
+      ]
+    },
+    "Alex Scott": {
+      "code": 503139,
+      "source_name": "Alex Scott",
+      "source_club": "bournemouth",
+      "source_birth_date": "2003-08-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "alex-scott"
+      ]
+    },
+    "Alexander Isak": {
+      "code": 219168,
+      "source_name": "Alexander Isak",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1999-09-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "alexander-isak"
+      ]
+    },
+    "Alexis Mac Allister": {
+      "code": 243016,
+      "source_name": "Alexis Mac Allister",
+      "source_club": "liverpool",
+      "source_birth_date": "1998-12-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "alexis-mac-allister"
+      ]
+    },
+    "Alfie Dorrington": {
+      "code": 519321,
+      "source_name": "Alfie Dorrington",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "alfie-dorrington"
+      ]
+    },
+    "Alfie Pond": {
+      "code": 517179,
+      "source_name": "Alfie Pond",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2004-03-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "alfie-pond"
+      ]
+    },
+    "Ali Al Hamadi": {
+      "code": 462387,
+      "source_name": "Ali Al-Hamadi",
+      "source_club": "ipswich-town",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "ali-al-hamadi"
+      ]
+    },
+    "Alisson": {
+      "code": 116535,
+      "source_name": "Alisson Ramses Becker",
+      "source_club": "liverpool",
+      "source_birth_date": "1992-10-02",
+      "match_method": "name_tokens",
+      "slugs": [
+        "alisson"
+      ]
+    },
+    "Alphonse Areola": {
+      "code": 84182,
+      "source_name": "Alphonse Areola",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1993-02-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "alphonse-areola"
+      ]
+    },
+    "Altay Bayındır": {
+      "code": 451302,
+      "source_name": "Altay Bayindir",
+      "source_club": "manchester-united",
+      "source_birth_date": "1998-04-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "altay-bayndr"
+      ]
+    },
+    "Amad Diallo": {
+      "code": 493250,
+      "source_name": "Amad Diallo",
+      "source_club": "manchester-united",
+      "source_birth_date": "2002-07-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "amad-diallo"
+      ]
+    },
+    "Amadou Onana": {
+      "code": 449871,
+      "source_name": "Amadou Onana",
+      "source_club": "aston-villa",
+      "source_birth_date": "2001-08-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "amadou-onana"
+      ]
+    },
+    "Andreas Pereira": {
+      "code": 156689,
+      "source_name": "Andreas Hoelgebaum Pereira",
+      "source_club": "fulham",
+      "source_birth_date": "1996-01-01",
+      "match_method": "name_tokens",
+      "slugs": [
+        "andreas-pereira"
+      ]
+    },
+    "Andrew Robertson": {
+      "code": 122798,
+      "source_name": "Andrew Robertson",
+      "source_club": "liverpool",
+      "source_birth_date": "1994-03-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "andrew-robertson"
+      ]
+    },
+    "André": {
+      "code": 509291,
+      "source_name": "André Trindade da Costa Neto",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-07-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "andre"
+      ]
+    },
+    "André Onana": {
+      "code": 202641,
+      "source_name": "André Onana",
+      "source_club": "manchester-united",
+      "source_birth_date": "1996-04-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "andre-onana"
+      ]
+    },
+    "Andrés García": {
+      "code": 606798,
+      "source_name": "Andrés García",
+      "source_club": "aston-villa",
+      "source_birth_date": "2003-02-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "andres-garcia"
+      ]
+    },
+    "Andy Irving": {
+      "code": 229384,
+      "source_name": "Andy Irving",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2000-05-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "andy-irving"
+      ]
+    },
+    "Anthony Elanga": {
+      "code": 449434,
+      "source_name": "Anthony Elanga",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2002-04-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "anthony-elanga"
+      ]
+    },
+    "Anthony Gordon": {
+      "code": 232826,
+      "source_name": "Anthony Gordon",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2001-02-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "anthony-gordon"
+      ]
+    },
+    "Antoine Semenyo": {
+      "code": 437730,
+      "source_name": "Antoine Semenyo",
+      "source_club": "bournemouth",
+      "source_birth_date": "2000-01-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "antoine-semenyo"
+      ]
+    },
+    "Antonee Robinson": {
+      "code": 169528,
+      "source_name": "Antonee Robinson",
+      "source_club": "fulham",
+      "source_birth_date": "1997-08-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "antonee-robinson"
+      ]
+    },
+    "Antony": {
+      "code": 467169,
+      "source_name": "Antony Matheus dos Santos",
+      "source_club": "manchester-united",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "antony"
+      ]
+    },
+    "Antonín Kinský": {
+      "code": 485055,
+      "source_name": "Antonín Kinsky",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2003-03-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "antonin-kinsky"
+      ]
+    },
+    "Archie Gray": {
+      "code": 547701,
+      "source_name": "Archie Gray",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2006-03-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "archie-gray"
+      ]
+    },
+    "Arijanet Muric": {
+      "code": 232917,
+      "source_name": "Arijanet Muric",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1998-11-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "arijanet-muric"
+      ]
+    },
+    "Armando Broja": {
+      "code": 440323,
+      "source_name": "Armando Broja",
+      "source_club": "everton",
+      "source_birth_date": "2001-09-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "armando-broja"
+      ]
+    },
+    "Armel Bella Kotchap": {
+      "code": 477386,
+      "source_name": "Armel Bella-Kotchap",
+      "source_club": "southampton",
+      "source_birth_date": "2001-12-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "armel-bella-kotchap"
+      ]
+    },
+    "Asher Agbinone": {
+      "code": 579075,
+      "source_name": "Asher Agbinone",
+      "source_club": "crystal-palace",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "asher-agbinone"
+      ]
+    },
+    "Ashley Young": {
+      "code": 18892,
+      "source_name": "Ashley Young",
+      "source_club": "everton",
+      "source_birth_date": "1985-07-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "ashley-young"
+      ]
+    },
+    "Axel Disasi": {
+      "code": 220362,
+      "source_name": "Axel Disasi",
+      "source_club": "aston-villa",
+      "source_birth_date": "1998-03-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "axel-disasi-aston-villa",
+        "axel-disasi-chelsea"
+      ]
+    },
+    "Axel Tuanzebe": {
+      "code": 180804,
+      "source_name": "Axel Tuanzebe",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1997-11-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "axel-tuanzebe"
+      ]
+    },
+    "Ayden Heaven": {
+      "code": 606745,
+      "source_name": "Ayden Heaven",
+      "source_club": "manchester-united",
+      "source_birth_date": "2006-09-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "ayden-heaven"
+      ]
+    },
+    "Bart Verbruggen": {
+      "code": 489639,
+      "source_name": "Bart Verbruggen",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2002-08-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "bart-verbruggen"
+      ]
+    },
+    "Ben Brereton": {
+      "code": 204814,
+      "source_name": "Ben Brereton Díaz",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "ben-brereton"
+      ]
+    },
+    "Ben Chilwell": {
+      "code": 172850,
+      "source_name": "Ben Chilwell",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1996-12-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-chilwell"
+      ]
+    },
+    "Ben Davies": {
+      "code": 115556,
+      "source_name": "Ben Davies",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1993-04-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-davies"
+      ]
+    },
+    "Ben Godfrey": {
+      "code": 198826,
+      "source_name": "Ben Godfrey",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1998-01-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-godfrey"
+      ]
+    },
+    "Ben Johnson": {
+      "code": 222018,
+      "source_name": "Ben Johnson",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2000-01-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-johnson"
+      ]
+    },
+    "Ben Mee": {
+      "code": 51927,
+      "source_name": "Ben Mee",
+      "source_club": "brentford",
+      "source_birth_date": "1989-09-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-mee"
+      ]
+    },
+    "Ben White": {
+      "code": 198869,
+      "source_name": "Benjamin White",
+      "source_club": "arsenal",
+      "source_birth_date": "1997-10-08",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "ben-white"
+      ]
+    },
+    "Ben Winterburn": {
+      "code": 606775,
+      "source_name": "Ben Winterburn",
+      "source_club": "bournemouth",
+      "source_birth_date": "2004-09-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "ben-winterburn"
+      ]
+    },
+    "Benoît Badiashile": {
+      "code": 242880,
+      "source_name": "Benoît Badiashile",
+      "source_club": "chelsea",
+      "source_birth_date": "2001-03-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "benoit-badiashile"
+      ]
+    },
+    "Bernardo Silva": {
+      "code": 165809,
+      "source_name": "Bernardo Veiga de Carvalho e Silva",
+      "source_club": "manchester-city",
+      "source_birth_date": "1994-08-10",
+      "match_method": "name_tokens",
+      "slugs": [
+        "bernardo-silva"
+      ]
+    },
+    "Bernd Leno": {
+      "code": 80201,
+      "source_name": "Bernd Leno",
+      "source_club": "fulham",
+      "source_birth_date": "1992-03-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "bernd-leno"
+      ]
+    },
+    "Beto": {
+      "code": 486385,
+      "source_name": "Norberto Bercique Gomes Betuncal",
+      "source_club": "everton",
+      "source_birth_date": "1998-01-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "beto"
+      ]
+    },
+    "Bilal El Khannouss": {
+      "code": 513527,
+      "source_name": "Bilal El Khannouss",
+      "source_club": "leicester-city",
+      "source_birth_date": "2004-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "bilal-el-khannouss"
+      ]
+    },
+    "Billy Gilmour": {
+      "code": 243568,
+      "source_name": "Billy Gilmour",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "billy-gilmour"
+      ]
+    },
+    "Bobby De Cordova-Reid": {
+      "code": 96994,
+      "source_name": "Bobby De Cordova-Reid",
+      "source_club": "leicester-city",
+      "source_birth_date": "1993-02-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "bobby-de-cordova-reid"
+      ]
+    },
+    "Boubacar Kamara": {
+      "code": 226944,
+      "source_name": "Boubacar Kamara",
+      "source_club": "aston-villa",
+      "source_birth_date": "1999-11-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "boubacar-kamara"
+      ]
+    },
+    "Boubacar Traoré": {
+      "code": 476502,
+      "source_name": "Boubacar Traoré",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-08-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "boubacar-traore"
+      ]
+    },
+    "Boubakary Soumaré": {
+      "code": 225902,
+      "source_name": "Boubakary Soumaré",
+      "source_club": "leicester-city",
+      "source_birth_date": "1999-02-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "boubakary-soumare"
+      ]
+    },
+    "Brajan Gruda": {
+      "code": 513433,
+      "source_name": "Brajan Gruda",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2004-05-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "brajan-gruda"
+      ]
+    },
+    "Brandon Austin": {
+      "code": 214572,
+      "source_name": "Brandon Austin",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1999-01-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "brandon-austin"
+      ]
+    },
+    "Brennan Johnson": {
+      "code": 242898,
+      "source_name": "Brennan Johnson",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2001-05-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "brennan-johnson"
+      ]
+    },
+    "Bruno Fernandes": {
+      "code": 141746,
+      "source_name": "Bruno Borges Fernandes",
+      "source_club": "manchester-united",
+      "source_birth_date": "1994-09-08",
+      "match_method": "name_tokens",
+      "slugs": [
+        "bruno-fernandes"
+      ]
+    },
+    "Bruno Guimarães": {
+      "code": 208706,
+      "source_name": "Bruno Guimarães Rodriguez Moura",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1997-11-16",
+      "match_method": "name_tokens",
+      "slugs": [
+        "bruno-guimaraes"
+      ]
+    },
+    "Bryan Mbeumo": {
+      "code": 446008,
+      "source_name": "Bryan Mbeumo",
+      "source_club": "brentford",
+      "source_birth_date": "1999-08-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "bryan-mbeumo"
+      ]
+    },
+    "Bukayo Saka": {
+      "code": 223340,
+      "source_name": "Bukayo Saka",
+      "source_club": "arsenal",
+      "source_birth_date": "2001-09-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "bukayo-saka"
+      ]
+    },
+    "Caleb Kporha": {
+      "code": 590012,
+      "source_name": "Caleb Kporha",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2006-07-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "caleb-kporha"
+      ]
+    },
+    "Caleb Okoli": {
+      "code": 473341,
+      "source_name": "Caleb Okoli",
+      "source_club": "leicester-city",
+      "source_birth_date": "2001-07-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "caleb-okoli"
+      ]
+    },
+    "Callum Hudson-Odoi": {
+      "code": 209046,
+      "source_name": "Callum Hudson-Odoi",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2000-11-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "callum-hudson-odoi"
+      ]
+    },
+    "Callum Wilson": {
+      "code": 75115,
+      "source_name": "Callum Wilson",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1992-02-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "callum-wilson"
+      ]
+    },
+    "Calvin Bassey": {
+      "code": 232892,
+      "source_name": "Calvin Bassey",
+      "source_club": "fulham",
+      "source_birth_date": "1999-12-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "calvin-bassey"
+      ]
+    },
+    "Cameron Archer": {
+      "code": 433979,
+      "source_name": "Cameron Archer",
+      "source_club": "southampton",
+      "source_birth_date": "2001-12-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "cameron-archer"
+      ]
+    },
+    "Cameron Burgess": {
+      "code": 122411,
+      "source_name": "Cameron Burgess",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1995-10-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "cameron-burgess"
+      ]
+    },
+    "Caoimhín Kelleher": {
+      "code": 200720,
+      "source_name": "Caoimhin Kelleher",
+      "source_club": "liverpool",
+      "source_birth_date": "1998-11-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "caoimhin-kelleher"
+      ]
+    },
+    "Carlos Alcaraz": {
+      "code": 502697,
+      "source_name": "Carlos Alcaraz Durán",
+      "source_club": "everton",
+      "source_birth_date": "2002-11-30",
+      "match_method": "name_tokens",
+      "slugs": [
+        "carlos-alcaraz-everton",
+        "carlos-alcaraz-southampton"
+      ]
+    },
+    "Carlos Baleba": {
+      "code": 535301,
+      "source_name": "Carlos Baleba",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2004-01-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "carlos-baleba"
+      ]
+    },
+    "Carlos Forbs": {
+      "code": 463212,
+      "source_name": "Carlos Roberto Forbs Borges",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2004-03-19",
+      "match_method": "name_tokens",
+      "slugs": [
+        "carlos-forbs"
+      ]
+    },
+    "Carlos Soler": {
+      "code": 224860,
+      "source_name": "Carlos Soler",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-01-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "carlos-soler"
+      ]
+    },
+    "Carlos Vinícius": {
+      "code": 245824,
+      "source_name": "Carlos Vinícius Alves Morais",
+      "source_club": "fulham",
+      "source_birth_date": "1995-03-25",
+      "match_method": "name_tokens",
+      "slugs": [
+        "carlos-vinicius"
+      ]
+    },
+    "Casemiro": {
+      "code": 61256,
+      "source_name": "Carlos Henrique Casimiro",
+      "source_club": "manchester-united",
+      "source_birth_date": "1992-02-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "casemiro"
+      ]
+    },
+    "Chadi Riad": {
+      "code": 515621,
+      "source_name": "Chadi Riad Dnanou",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2003-06-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "chadi-riad"
+      ]
+    },
+    "Charlie Taylor": {
+      "code": 103914,
+      "source_name": "Charlie Taylor",
+      "source_club": "southampton",
+      "source_birth_date": "1993-09-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "charlie-taylor"
+      ]
+    },
+    "Cheick Doucouré": {
+      "code": 438464,
+      "source_name": "Cheick Doucouré",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2000-01-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "cheick-doucoure"
+      ]
+    },
+    "Chidozie Obi-Martin": {
+      "code": 596047,
+      "source_name": "Chido Obi-Martin",
+      "source_club": "manchester-united",
+      "source_birth_date": "2007-11-29",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "chidozie-obi-martin"
+      ]
+    },
+    "Chiedozie Ogbene": {
+      "code": 229164,
+      "source_name": "Chiedozie Ogbene",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1997-05-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "chiedozie-ogbene"
+      ]
+    },
+    "Chiquinho": {
+      "code": 510363,
+      "source_name": "Francisco Jorge Tomás Oliveira",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "chiquinho"
+      ]
+    },
+    "Chris Richards": {
+      "code": 427623,
+      "source_name": "Chris Richards",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2000-03-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "chris-richards"
+      ]
+    },
+    "Chris Wood": {
+      "code": 60689,
+      "source_name": "Chris Wood",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1991-12-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "chris-wood"
+      ]
+    },
+    "Christian Eriksen": {
+      "code": 80607,
+      "source_name": "Christian Eriksen",
+      "source_club": "manchester-united",
+      "source_birth_date": "1992-02-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "christian-eriksen"
+      ]
+    },
+    "Christian Nørgaard": {
+      "code": 128295,
+      "source_name": "Christian Nørgaard",
+      "source_club": "brentford",
+      "source_birth_date": "1994-03-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "christian-nrgaard"
+      ]
+    },
+    "Christian Walton": {
+      "code": 108813,
+      "source_name": "Christian Walton",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1995-11-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "christian-walton"
+      ]
+    },
+    "Christopher Nkunku": {
+      "code": 213198,
+      "source_name": "Christopher Nkunku",
+      "source_club": "chelsea",
+      "source_birth_date": "1997-11-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "christopher-nkunku"
+      ]
+    },
+    "Claudio Echeverri": {
+      "code": 575204,
+      "source_name": "Claudio Echeverri",
+      "source_club": "manchester-city",
+      "source_birth_date": "2006-01-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "claudio-echeverri"
+      ]
+    },
+    "Cody Gakpo": {
+      "code": 243298,
+      "source_name": "Cody Gakpo",
+      "source_club": "liverpool",
+      "source_birth_date": "1999-05-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "cody-gakpo"
+      ]
+    },
+    "Cole Palmer": {
+      "code": 244851,
+      "source_name": "Cole Palmer",
+      "source_club": "chelsea",
+      "source_birth_date": "2002-05-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "cole-palmer"
+      ]
+    },
+    "Conor Bradley": {
+      "code": 492777,
+      "source_name": "Conor Bradley",
+      "source_club": "liverpool",
+      "source_birth_date": "2003-07-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "conor-bradley"
+      ]
+    },
+    "Conor Chaplin": {
+      "code": 196411,
+      "source_name": "Conor Chaplin",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1997-02-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "conor-chaplin"
+      ]
+    },
+    "Conor Coady": {
+      "code": 94147,
+      "source_name": "Conor Coady",
+      "source_club": "leicester-city",
+      "source_birth_date": "1993-02-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "conor-coady"
+      ]
+    },
+    "Conor Townsend": {
+      "code": 108053,
+      "source_name": "Conor Townsend",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1993-03-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "conor-townsend"
+      ]
+    },
+    "Craig Dawson": {
+      "code": 60232,
+      "source_name": "Craig Dawson",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1990-05-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "craig-dawson"
+      ]
+    },
+    "Cristian Romero": {
+      "code": 221632,
+      "source_name": "Cristian Romero",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1998-04-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "cristian-romero"
+      ]
+    },
+    "Crysencio Summerville": {
+      "code": 450070,
+      "source_name": "Crysencio Summerville",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2001-10-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "crysencio-summerville"
+      ]
+    },
+    "Curtis Jones": {
+      "code": 206915,
+      "source_name": "Curtis Jones",
+      "source_club": "liverpool",
+      "source_birth_date": "2001-01-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "curtis-jones"
+      ]
+    },
+    "Daichi Kamada": {
+      "code": 209400,
+      "source_name": "Daichi Kamada",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1996-08-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "daichi-kamada"
+      ]
+    },
+    "Dan Burn": {
+      "code": 78916,
+      "source_name": "Dan Burn",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1992-05-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "dan-burn"
+      ]
+    },
+    "Dane Scarlett": {
+      "code": 490145,
+      "source_name": "Dane Scarlett",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2004-03-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "dane-scarlett"
+      ]
+    },
+    "Dango Ouattara": {
+      "code": 533463,
+      "source_name": "Dango Ouattara",
+      "source_club": "bournemouth",
+      "source_birth_date": "2002-02-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "dango-ouattara"
+      ]
+    },
+    "Daniel Bentley": {
+      "code": 79602,
+      "source_name": "Daniel Bentley",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1993-07-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "daniel-bentley"
+      ]
+    },
+    "Daniel Jebbison": {
+      "code": 523700,
+      "source_name": "Daniel Jebbison",
+      "source_club": "bournemouth",
+      "source_birth_date": "2003-08-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "daniel-jebbison"
+      ]
+    },
+    "Daniel Muñoz": {
+      "code": 247348,
+      "source_name": "Daniel Muñoz",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1996-05-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "daniel-munoz"
+      ]
+    },
+    "Daniel Podence": {
+      "code": 200600,
+      "source_name": "Daniel Castelo Podence",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "daniel-podence"
+      ]
+    },
+    "Danilo": {
+      "code": 513046,
+      "source_name": "Danilo dos Santos de Oliveira",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2001-04-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "danilo"
+      ]
+    },
+    "Danny Ings": {
+      "code": 84939,
+      "source_name": "Danny Ings",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1992-07-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "danny-ings"
+      ]
+    },
+    "Danny Ward": {
+      "code": 95463,
+      "source_name": "Danny Ward",
+      "source_club": "leicester-city",
+      "source_birth_date": "1993-06-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "danny-ward"
+      ]
+    },
+    "Danny Welbeck": {
+      "code": 50175,
+      "source_name": "Danny Welbeck",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1990-11-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "danny-welbeck"
+      ]
+    },
+    "Dara O'Shea": {
+      "code": 216616,
+      "source_name": "Dara O'Shea",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1999-03-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "dara-o-shea"
+      ]
+    },
+    "Darwin Núñez": {
+      "code": 447203,
+      "source_name": "Darwin Núñez Ribeiro",
+      "source_club": "liverpool",
+      "source_birth_date": "1999-06-24",
+      "match_method": "name_tokens",
+      "slugs": [
+        "darwin-nunez"
+      ]
+    },
+    "David Brooks": {
+      "code": 111317,
+      "source_name": "David Brooks",
+      "source_club": "bournemouth",
+      "source_birth_date": "1997-07-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "david-brooks"
+      ]
+    },
+    "David Raya": {
+      "code": 154561,
+      "source_name": "David Raya Martin",
+      "source_club": "arsenal",
+      "source_birth_date": "1995-09-15",
+      "match_method": "name_tokens",
+      "slugs": [
+        "david-raya"
+      ]
+    },
+    "Dean Henderson": {
+      "code": 172649,
+      "source_name": "Dean Henderson",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1997-03-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "dean-henderson"
+      ]
+    },
+    "Dean Huijsen": {
+      "code": 554605,
+      "source_name": "Dean Huijsen",
+      "source_club": "bournemouth",
+      "source_birth_date": "2005-04-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "dean-huijsen"
+      ]
+    },
+    "Declan Rice": {
+      "code": 204480,
+      "source_name": "Declan Rice",
+      "source_club": "arsenal",
+      "source_birth_date": "1999-01-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "declan-rice"
+      ]
+    },
+    "Dejan Kulusevski": {
+      "code": 445044,
+      "source_name": "Dejan Kulusevski",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2000-04-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "dejan-kulusevski"
+      ]
+    },
+    "Destiny Udogie": {
+      "code": 487053,
+      "source_name": "Destiny Udogie",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2002-11-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "destiny-udogie"
+      ]
+    },
+    "Diego Carlos": {
+      "code": 165659,
+      "source_name": "Diego Carlos Santos Silva",
+      "source_club": "aston-villa",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "diego-carlos"
+      ]
+    },
+    "Diego Gómez": {
+      "code": 514254,
+      "source_name": "Diego Gómez",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2003-03-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "diego-gomez"
+      ]
+    },
+    "Diogo Dalot": {
+      "code": 216051,
+      "source_name": "Diogo Dalot Teixeira",
+      "source_club": "manchester-united",
+      "source_birth_date": "1999-03-18",
+      "match_method": "name_tokens",
+      "slugs": [
+        "diogo-dalot"
+      ]
+    },
+    "Diogo Jota": {
+      "code": 194634,
+      "source_name": "Diogo Teixeira da Silva",
+      "source_club": "liverpool",
+      "source_birth_date": "1996-12-04",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "diogo-jota"
+      ]
+    },
+    "Divin Mubama": {
+      "code": 487837,
+      "source_name": "Divin Mubama",
+      "source_club": "manchester-city",
+      "source_birth_date": "2004-10-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "divin-mubama"
+      ]
+    },
+    "Djed Spence": {
+      "code": 232859,
+      "source_name": "Djed Spence",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2000-08-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "djed-spence"
+      ]
+    },
+    "Dominic Calvert-Lewin": {
+      "code": 177815,
+      "source_name": "Dominic Calvert-Lewin",
+      "source_club": "everton",
+      "source_birth_date": "1997-03-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "dominic-calvert-lewin"
+      ]
+    },
+    "Dominic Solanke": {
+      "code": 154566,
+      "source_name": "Dominic Solanke-Mitchell",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1997-09-14",
+      "match_method": "name_tokens",
+      "slugs": [
+        "dominic-solanke"
+      ]
+    },
+    "Dominik Szoboszlai": {
+      "code": 424876,
+      "source_name": "Dominik Szoboszlai",
+      "source_club": "liverpool",
+      "source_birth_date": "2000-10-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "dominik-szoboszlai"
+      ]
+    },
+    "Donyell Malen": {
+      "code": 204646,
+      "source_name": "Donyell Malen",
+      "source_club": "aston-villa",
+      "source_birth_date": "1999-01-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "donyell-malen"
+      ]
+    },
+    "Dwight McNeil": {
+      "code": 433154,
+      "source_name": "Dwight McNeil",
+      "source_club": "everton",
+      "source_birth_date": "1999-11-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "dwight-mcneil"
+      ]
+    },
+    "Eberechi Eze": {
+      "code": 232413,
+      "source_name": "Eberechi Eze",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1998-06-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "eberechi-eze"
+      ]
+    },
+    "Eddie Nketiah": {
+      "code": 205533,
+      "source_name": "Eddie Nketiah",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1999-05-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "eddie-nketiah"
+      ]
+    },
+    "Ederson": {
+      "code": 121160,
+      "source_name": "Ederson Santana de Moraes",
+      "source_club": "manchester-city",
+      "source_birth_date": "1993-08-17",
+      "match_method": "name_tokens",
+      "slugs": [
+        "ederson"
+      ]
+    },
+    "Edmond-Paris Maghoma": {
+      "code": 220695,
+      "source_name": "Paris Maghoma",
+      "source_club": "brentford",
+      "source_birth_date": "2001-05-08",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "edmond-paris-maghoma"
+      ]
+    },
+    "Edson Álvarez": {
+      "code": 213999,
+      "source_name": "Edson Álvarez Velázquez",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-10-24",
+      "match_method": "name_tokens",
+      "slugs": [
+        "edson-alvarez"
+      ]
+    },
+    "Eiran Cashin": {
+      "code": 439135,
+      "source_name": "Eiran Cashin",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2001-11-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "eiran-cashin"
+      ]
+    },
+    "Elliot Anderson": {
+      "code": 215379,
+      "source_name": "Elliot Anderson",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2002-11-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "elliot-anderson"
+      ]
+    },
+    "Emerson Palmieri": {
+      "code": 109533,
+      "source_name": "Emerson Palmieri dos Santos",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1994-08-03",
+      "match_method": "name_tokens",
+      "slugs": [
+        "emerson-palmieri"
+      ]
+    },
+    "Emi Buendía": {
+      "code": 195546,
+      "source_name": "Emiliano Buendía Stati",
+      "source_club": "aston-villa",
+      "source_birth_date": null,
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "emi-buendia"
+      ]
+    },
+    "Emil Krafth": {
+      "code": 111773,
+      "source_name": "Emil Krafth",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1994-08-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "emil-krafth"
+      ]
+    },
+    "Emile Smith Rowe": {
+      "code": 209289,
+      "source_name": "Emile Smith Rowe",
+      "source_club": "fulham",
+      "source_birth_date": "2000-07-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "emile-smith-rowe"
+      ]
+    },
+    "Emiliano Martínez": {
+      "code": 98980,
+      "source_name": "Emiliano Martínez Romero",
+      "source_club": "aston-villa",
+      "source_birth_date": "1992-09-02",
+      "match_method": "name_tokens",
+      "slugs": [
+        "emiliano-martinez"
+      ]
+    },
+    "Emmanuel Agbadou": {
+      "code": 516939,
+      "source_name": "Emmanuel Agbadou",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1997-06-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "emmanuel-agbadou"
+      ]
+    },
+    "Enes Ünal": {
+      "code": 168636,
+      "source_name": "Enes Ünal",
+      "source_club": "bournemouth",
+      "source_birth_date": "1997-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "enes-unal"
+      ]
+    },
+    "Enzo Fernández": {
+      "code": 448047,
+      "source_name": "Enzo Fernández",
+      "source_club": "chelsea",
+      "source_birth_date": "2001-01-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "enzo-fernandez"
+      ]
+    },
+    "Eric da Silva Moreira": {
+      "code": 569014,
+      "source_name": "Eric da Silva Moreira",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2006-05-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "eric-da-silva-moreira"
+      ]
+    },
+    "Erling Haaland": {
+      "code": 223094,
+      "source_name": "Erling Haaland",
+      "source_club": "manchester-city",
+      "source_birth_date": "2000-07-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "erling-haaland"
+      ]
+    },
+    "Ethan Nwaneri": {
+      "code": 499175,
+      "source_name": "Ethan Nwaneri",
+      "source_club": "arsenal",
+      "source_birth_date": "2007-03-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "ethan-nwaneri"
+      ]
+    },
+    "Ethan Pinnock": {
+      "code": 231065,
+      "source_name": "Ethan Pinnock",
+      "source_club": "brentford",
+      "source_birth_date": "1993-05-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "ethan-pinnock"
+      ]
+    },
+    "Evan Ferguson": {
+      "code": 487117,
+      "source_name": "Evan Ferguson",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2004-10-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "evan-ferguson-brighton-and-hove-albion",
+        "evan-ferguson-west-ham-united"
+      ]
+    },
+    "Evanilson": {
+      "code": 444102,
+      "source_name": "Francisco Evanilson de Lima Barbosa",
+      "source_club": "bournemouth",
+      "source_birth_date": "1999-10-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "evanilson"
+      ]
+    },
+    "Ezri Konsa": {
+      "code": 199798,
+      "source_name": "Ezri Konsa Ngoyo",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-10-23",
+      "match_method": "name_tokens",
+      "slugs": [
+        "ezri-konsa"
+      ]
+    },
+    "Fabian Schär": {
+      "code": 119471,
+      "source_name": "Fabian Schär",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1991-12-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "fabian-schar"
+      ]
+    },
+    "Fabio Carvalho": {
+      "code": 244858,
+      "source_name": "Fábio Freitas Gouveia Carvalho",
+      "source_club": "brentford",
+      "source_birth_date": "2002-08-30",
+      "match_method": "name_tokens",
+      "slugs": [
+        "fabio-carvalho"
+      ]
+    },
+    "Facundo Buonanotte": {
+      "code": 536916,
+      "source_name": "Facundo Buonanotte",
+      "source_club": "leicester-city",
+      "source_birth_date": "2004-12-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "facundo-buonanotte"
+      ]
+    },
+    "Federico Chiesa": {
+      "code": 223541,
+      "source_name": "Federico Chiesa",
+      "source_club": "liverpool",
+      "source_birth_date": "1997-10-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "federico-chiesa"
+      ]
+    },
+    "Ferdi Kadioglu": {
+      "code": 231416,
+      "source_name": "Ferdi Kadioglu",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1999-10-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "ferdi-kadioglu"
+      ]
+    },
+    "Filip Jørgensen": {
+      "code": 508479,
+      "source_name": "Filip Jørgensen",
+      "source_club": "chelsea",
+      "source_birth_date": "2002-04-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "filip-jrgensen"
+      ]
+    },
+    "Flynn Downes": {
+      "code": 220585,
+      "source_name": "Flynn Downes",
+      "source_club": "southampton",
+      "source_birth_date": "1999-01-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "flynn-downes"
+      ]
+    },
+    "Frank Onyeka": {
+      "code": 428580,
+      "source_name": "Frank Onyeka",
+      "source_club": "brentford",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "frank-onyeka"
+      ]
+    },
+    "Fraser Forster": {
+      "code": 40383,
+      "source_name": "Fraser Forster",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1988-03-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "fraser-forster"
+      ]
+    },
+    "Gabriel Jesus": {
+      "code": 205651,
+      "source_name": "Gabriel Fernando de Jesus",
+      "source_club": "arsenal",
+      "source_birth_date": "1997-04-03",
+      "match_method": "name_tokens",
+      "slugs": [
+        "gabriel-jesus"
+      ]
+    },
+    "Gabriel Magalhães": {
+      "code": 226597,
+      "source_name": "Gabriel dos Santos Magalhães",
+      "source_club": "arsenal",
+      "source_birth_date": "1997-12-19",
+      "match_method": "name_tokens",
+      "slugs": [
+        "gabriel-magalhaes"
+      ]
+    },
+    "Gabriel Martinelli": {
+      "code": 444145,
+      "source_name": "Gabriel Martinelli Silva",
+      "source_club": "arsenal",
+      "source_birth_date": "2001-06-18",
+      "match_method": "name_tokens",
+      "slugs": [
+        "gabriel-martinelli"
+      ]
+    },
+    "George Edmundson": {
+      "code": 214964,
+      "source_name": "George Edmundson",
+      "source_club": "ipswich-town",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "george-edmundson"
+      ]
+    },
+    "George Hirst": {
+      "code": 222625,
+      "source_name": "George Hirst",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1999-02-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "george-hirst"
+      ]
+    },
+    "Georginio Rutter": {
+      "code": 463067,
+      "source_name": "Georginio Rutter",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2002-04-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "georginio-rutter"
+      ]
+    },
+    "Gonçalo Guedes": {
+      "code": 181284,
+      "source_name": "Gonçalo Manuel Ganchinho Guedes",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1996-11-29",
+      "match_method": "name_tokens",
+      "slugs": [
+        "goncalo-guedes"
+      ]
+    },
+    "Guglielmo Vicario": {
+      "code": 184254,
+      "source_name": "Guglielmo Vicario",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1996-10-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "guglielmo-vicario"
+      ]
+    },
+    "Guido Rodríguez": {
+      "code": 197024,
+      "source_name": "Guido Rodríguez",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1994-04-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "guido-rodriguez"
+      ]
+    },
+    "Gustavo Nunes": {
+      "code": 626464,
+      "source_name": "Gustavo Nunes Fernandes Gomes",
+      "source_club": "brentford",
+      "source_birth_date": "2005-11-20",
+      "match_method": "name_tokens",
+      "slugs": [
+        "gustavo-nunes"
+      ]
+    },
+    "Hamza Choudhury": {
+      "code": 197469,
+      "source_name": "Hamza Choudhury",
+      "source_club": "leicester-city",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "hamza-choudhury"
+      ]
+    },
+    "Harrison Armstrong": {
+      "code": 609873,
+      "source_name": "Harrison Armstrong",
+      "source_club": "everton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "harrison-armstrong"
+      ]
+    },
+    "Harrison Reed": {
+      "code": 153366,
+      "source_name": "Harrison Reed",
+      "source_club": "fulham",
+      "source_birth_date": "1995-01-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "harrison-reed"
+      ]
+    },
+    "Harry Amass": {
+      "code": 577974,
+      "source_name": "Harry Amass",
+      "source_club": "manchester-united",
+      "source_birth_date": "2007-03-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-amass"
+      ]
+    },
+    "Harry Clarke": {
+      "code": 232228,
+      "source_name": "Harry Clarke",
+      "source_club": "ipswich-town",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-clarke"
+      ]
+    },
+    "Harry Howell": {
+      "code": 597320,
+      "source_name": "Harry Howell",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2008-04-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-howell"
+      ]
+    },
+    "Harry Maguire": {
+      "code": 95658,
+      "source_name": "Harry Maguire",
+      "source_club": "manchester-united",
+      "source_birth_date": "1993-03-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-maguire"
+      ]
+    },
+    "Harry Toffolo": {
+      "code": 114241,
+      "source_name": "Harry Toffolo",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1995-08-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-toffolo"
+      ]
+    },
+    "Harry Wilson": {
+      "code": 153682,
+      "source_name": "Harry Wilson",
+      "source_club": "fulham",
+      "source_birth_date": "1997-03-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-wilson"
+      ]
+    },
+    "Harry Winks": {
+      "code": 157668,
+      "source_name": "Harry Winks",
+      "source_club": "leicester-city",
+      "source_birth_date": "1996-02-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "harry-winks"
+      ]
+    },
+    "Harvey Barnes": {
+      "code": 201666,
+      "source_name": "Harvey Barnes",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1997-12-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "harvey-barnes"
+      ]
+    },
+    "Harvey Elliott": {
+      "code": 444884,
+      "source_name": "Harvey Elliott",
+      "source_club": "liverpool",
+      "source_birth_date": "2003-04-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "harvey-elliott"
+      ]
+    },
+    "Hwang Hee-chan": {
+      "code": 184754,
+      "source_name": "Hwang Hee-chan",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1996-01-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "hwang-hee-chan"
+      ]
+    },
+    "Hákon Valdimarsson": {
+      "code": 507433,
+      "source_name": "Hákon Valdimarsson",
+      "source_club": "brentford",
+      "source_birth_date": "2001-10-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "hakon-valdimarsson"
+      ]
+    },
+    "Ian Maatsen": {
+      "code": 441302,
+      "source_name": "Ian Maatsen",
+      "source_club": "aston-villa",
+      "source_birth_date": "2002-03-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "ian-maatsen"
+      ]
+    },
+    "Ibrahim Sangaré": {
+      "code": 210462,
+      "source_name": "Ibrahim Sangaré",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1997-12-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "ibrahim-sangare"
+      ]
+    },
+    "Ibrahima Konaté": {
+      "code": 204716,
+      "source_name": "Ibrahima Konaté",
+      "source_club": "liverpool",
+      "source_birth_date": "1999-05-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "ibrahima-konate"
+      ]
+    },
+    "Idrissa Gana Gueye": {
+      "code": 80801,
+      "source_name": "Idrissa Gueye",
+      "source_club": "everton",
+      "source_birth_date": "1989-09-26",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "idrissa-gana-gueye"
+      ]
+    },
+    "Igor": {
+      "code": 223434,
+      "source_name": "Igor Julio dos Santos de Paulo",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1998-02-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "igor"
+      ]
+    },
+    "Iliman Ndiaye": {
+      "code": 440993,
+      "source_name": "Iliman Ndiaye",
+      "source_club": "everton",
+      "source_birth_date": "2000-03-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "iliman-ndiaye"
+      ]
+    },
+    "Illia Zabarnyi": {
+      "code": 477580,
+      "source_name": "Illia Zabarnyi",
+      "source_club": "bournemouth",
+      "source_birth_date": "2002-09-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "illia-zabarnyi"
+      ]
+    },
+    "Ismaila Sarr": {
+      "code": 232185,
+      "source_name": "Ismaïla Sarr",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1998-02-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "ismaila-sarr"
+      ]
+    },
+    "Issa Diop": {
+      "code": 219924,
+      "source_name": "Issa Diop",
+      "source_club": "fulham",
+      "source_birth_date": "1997-01-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "issa-diop"
+      ]
+    },
+    "Jack Clarke": {
+      "code": 443261,
+      "source_name": "Jack Clarke",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2000-11-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-clarke"
+      ]
+    },
+    "Jack Grealish": {
+      "code": 114283,
+      "source_name": "Jack Grealish",
+      "source_club": "manchester-city",
+      "source_birth_date": "1995-09-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-grealish"
+      ]
+    },
+    "Jack Harrison": {
+      "code": 221399,
+      "source_name": "Jack Harrison",
+      "source_club": "everton",
+      "source_birth_date": "1996-11-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-harrison"
+      ]
+    },
+    "Jack Hinshelwood": {
+      "code": 532529,
+      "source_name": "Jack Hinshelwood",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2005-04-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-hinshelwood"
+      ]
+    },
+    "Jack Stephens": {
+      "code": 88900,
+      "source_name": "Jack Stephens",
+      "source_club": "southampton",
+      "source_birth_date": "1994-01-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-stephens"
+      ]
+    },
+    "Jack Taylor": {
+      "code": 231899,
+      "source_name": "Jack Taylor",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1998-06-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "jack-taylor"
+      ]
+    },
+    "Jacob Greaves": {
+      "code": 449429,
+      "source_name": "Jacob Greaves",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2000-09-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "jacob-greaves"
+      ]
+    },
+    "Jacob Murphy": {
+      "code": 114243,
+      "source_name": "Jacob Murphy",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1995-02-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "jacob-murphy"
+      ]
+    },
+    "Jacob Ramsey": {
+      "code": 232653,
+      "source_name": "Jacob Ramsey",
+      "source_club": "aston-villa",
+      "source_birth_date": "2001-05-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "jacob-ramsey"
+      ]
+    },
+    "Jaden Philogene Bidace": {
+      "code": 481624,
+      "source_name": "Jaden Philogene",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2002-02-08",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "jaden-philogene-bidace-aston-villa",
+        "jaden-philogene-bidace-ipswich-town"
+      ]
+    },
+    "Jadon Sancho": {
+      "code": 209243,
+      "source_name": "Jadon Sancho",
+      "source_club": "chelsea",
+      "source_birth_date": "2000-03-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "jadon-sancho"
+      ]
+    },
+    "Jahmai Simpson-Pusey": {
+      "code": 554194,
+      "source_name": "Jahmai Simpson-Pusey",
+      "source_club": "manchester-city",
+      "source_birth_date": "2005-11-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "jahmai-simpson-pusey"
+      ]
+    },
+    "Jake Evans": {
+      "code": 630664,
+      "source_name": "Jake Evans",
+      "source_club": "leicester-city",
+      "source_birth_date": "2008-06-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "jake-evans"
+      ]
+    },
+    "Jake O'Brien": {
+      "code": 512462,
+      "source_name": "Jake O'Brien",
+      "source_club": "everton",
+      "source_birth_date": "2001-05-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "jake-o-brien"
+      ]
+    },
+    "Jakub Kiwior": {
+      "code": 440854,
+      "source_name": "Jakub Kiwior",
+      "source_club": "arsenal",
+      "source_birth_date": "2000-02-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "jakub-kiwior"
+      ]
+    },
+    "Jakub Moder": {
+      "code": 243505,
+      "source_name": "Jakub Moder",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "jakub-moder"
+      ]
+    },
+    "Jakub Stolarczyk": {
+      "code": 436680,
+      "source_name": "Jakub Stolarczyk",
+      "source_club": "leicester-city",
+      "source_birth_date": "2000-12-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "jakub-stolarczyk"
+      ]
+    },
+    "James Bree": {
+      "code": 184386,
+      "source_name": "James Bree",
+      "source_club": "southampton",
+      "source_birth_date": "1997-12-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-bree"
+      ]
+    },
+    "James Garner": {
+      "code": 232928,
+      "source_name": "James Garner",
+      "source_club": "everton",
+      "source_birth_date": "2001-03-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-garner"
+      ]
+    },
+    "James Hill": {
+      "code": 463981,
+      "source_name": "James Hill",
+      "source_club": "bournemouth",
+      "source_birth_date": "2002-01-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-hill"
+      ]
+    },
+    "James Justin": {
+      "code": 220627,
+      "source_name": "James Justin",
+      "source_club": "leicester-city",
+      "source_birth_date": "1998-02-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-justin"
+      ]
+    },
+    "James Maddison": {
+      "code": 172780,
+      "source_name": "James Maddison",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1996-11-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-maddison"
+      ]
+    },
+    "James Mcatee": {
+      "code": 432714,
+      "source_name": "James McAtee",
+      "source_club": "manchester-city",
+      "source_birth_date": "2002-10-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-mcatee"
+      ]
+    },
+    "James Milner": {
+      "code": 15157,
+      "source_name": "James Milner",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1986-01-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-milner"
+      ]
+    },
+    "James Tarkowski": {
+      "code": 17761,
+      "source_name": "James Tarkowski",
+      "source_club": "everton",
+      "source_birth_date": "1992-11-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-tarkowski"
+      ]
+    },
+    "James Ward-Prowse": {
+      "code": 101178,
+      "source_name": "James Ward-Prowse",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1994-11-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "james-ward-prowse-nottingham-forest",
+        "james-ward-prowse-west-ham-united"
+      ]
+    },
+    "Jamie Vardy": {
+      "code": 101668,
+      "source_name": "Jamie Vardy",
+      "source_club": "leicester-city",
+      "source_birth_date": "1987-01-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "jamie-vardy"
+      ]
+    },
+    "Jan Bednarek": {
+      "code": 171771,
+      "source_name": "Jan Bednarek",
+      "source_club": "southampton",
+      "source_birth_date": "1996-04-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "jan-bednarek"
+      ]
+    },
+    "Jan Paul van Hecke": {
+      "code": 469142,
+      "source_name": "Jan Paul van Hecke",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2000-06-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "jan-paul-van-hecke"
+      ]
+    },
+    "Jannik Vestergaard": {
+      "code": 93100,
+      "source_name": "Jannik Vestergaard",
+      "source_club": "leicester-city",
+      "source_birth_date": "1992-08-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "jannik-vestergaard"
+      ]
+    },
+    "Jarell Quansah": {
+      "code": 441428,
+      "source_name": "Jarell Quansah",
+      "source_club": "liverpool",
+      "source_birth_date": "2003-01-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "jarell-quansah"
+      ]
+    },
+    "Jarrad Branthwaite": {
+      "code": 480455,
+      "source_name": "Jarrad Branthwaite",
+      "source_club": "everton",
+      "source_birth_date": "2002-06-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "jarrad-branthwaite"
+      ]
+    },
+    "Jarrod Bowen": {
+      "code": 178186,
+      "source_name": "Jarrod Bowen",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1996-12-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "jarrod-bowen"
+      ]
+    },
+    "Jason Steele": {
+      "code": 49262,
+      "source_name": "Jason Steele",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1990-08-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "jason-steele"
+      ]
+    },
+    "Jay Robinson": {
+      "code": 495024,
+      "source_name": "Jay Robinson",
+      "source_club": "southampton",
+      "source_birth_date": "2007-03-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "jay-robinson"
+      ]
+    },
+    "Jay Stansfield": {
+      "code": 490146,
+      "source_name": "Jay Stansfield",
+      "source_club": "fulham",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "jay-stansfield"
+      ]
+    },
+    "Jayden Danns": {
+      "code": 500058,
+      "source_name": "Jayden Danns",
+      "source_club": "liverpool",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "jayden-danns"
+      ]
+    },
+    "Jayden Meghoma": {
+      "code": 499717,
+      "source_name": "Jayden Meghoma",
+      "source_club": "brentford",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "jayden-meghoma"
+      ]
+    },
+    "Jean-Clair Todibo": {
+      "code": 462116,
+      "source_name": "Jean-Clair Todibo",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1999-12-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "jean-clair-todibo"
+      ]
+    },
+    "Jean-Philippe Mateta": {
+      "code": 231747,
+      "source_name": "Jean-Philippe Mateta",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1997-06-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "jean-philippe-mateta"
+      ]
+    },
+    "Jean-Ricner Bellegarde": {
+      "code": 231057,
+      "source_name": "Jean-Ricner Bellegarde",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1998-06-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "jean-ricner-bellegarde"
+      ]
+    },
+    "Jefferson Lerma": {
+      "code": 152551,
+      "source_name": "Jefferson Lerma Solís",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1994-10-25",
+      "match_method": "name_tokens",
+      "slugs": [
+        "jefferson-lerma"
+      ]
+    },
+    "Jeffrey Schlupp": {
+      "code": 86417,
+      "source_name": "Jeffrey Schlupp",
+      "source_club": "crystal-palace",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "jeffrey-schlupp"
+      ]
+    },
+    "Jens Cajuste": {
+      "code": 454667,
+      "source_name": "Jens Cajuste",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1999-08-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "jens-cajuste"
+      ]
+    },
+    "Jeremy Doku": {
+      "code": 248875,
+      "source_name": "Jérémy Doku",
+      "source_club": "manchester-city",
+      "source_birth_date": "2002-05-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "jeremy-doku"
+      ]
+    },
+    "Jeremy Monga": {
+      "code": 649208,
+      "source_name": "Jeremy Monga",
+      "source_club": "leicester-city",
+      "source_birth_date": "2009-07-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "jeremy-monga"
+      ]
+    },
+    "Jeremy Sarmiento": {
+      "code": 441192,
+      "source_name": "Jeremy Sarmiento Morante",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "jeremy-sarmiento"
+      ]
+    },
+    "Jesper Lindstrøm": {
+      "code": 463903,
+      "source_name": "Jesper Lindstrøm",
+      "source_club": "everton",
+      "source_birth_date": "2000-02-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "jesper-lindstrm"
+      ]
+    },
+    "Joachim Andersen": {
+      "code": 174874,
+      "source_name": "Joachim Andersen",
+      "source_club": "fulham",
+      "source_birth_date": "1996-05-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "joachim-andersen-crystal-palace",
+        "joachim-andersen-fulham"
+      ]
+    },
+    "Joachim Kayi Sanda": {
+      "code": 620408,
+      "source_name": "Joachim Kayi-Sanda",
+      "source_club": "southampton",
+      "source_birth_date": "2006-11-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "joachim-kayi-sanda"
+      ]
+    },
+    "Joe Aribo": {
+      "code": 193204,
+      "source_name": "Joe Aribo",
+      "source_club": "southampton",
+      "source_birth_date": "1996-07-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "joe-aribo"
+      ]
+    },
+    "Joe Gomez": {
+      "code": 171287,
+      "source_name": "Joe Gomez",
+      "source_club": "liverpool",
+      "source_birth_date": "1997-05-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "joe-gomez"
+      ]
+    },
+    "Joe Lumley": {
+      "code": 167888,
+      "source_name": "Joe Lumley",
+      "source_club": "southampton",
+      "source_birth_date": "1995-02-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "joe-lumley"
+      ]
+    },
+    "Joe Willock": {
+      "code": 200089,
+      "source_name": "Joe Willock",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1999-08-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "joe-willock"
+      ]
+    },
+    "Joel Ward": {
+      "code": 55494,
+      "source_name": "Joel Ward",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1989-10-29",
+      "match_method": "exact_name",
+      "slugs": [
+        "joel-ward"
+      ]
+    },
+    "Joelinton": {
+      "code": 180974,
+      "source_name": "Joelinton Cássio Apolinário de Lira",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1996-08-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "joelinton"
+      ]
+    },
+    "John McGinn": {
+      "code": 122806,
+      "source_name": "John McGinn",
+      "source_club": "aston-villa",
+      "source_birth_date": "1994-10-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "john-mcginn"
+      ]
+    },
+    "John Stones": {
+      "code": 97299,
+      "source_name": "John Stones",
+      "source_club": "manchester-city",
+      "source_birth_date": "1994-05-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "john-stones"
+      ]
+    },
+    "Jonny Evans": {
+      "code": 37642,
+      "source_name": "Jonny Evans",
+      "source_club": "manchester-united",
+      "source_birth_date": "1988-01-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "jonny-evans"
+      ]
+    },
+    "Jordan Ayew": {
+      "code": 80146,
+      "source_name": "Jordan Ayew",
+      "source_club": "leicester-city",
+      "source_birth_date": "1991-09-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "jordan-ayew-crystal-palace",
+        "jordan-ayew-leicester-city"
+      ]
+    },
+    "Jordan Pickford": {
+      "code": 111234,
+      "source_name": "Jordan Pickford",
+      "source_club": "everton",
+      "source_birth_date": "1994-03-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "jordan-pickford"
+      ]
+    },
+    "Jorge Cuenca": {
+      "code": 246301,
+      "source_name": "Jorge Cuenca Barreno",
+      "source_club": "fulham",
+      "source_birth_date": "1999-11-17",
+      "match_method": "name_tokens",
+      "slugs": [
+        "jorge-cuenca"
+      ]
+    },
+    "Jorginho": {
+      "code": 85955,
+      "source_name": "Jorge Luiz Frello Filho",
+      "source_club": "arsenal",
+      "source_birth_date": "1991-12-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "jorginho"
+      ]
+    },
+    "Joshua Acheampong": {
+      "code": 577016,
+      "source_name": "Josh Acheampong",
+      "source_club": "chelsea",
+      "source_birth_date": "2006-05-05",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "joshua-acheampong"
+      ]
+    },
+    "Joshua King": {
+      "code": 577725,
+      "source_name": "Josh King",
+      "source_club": "fulham",
+      "source_birth_date": "2007-01-03",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "joshua-king"
+      ]
+    },
+    "Joshua Zirkzee": {
+      "code": 458249,
+      "source_name": "Joshua Zirkzee",
+      "source_club": "manchester-united",
+      "source_birth_date": "2001-05-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "joshua-zirkzee"
+      ]
+    },
+    "José Sá": {
+      "code": 149065,
+      "source_name": "José Malheiro de Sá",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1993-01-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "jose-sa"
+      ]
+    },
+    "Jota Silva": {
+      "code": 510500,
+      "source_name": "João Pedro Ferreira Silva",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1999-08-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "jota-silva"
+      ]
+    },
+    "João Félix": {
+      "code": 428399,
+      "source_name": "João Félix Sequeira",
+      "source_club": "chelsea",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "joao-felix"
+      ]
+    },
+    "João Gomes": {
+      "code": 448089,
+      "source_name": "João Victor Gomes da Silva",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-02-12",
+      "match_method": "name_tokens",
+      "slugs": [
+        "joao-gomes"
+      ]
+    },
+    "João Pedro": {
+      "code": 475168,
+      "source_name": "João Pedro Junqueira de Jesus",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2001-09-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "joao-pedro"
+      ]
+    },
+    "Joël Veltman": {
+      "code": 111478,
+      "source_name": "Joël Veltman",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1992-01-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "joel-veltman"
+      ]
+    },
+    "Joško Gvardiol": {
+      "code": 477424,
+      "source_name": "Joško Gvardiol",
+      "source_club": "manchester-city",
+      "source_birth_date": "2002-01-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "josko-gvardiol"
+      ]
+    },
+    "Julian Araujo": {
+      "code": 436893,
+      "source_name": "Julián Araujo Zúñiga",
+      "source_club": "bournemouth",
+      "source_birth_date": "2001-08-13",
+      "match_method": "name_tokens",
+      "slugs": [
+        "julian-araujo"
+      ]
+    },
+    "Julio Enciso": {
+      "code": 474120,
+      "source_name": "Julio Enciso",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2004-01-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "julio-enciso-brighton-and-hove-albion",
+        "julio-enciso-ipswich-town"
+      ]
+    },
+    "Julio Soler": {
+      "code": 575901,
+      "source_name": "Julio Soler",
+      "source_club": "bournemouth",
+      "source_birth_date": "2005-02-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "julio-soler"
+      ]
+    },
+    "Jurriën Timber": {
+      "code": 445122,
+      "source_name": "Jurriën Timber",
+      "source_club": "arsenal",
+      "source_birth_date": "2001-06-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "jurrien-timber"
+      ]
+    },
+    "Justin Devenny": {
+      "code": 489706,
+      "source_name": "Justin Devenny",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2003-10-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "justin-devenny"
+      ]
+    },
+    "Justin Kluivert": {
+      "code": 222683,
+      "source_name": "Justin Kluivert",
+      "source_club": "bournemouth",
+      "source_birth_date": "1999-05-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "justin-kluivert"
+      ]
+    },
+    "Jáder Durán": {
+      "code": 476344,
+      "source_name": "Jhon Durán",
+      "source_club": "aston-villa",
+      "source_birth_date": null,
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "jader-duran"
+      ]
+    },
+    "Jørgen Strand Larsen": {
+      "code": 247412,
+      "source_name": "Jørgen Strand Larsen",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2000-02-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "jrgen-strand-larsen"
+      ]
+    },
+    "Kaelan Casey": {
+      "code": 518438,
+      "source_name": "Kaelan Casey",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2004-10-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "kaelan-casey"
+      ]
+    },
+    "Kai Havertz": {
+      "code": 219847,
+      "source_name": "Kai Havertz",
+      "source_club": "arsenal",
+      "source_birth_date": "1999-06-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "kai-havertz"
+      ]
+    },
+    "Kalvin Phillips": {
+      "code": 155405,
+      "source_name": "Kalvin Phillips",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1995-12-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "kalvin-phillips"
+      ]
+    },
+    "Kamaldeen Sulemana": {
+      "code": 504783,
+      "source_name": "Kamaldeen Sulemana",
+      "source_club": "southampton",
+      "source_birth_date": "2002-02-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "kamaldeen-sulemana"
+      ]
+    },
+    "Kaoru Mitoma": {
+      "code": 451340,
+      "source_name": "Mitoma Kaoru",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1997-05-20",
+      "match_method": "name_tokens",
+      "slugs": [
+        "kaoru-mitoma"
+      ]
+    },
+    "Kasey McAteer": {
+      "code": 461587,
+      "source_name": "Kasey McAteer",
+      "source_club": "leicester-city",
+      "source_birth_date": "2001-11-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "kasey-mcateer"
+      ]
+    },
+    "Keane Lewis-Potter": {
+      "code": 249231,
+      "source_name": "Keane Lewis-Potter",
+      "source_club": "brentford",
+      "source_birth_date": "2001-02-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "keane-lewis-potter"
+      ]
+    },
+    "Kenny Tete": {
+      "code": 167074,
+      "source_name": "Kenny Tete",
+      "source_club": "fulham",
+      "source_birth_date": "1995-10-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "kenny-tete"
+      ]
+    },
+    "Kepa Arrizabalaga": {
+      "code": 109745,
+      "source_name": "Kepa Arrizabalaga",
+      "source_club": "bournemouth",
+      "source_birth_date": "1994-10-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "kepa-arrizabalaga"
+      ]
+    },
+    "Kevin Danso": {
+      "code": 135720,
+      "source_name": "Kevin Danso",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1998-09-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "kevin-danso"
+      ]
+    },
+    "Kevin De Bruyne": {
+      "code": 61366,
+      "source_name": "Kevin De Bruyne",
+      "source_club": "manchester-city",
+      "source_birth_date": "1991-06-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "kevin-de-bruyne"
+      ]
+    },
+    "Kevin Schade": {
+      "code": 513418,
+      "source_name": "Kevin Schade",
+      "source_club": "brentford",
+      "source_birth_date": "2001-11-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "kevin-schade"
+      ]
+    },
+    "Kieran Tierney": {
+      "code": 192895,
+      "source_name": "Kieran Tierney",
+      "source_club": "arsenal",
+      "source_birth_date": "1997-06-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "kieran-tierney"
+      ]
+    },
+    "Kieran Trippier": {
+      "code": 77794,
+      "source_name": "Kieran Trippier",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1990-09-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "kieran-trippier"
+      ]
+    },
+    "Kiernan Dewsbury-Hall": {
+      "code": 215413,
+      "source_name": "Kiernan Dewsbury-Hall",
+      "source_club": "chelsea",
+      "source_birth_date": "1998-09-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "kiernan-dewsbury-hall"
+      ]
+    },
+    "Kim Jisoo": {
+      "code": 570241,
+      "source_name": "Kim Ji-soo",
+      "source_club": "brentford",
+      "source_birth_date": "2004-12-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "kim-jisoo"
+      ]
+    },
+    "Kobbie Mainoo": {
+      "code": 516895,
+      "source_name": "Kobbie Mainoo",
+      "source_club": "manchester-united",
+      "source_birth_date": "2005-04-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "kobbie-mainoo"
+      ]
+    },
+    "Konstantinos Mavropanos": {
+      "code": 233963,
+      "source_name": "Konstantinos Mavropanos",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-12-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "konstantinos-mavropanos"
+      ]
+    },
+    "Kosta Nedeljković": {
+      "code": 578545,
+      "source_name": "Kosta Nedeljković",
+      "source_club": "aston-villa",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "kosta-nedeljkovic"
+      ]
+    },
+    "Kostas Tsimikas": {
+      "code": 214285,
+      "source_name": "Konstantinos Tsimikas",
+      "source_club": "liverpool",
+      "source_birth_date": "1996-05-12",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "kostas-tsimikas"
+      ]
+    },
+    "Kristoffer Ajer": {
+      "code": 191866,
+      "source_name": "Kristoffer Ajer",
+      "source_club": "brentford",
+      "source_birth_date": "1998-04-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "kristoffer-ajer"
+      ]
+    },
+    "Kyle Walker": {
+      "code": 58621,
+      "source_name": "Kyle Walker",
+      "source_club": "manchester-city",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "kyle-walker"
+      ]
+    },
+    "Kyle Walker-Peters": {
+      "code": 158534,
+      "source_name": "Kyle Walker-Peters",
+      "source_club": "southampton",
+      "source_birth_date": "1997-04-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "kyle-walker-peters"
+      ]
+    },
+    "Lamare Bogarde": {
+      "code": 515597,
+      "source_name": "Lamare Bogarde",
+      "source_club": "aston-villa",
+      "source_birth_date": "2004-01-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "lamare-bogarde"
+      ]
+    },
+    "Leandro Trossard": {
+      "code": 116216,
+      "source_name": "Leandro Trossard",
+      "source_club": "arsenal",
+      "source_birth_date": "1994-12-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "leandro-trossard"
+      ]
+    },
+    "Leif Davis": {
+      "code": 455084,
+      "source_name": "Leif Davis",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1999-12-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "leif-davis"
+      ]
+    },
+    "Leny Yoro": {
+      "code": 550864,
+      "source_name": "Leny Yoro",
+      "source_club": "manchester-united",
+      "source_birth_date": "2005-11-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "leny-yoro"
+      ]
+    },
+    "Leon Bailey": {
+      "code": 215711,
+      "source_name": "Leon Bailey",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-08-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "leon-bailey"
+      ]
+    },
+    "Lesley Ugochukwu": {
+      "code": 503714,
+      "source_name": "Lesley Ugochukwu",
+      "source_club": "southampton",
+      "source_birth_date": "2004-03-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "lesley-ugochukwu"
+      ]
+    },
+    "Levi Colwill": {
+      "code": 460028,
+      "source_name": "Levi Colwill",
+      "source_club": "chelsea",
+      "source_birth_date": "2003-02-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "levi-colwill"
+      ]
+    },
+    "Lewis Cook": {
+      "code": 155408,
+      "source_name": "Lewis Cook",
+      "source_club": "bournemouth",
+      "source_birth_date": "1997-02-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "lewis-cook"
+      ]
+    },
+    "Lewis Dunk": {
+      "code": 83299,
+      "source_name": "Lewis Dunk",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1991-11-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "lewis-dunk"
+      ]
+    },
+    "Lewis Hall": {
+      "code": 487838,
+      "source_name": "Lewis Hall",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2004-09-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "lewis-hall"
+      ]
+    },
+    "Lewis Miley": {
+      "code": 547719,
+      "source_name": "Lewis Miley",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2006-05-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "lewis-miley"
+      ]
+    },
+    "Lewis Orford": {
+      "code": 518442,
+      "source_name": "Lewis Orford",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2006-02-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "lewis-orford"
+      ]
+    },
+    "Liam Delap": {
+      "code": 463034,
+      "source_name": "Liam Delap",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2003-02-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "liam-delap"
+      ]
+    },
+    "Lisandro Martínez": {
+      "code": 221820,
+      "source_name": "Lisandro Martínez",
+      "source_club": "manchester-united",
+      "source_birth_date": "1998-01-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "lisandro-martinez"
+      ]
+    },
+    "Lloyd Kelly": {
+      "code": 235530,
+      "source_name": "Lloyd Kelly",
+      "source_club": "newcastle-united",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "lloyd-kelly"
+      ]
+    },
+    "Lucas Bergvall": {
+      "code": 570526,
+      "source_name": "Lucas Bergvall",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2006-02-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "lucas-bergvall"
+      ]
+    },
+    "Lucas Digne": {
+      "code": 101188,
+      "source_name": "Lucas Digne",
+      "source_club": "aston-villa",
+      "source_birth_date": "1993-07-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "lucas-digne"
+      ]
+    },
+    "Lucas Paquetá": {
+      "code": 224024,
+      "source_name": "Lucas Tolentino Coelho de Lima",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-08-27",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "lucas-paqueta"
+      ]
+    },
+    "Luis Díaz": {
+      "code": 244731,
+      "source_name": "Luis Díaz",
+      "source_club": "liverpool",
+      "source_birth_date": "1997-01-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "luis-diaz"
+      ]
+    },
+    "Luis Guilherme": {
+      "code": 577114,
+      "source_name": "Luis Guilherme Lira dos Santos",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2006-02-09",
+      "match_method": "name_tokens",
+      "slugs": [
+        "luis-guilherme"
+      ]
+    },
+    "Luis Sinisterra": {
+      "code": 224995,
+      "source_name": "Luis Sinisterra",
+      "source_club": "bournemouth",
+      "source_birth_date": "1999-06-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "luis-sinisterra"
+      ]
+    },
+    "Luke Shaw": {
+      "code": 106760,
+      "source_name": "Luke Shaw",
+      "source_club": "manchester-united",
+      "source_birth_date": "1995-07-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "luke-shaw"
+      ]
+    },
+    "Luke Thomas": {
+      "code": 244619,
+      "source_name": "Luke Thomas",
+      "source_club": "leicester-city",
+      "source_birth_date": "2001-06-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "luke-thomas"
+      ]
+    },
+    "Luke Woolfenden": {
+      "code": 220583,
+      "source_name": "Luke Woolfenden",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1998-10-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "luke-woolfenden"
+      ]
+    },
+    "Mads Hermansen": {
+      "code": 467189,
+      "source_name": "Mads Hermansen",
+      "source_club": "leicester-city",
+      "source_birth_date": "2000-07-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "mads-hermansen"
+      ]
+    },
+    "Mads Roerslev": {
+      "code": 226956,
+      "source_name": "Mads Roerslev Rasmussen",
+      "source_club": "brentford",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "mads-roerslev"
+      ]
+    },
+    "Malo Gusto": {
+      "code": 482609,
+      "source_name": "Malo Gusto",
+      "source_club": "chelsea",
+      "source_birth_date": "2003-05-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "malo-gusto"
+      ]
+    },
+    "Manuel Akanji": {
+      "code": 211975,
+      "source_name": "Manuel Akanji",
+      "source_club": "manchester-city",
+      "source_birth_date": "1995-07-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "manuel-akanji"
+      ]
+    },
+    "Manuel Ugarte": {
+      "code": 232112,
+      "source_name": "Manuel Ugarte",
+      "source_club": "manchester-united",
+      "source_birth_date": "2001-04-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "manuel-ugarte"
+      ]
+    },
+    "Marc Cucurella": {
+      "code": 179268,
+      "source_name": "Marc Cucurella Saseta",
+      "source_club": "chelsea",
+      "source_birth_date": "1998-07-22",
+      "match_method": "name_tokens",
+      "slugs": [
+        "marc-cucurella"
+      ]
+    },
+    "Marc Guiu": {
+      "code": 499309,
+      "source_name": "Marc Guiu Paz",
+      "source_club": "chelsea",
+      "source_birth_date": "2006-01-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "marc-guiu"
+      ]
+    },
+    "Marc Guéhi": {
+      "code": 209036,
+      "source_name": "Marc Guéhi",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2000-07-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "marc-guehi"
+      ]
+    },
+    "Marco Asensio": {
+      "code": 174292,
+      "source_name": "Marco Asensio",
+      "source_club": "aston-villa",
+      "source_birth_date": "1996-01-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "marco-asensio"
+      ]
+    },
+    "Marcos Senesi": {
+      "code": 221466,
+      "source_name": "Marcos Senesi",
+      "source_club": "bournemouth",
+      "source_birth_date": "1997-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "marcos-senesi"
+      ]
+    },
+    "Marcus Harness": {
+      "code": 167191,
+      "source_name": "Marcus Myers-Harness",
+      "source_club": "ipswich-town",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "marcus-harness"
+      ]
+    },
+    "Marcus Rashford": {
+      "code": 176297,
+      "source_name": "Marcus Rashford",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-10-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "marcus-rashford-aston-villa",
+        "marcus-rashford-manchester-united"
+      ]
+    },
+    "Marcus Tavernier": {
+      "code": 201658,
+      "source_name": "Marcus Tavernier",
+      "source_club": "bournemouth",
+      "source_birth_date": "1999-03-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "marcus-tavernier"
+      ]
+    },
+    "Mario Lemina": {
+      "code": 151086,
+      "source_name": "Mario Lemina",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "mario-lemina"
+      ]
+    },
+    "Mark Flekken": {
+      "code": 118342,
+      "source_name": "Mark Flekken",
+      "source_club": "brentford",
+      "source_birth_date": "1993-06-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "mark-flekken"
+      ]
+    },
+    "Mark Travers": {
+      "code": 229600,
+      "source_name": "Mark Travers",
+      "source_club": "bournemouth",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "mark-travers"
+      ]
+    },
+    "Marshall Munetsi": {
+      "code": 433312,
+      "source_name": "Marshall Munetsi",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1996-06-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "marshall-munetsi"
+      ]
+    },
+    "Martial Godo": {
+      "code": 573062,
+      "source_name": "Martial Godo",
+      "source_club": "fulham",
+      "source_birth_date": "2003-03-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "martial-godo"
+      ]
+    },
+    "Martin Dúbravka": {
+      "code": 67089,
+      "source_name": "Martin Dúbravka",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1989-01-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "martin-dubravka"
+      ]
+    },
+    "Martin Ødegaard": {
+      "code": 184029,
+      "source_name": "Martin Ødegaard",
+      "source_club": "arsenal",
+      "source_birth_date": "1998-12-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "martin-degaard"
+      ]
+    },
+    "Mason Holgate": {
+      "code": 194164,
+      "source_name": "Mason Holgate",
+      "source_club": "everton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "mason-holgate"
+      ]
+    },
+    "Mason Mount": {
+      "code": 184341,
+      "source_name": "Mason Mount",
+      "source_club": "manchester-united",
+      "source_birth_date": "1999-01-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "mason-mount"
+      ]
+    },
+    "Massimo Luongo": {
+      "code": 106606,
+      "source_name": "Massimo Luongo",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1992-09-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "massimo-luongo"
+      ]
+    },
+    "Mateo Kovačić": {
+      "code": 91651,
+      "source_name": "Mateo Kovačić",
+      "source_club": "manchester-city",
+      "source_birth_date": "1994-05-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "mateo-kovacic"
+      ]
+    },
+    "Mateus Fernandes": {
+      "code": 551226,
+      "source_name": "Mateus Gonçalo Espanha Fernandes",
+      "source_club": "southampton",
+      "source_birth_date": "2004-07-10",
+      "match_method": "name_tokens",
+      "slugs": [
+        "mateus-fernandes"
+      ]
+    },
+    "Mateus Mane": {
+      "code": 647671,
+      "source_name": "Mateus Mané",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2007-09-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "mateus-mane"
+      ]
+    },
+    "Matheus Cunha": {
+      "code": 430871,
+      "source_name": "Matheus Santos Carneiro Da Cunha",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1999-05-27",
+      "match_method": "name_tokens",
+      "slugs": [
+        "matheus-cunha"
+      ]
+    },
+    "Matheus França": {
+      "code": 536694,
+      "source_name": "Matheus França de Oliveira",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2004-04-01",
+      "match_method": "name_tokens",
+      "slugs": [
+        "matheus-franca"
+      ]
+    },
+    "Matheus Nunes": {
+      "code": 465351,
+      "source_name": "Matheus Luiz Nunes",
+      "source_club": "manchester-city",
+      "source_birth_date": "1998-08-27",
+      "match_method": "name_tokens",
+      "slugs": [
+        "matheus-nunes"
+      ]
+    },
+    "Mathias Jensen": {
+      "code": 207283,
+      "source_name": "Mathias Jensen",
+      "source_club": "brentford",
+      "source_birth_date": "1996-01-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "mathias-jensen"
+      ]
+    },
+    "Mathis Amougou": {
+      "code": 609640,
+      "source_name": "Mathis Amougou",
+      "source_club": "chelsea",
+      "source_birth_date": "2006-01-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "mathis-amougou"
+      ]
+    },
+    "Mathys Tel": {
+      "code": 511499,
+      "source_name": "Mathys Tel",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2005-04-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "mathys-tel"
+      ]
+    },
+    "Mats Wieffer": {
+      "code": 467779,
+      "source_name": "Mats Wieffer",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1999-11-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "mats-wieffer"
+      ]
+    },
+    "Matt Doherty": {
+      "code": 87835,
+      "source_name": "Matt Doherty",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1992-01-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "matt-doherty"
+      ]
+    },
+    "Matt O'Riley": {
+      "code": 219249,
+      "source_name": "Matt O'Riley",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2000-11-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "matt-o-riley"
+      ]
+    },
+    "Matt Targett": {
+      "code": 169359,
+      "source_name": "Matt Targett",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1995-09-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "matt-targett"
+      ]
+    },
+    "Matthijs de Ligt": {
+      "code": 209365,
+      "source_name": "Matthijs de Ligt",
+      "source_club": "manchester-united",
+      "source_birth_date": "1999-08-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "matthijs-de-ligt"
+      ]
+    },
+    "Matty Cash": {
+      "code": 199796,
+      "source_name": "Matty Cash",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-08-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "matty-cash"
+      ]
+    },
+    "Matz Sels": {
+      "code": 85633,
+      "source_name": "Matz Sels",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1992-02-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "matz-sels"
+      ]
+    },
+    "Max Aarons": {
+      "code": 232980,
+      "source_name": "Max Aarons",
+      "source_club": "bournemouth",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "max-aarons"
+      ]
+    },
+    "Max Kilman": {
+      "code": 214048,
+      "source_name": "Max Kilman",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1997-05-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "max-kilman"
+      ]
+    },
+    "Maxence Lacroix": {
+      "code": 437499,
+      "source_name": "Maxence Lacroix",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2000-04-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "maxence-lacroix"
+      ]
+    },
+    "Maxwel Cornet": {
+      "code": 149519,
+      "source_name": "Maxwel Cornet",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "maxwel-cornet"
+      ]
+    },
+    "Michael Golding": {
+      "code": 549640,
+      "source_name": "Michael Golding",
+      "source_club": "leicester-city",
+      "source_birth_date": "2006-05-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "michael-golding"
+      ]
+    },
+    "Michael Kayode": {
+      "code": 607464,
+      "source_name": "Michael Kayode",
+      "source_club": "brentford",
+      "source_birth_date": "2004-07-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "michael-kayode"
+      ]
+    },
+    "Michael Keane": {
+      "code": 106611,
+      "source_name": "Michael Keane",
+      "source_club": "everton",
+      "source_birth_date": "1993-01-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "michael-keane"
+      ]
+    },
+    "Michail Antonio": {
+      "code": 57531,
+      "source_name": "Michail Antonio",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1990-03-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "michail-antonio"
+      ]
+    },
+    "Micky van de Ven": {
+      "code": 491279,
+      "source_name": "Micky van de Ven",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2001-04-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "micky-van-de-ven"
+      ]
+    },
+    "Miguel Almirón": {
+      "code": 179018,
+      "source_name": "Miguel Almirón Rejala",
+      "source_club": "newcastle-united",
+      "source_birth_date": null,
+      "match_method": "name_tokens",
+      "slugs": [
+        "miguel-almiron"
+      ]
+    },
+    "Mikel Merino": {
+      "code": 195384,
+      "source_name": "Mikel Merino",
+      "source_club": "arsenal",
+      "source_birth_date": "1996-06-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "mikel-merino"
+      ]
+    },
+    "Mikey Moore": {
+      "code": 499721,
+      "source_name": "Mikey Moore",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2007-08-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "mikey-moore"
+      ]
+    },
+    "Mikkel Damsgaard": {
+      "code": 440089,
+      "source_name": "Mikkel Damsgaard",
+      "source_club": "brentford",
+      "source_birth_date": "2000-07-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "mikkel-damsgaard"
+      ]
+    },
+    "Milos Kerkez": {
+      "code": 544877,
+      "source_name": "Milos Kerkez",
+      "source_club": "bournemouth",
+      "source_birth_date": "2003-11-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "milos-kerkez"
+      ]
+    },
+    "Mohamed Salah": {
+      "code": 118748,
+      "source_name": "Mohamed Salah",
+      "source_club": "liverpool",
+      "source_birth_date": "1992-06-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "mohamed-salah"
+      ]
+    },
+    "Mohammed Kudus": {
+      "code": 460842,
+      "source_name": "Mohammed Kudus",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2000-08-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "mohammed-kudus"
+      ]
+    },
+    "Moisés Caicedo": {
+      "code": 486672,
+      "source_name": "Moisés Caicedo Corozo",
+      "source_club": "chelsea",
+      "source_birth_date": "2001-11-02",
+      "match_method": "name_tokens",
+      "slugs": [
+        "moises-caicedo"
+      ]
+    },
+    "Morato": {
+      "code": 485047,
+      "source_name": "Felipe Rodrigues da Silva",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2001-06-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "morato"
+      ]
+    },
+    "Morgan Gibbs-White": {
+      "code": 222531,
+      "source_name": "Morgan Gibbs-White",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2000-01-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "morgan-gibbs-white"
+      ]
+    },
+    "Morgan Rogers": {
+      "code": 244850,
+      "source_name": "Morgan Rogers",
+      "source_club": "aston-villa",
+      "source_birth_date": "2002-07-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "morgan-rogers"
+      ]
+    },
+    "Murillo": {
+      "code": 575476,
+      "source_name": "Murillo Santiago Costa dos Santos",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2002-07-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "murillo"
+      ]
+    },
+    "Mykhailo Mudryk": {
+      "code": 465920,
+      "source_name": "Mykhailo Mudryk",
+      "source_club": "chelsea",
+      "source_birth_date": "2001-01-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "mykhailo-mudryk"
+      ]
+    },
+    "Myles Lewis-Skelly": {
+      "code": 499169,
+      "source_name": "Myles Lewis-Skelly",
+      "source_club": "arsenal",
+      "source_birth_date": "2006-09-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "myles-lewis-skelly"
+      ]
+    },
+    "Nasser Djiga": {
+      "code": 531170,
+      "source_name": "Nasser Djiga",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2002-11-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "nasser-djiga"
+      ]
+    },
+    "Nathan Aké": {
+      "code": 126184,
+      "source_name": "Nathan Aké",
+      "source_club": "manchester-city",
+      "source_birth_date": "1995-02-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-ake"
+      ]
+    },
+    "Nathan Broadhead": {
+      "code": 173818,
+      "source_name": "Nathan Broadhead",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1998-04-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-broadhead"
+      ]
+    },
+    "Nathan Butler-Oyedeji": {
+      "code": 461025,
+      "source_name": "Nathan Butler-Oyedeji",
+      "source_club": "arsenal",
+      "source_birth_date": "2003-01-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-butler-oyedeji"
+      ]
+    },
+    "Nathan Collins": {
+      "code": 432830,
+      "source_name": "Nathan Collins",
+      "source_club": "brentford",
+      "source_birth_date": "2001-04-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-collins"
+      ]
+    },
+    "Nathan Patterson": {
+      "code": 243571,
+      "source_name": "Nathan Patterson",
+      "source_club": "everton",
+      "source_birth_date": "2001-10-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-patterson"
+      ]
+    },
+    "Nathan Wood-Gordon": {
+      "code": 244845,
+      "source_name": "Nathan Wood-Gordon",
+      "source_club": "southampton",
+      "source_birth_date": "2002-05-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathan-wood-gordon"
+      ]
+    },
+    "Nathaniel Clyne": {
+      "code": 57328,
+      "source_name": "Nathaniel Clyne",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1991-04-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "nathaniel-clyne"
+      ]
+    },
+    "Neco Williams": {
+      "code": 215136,
+      "source_name": "Neco Williams",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "2001-04-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "neco-williams"
+      ]
+    },
+    "Neto": {
+      "code": 69752,
+      "source_name": "Norberto Murara Neto",
+      "source_club": "arsenal",
+      "source_birth_date": "1989-07-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "neto"
+      ]
+    },
+    "Nick Pope": {
+      "code": 98747,
+      "source_name": "Nick Pope",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1992-04-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "nick-pope"
+      ]
+    },
+    "Niclas Füllkrug": {
+      "code": 91889,
+      "source_name": "Niclas Füllkrug",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1993-02-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "niclas-fullkrug"
+      ]
+    },
+    "Nico O’Reilly": {
+      "code": 472769,
+      "source_name": "Nico O'Reilly",
+      "source_club": "manchester-city",
+      "source_birth_date": "2005-03-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "nico-oreilly"
+      ]
+    },
+    "Nicolas Jackson": {
+      "code": 517052,
+      "source_name": "Nicolas Jackson",
+      "source_club": "chelsea",
+      "source_birth_date": "2001-06-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "nicolas-jackson"
+      ]
+    },
+    "Nicolás Domínguez": {
+      "code": 250199,
+      "source_name": "Nicolás Domínguez",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1998-06-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "nicolas-dominguez"
+      ]
+    },
+    "Nicolás González": {
+      "code": 465694,
+      "source_name": "Nico González",
+      "source_club": "manchester-city",
+      "source_birth_date": "2002-01-03",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "nicolas-gonzalez"
+      ]
+    },
+    "Nikola Milenković": {
+      "code": 227444,
+      "source_name": "Nikola Milenković",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1997-10-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "nikola-milenkovic"
+      ]
+    },
+    "Noni Madueke": {
+      "code": 248857,
+      "source_name": "Noni Madueke",
+      "source_club": "chelsea",
+      "source_birth_date": "2002-03-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "noni-madueke"
+      ]
+    },
+    "Noussair Mazraoui": {
+      "code": 230001,
+      "source_name": "Noussair Mazraoui",
+      "source_club": "manchester-united",
+      "source_birth_date": "1997-11-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "noussair-mazraoui"
+      ]
+    },
+    "Nélson Semedo": {
+      "code": 200402,
+      "source_name": "Nélson Cabral Semedo",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1993-11-16",
+      "match_method": "name_tokens",
+      "slugs": [
+        "nelson-semedo"
+      ]
+    },
+    "Odsonne Édouard": {
+      "code": 199670,
+      "source_name": "Odsonne Edouard",
+      "source_club": "leicester-city",
+      "source_birth_date": "1998-01-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "odsonne-edouard-crystal-palace",
+        "odsonne-edouard-leicester-city"
+      ]
+    },
+    "Ola Aina": {
+      "code": 159506,
+      "source_name": "Ola Aina",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1996-10-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "ola-aina"
+      ]
+    },
+    "Olabade Aluko": {
+      "code": 619146,
+      "source_name": "Olabade Aluko",
+      "source_club": "leicester-city",
+      "source_birth_date": "2006-11-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "olabade-aluko"
+      ]
+    },
+    "Oleksandr Zinchenko": {
+      "code": 206325,
+      "source_name": "Oleksandr Zinchenko",
+      "source_club": "arsenal",
+      "source_birth_date": "1996-12-15",
+      "match_method": "exact_name",
+      "slugs": [
+        "oleksandr-zinchenko"
+      ]
+    },
+    "Oliver Scarles": {
+      "code": 536109,
+      "source_name": "Ollie Scarles",
+      "source_club": "west-ham-united",
+      "source_birth_date": "2005-12-12",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "oliver-scarles"
+      ]
+    },
+    "Oliver Skipp": {
+      "code": 209042,
+      "source_name": "Oliver Skipp",
+      "source_club": "leicester-city",
+      "source_birth_date": "2000-09-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "oliver-skipp"
+      ]
+    },
+    "Ollie Watkins": {
+      "code": 178301,
+      "source_name": "Ollie Watkins",
+      "source_club": "aston-villa",
+      "source_birth_date": "1995-12-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "ollie-watkins"
+      ]
+    },
+    "Omar Marmoush": {
+      "code": 438234,
+      "source_name": "Omar Marmoush",
+      "source_club": "manchester-city",
+      "source_birth_date": "1999-02-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "omar-marmoush"
+      ]
+    },
+    "Omari Hutchinson": {
+      "code": 503301,
+      "source_name": "Omari Giraud-Hutchinson",
+      "source_club": "ipswich-town",
+      "source_birth_date": "2003-10-30",
+      "match_method": "name_tokens",
+      "slugs": [
+        "omari-hutchinson"
+      ]
+    },
+    "Orel Mangala": {
+      "code": 179519,
+      "source_name": "Orel Mangala",
+      "source_club": "everton",
+      "source_birth_date": "1998-03-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "orel-mangala"
+      ]
+    },
+    "Oscar Bobb": {
+      "code": 477555,
+      "source_name": "Oscar Bobb",
+      "source_club": "manchester-city",
+      "source_birth_date": "2003-07-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "oscar-bobb"
+      ]
+    },
+    "Pablo Sarabia": {
+      "code": 88484,
+      "source_name": "Pablo Sarabia",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1992-05-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "pablo-sarabia"
+      ]
+    },
+    "Pape Matar Sarr": {
+      "code": 482442,
+      "source_name": "Pape Matar Sarr",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2002-09-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "pape-matar-sarr"
+      ]
+    },
+    "Patrick Dorgu": {
+      "code": 596777,
+      "source_name": "Patrick Dorgu",
+      "source_club": "manchester-united",
+      "source_birth_date": "2004-10-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "patrick-dorgu"
+      ]
+    },
+    "Patson Daka": {
+      "code": 245419,
+      "source_name": "Patson Daka",
+      "source_club": "leicester-city",
+      "source_birth_date": "1998-10-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "patson-daka"
+      ]
+    },
+    "Pau Torres": {
+      "code": 244954,
+      "source_name": "Pau Torres",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-01-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "pau-torres"
+      ]
+    },
+    "Paul Onuachu": {
+      "code": 147611,
+      "source_name": "Paul Onuachu",
+      "source_club": "southampton",
+      "source_birth_date": "1994-05-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "paul-onuachu"
+      ]
+    },
+    "Pedro Lima": {
+      "code": 641221,
+      "source_name": "Pedro Cardoso de Lima",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2006-07-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "pedro-lima"
+      ]
+    },
+    "Pedro Neto": {
+      "code": 247632,
+      "source_name": "Pedro Lomba Neto",
+      "source_club": "chelsea",
+      "source_birth_date": "2000-03-09",
+      "match_method": "name_tokens",
+      "slugs": [
+        "pedro-neto"
+      ]
+    },
+    "Pedro Porro": {
+      "code": 441164,
+      "source_name": "Pedro Porro",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1999-09-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "pedro-porro"
+      ]
+    },
+    "Pervis Estupiñán": {
+      "code": 204214,
+      "source_name": "Pervis Estupiñán",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1998-01-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "pervis-estupinan"
+      ]
+    },
+    "Phil Foden": {
+      "code": 209244,
+      "source_name": "Phil Foden",
+      "source_club": "manchester-city",
+      "source_birth_date": "2000-05-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "phil-foden"
+      ]
+    },
+    "Philip Billing": {
+      "code": 168991,
+      "source_name": "Philip Billing",
+      "source_club": "bournemouth",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "philip-billing"
+      ]
+    },
+    "Radu Drăgușin": {
+      "code": 493125,
+      "source_name": "Radu Drăgușin",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2002-02-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "radu-dragusin"
+      ]
+    },
+    "Raheem Sterling": {
+      "code": 103955,
+      "source_name": "Raheem Sterling",
+      "source_club": "arsenal",
+      "source_birth_date": "1994-12-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "raheem-sterling"
+      ]
+    },
+    "Ramón Sosa": {
+      "code": 502222,
+      "source_name": "Ramón Sosa",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1999-08-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "ramon-sosa"
+      ]
+    },
+    "Rasmus Højlund": {
+      "code": 497894,
+      "source_name": "Rasmus Højlund",
+      "source_club": "manchester-united",
+      "source_birth_date": "2003-02-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "rasmus-hjlund"
+      ]
+    },
+    "Rayan Aït-Nouri": {
+      "code": 448514,
+      "source_name": "Rayan Aït-Nouri",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-06-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "rayan-ait-nouri"
+      ]
+    },
+    "Raúl Jiménez": {
+      "code": 102057,
+      "source_name": "Raúl Jiménez",
+      "source_club": "fulham",
+      "source_birth_date": "1991-05-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "raul-jimenez"
+      ]
+    },
+    "Reece James": {
+      "code": 225796,
+      "source_name": "Reece James",
+      "source_club": "chelsea",
+      "source_birth_date": "1999-12-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "reece-james"
+      ]
+    },
+    "Reiss Nelson": {
+      "code": 200641,
+      "source_name": "Reiss Nelson",
+      "source_club": "fulham",
+      "source_birth_date": "1999-12-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "reiss-nelson-arsenal",
+        "reiss-nelson-fulham"
+      ]
+    },
+    "Remy Rees-Dottin": {
+      "code": 606774,
+      "source_name": "Remy Rees-Dottin",
+      "source_club": "bournemouth",
+      "source_birth_date": "2006-03-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "remy-rees-dottin"
+      ]
+    },
+    "Renato Veiga": {
+      "code": 551230,
+      "source_name": "Renato Palma Veiga",
+      "source_club": "chelsea",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "renato-veiga"
+      ]
+    },
+    "Ricardo Pereira": {
+      "code": 111931,
+      "source_name": "Ricardo Barbosa Pereira",
+      "source_club": "leicester-city",
+      "source_birth_date": "1993-10-06",
+      "match_method": "name_tokens",
+      "slugs": [
+        "ricardo-pereira"
+      ]
+    },
+    "Riccardo Calafiori": {
+      "code": 466075,
+      "source_name": "Riccardo Calafiori",
+      "source_club": "arsenal",
+      "source_birth_date": "2002-05-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "riccardo-calafiori"
+      ]
+    },
+    "Richarlison": {
+      "code": 212319,
+      "source_name": "Richarlison de Andrade",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1997-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "richarlison"
+      ]
+    },
+    "Rico Henry": {
+      "code": 194010,
+      "source_name": "Rico Henry",
+      "source_club": "brentford",
+      "source_birth_date": "1997-07-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "rico-henry"
+      ]
+    },
+    "Rico Lewis": {
+      "code": 477064,
+      "source_name": "Rico Lewis",
+      "source_club": "manchester-city",
+      "source_birth_date": "2004-11-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "rico-lewis"
+      ]
+    },
+    "Robert Sánchez": {
+      "code": 215059,
+      "source_name": "Robert Sánchez",
+      "source_club": "chelsea",
+      "source_birth_date": "1997-11-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "robert-sanchez"
+      ]
+    },
+    "Robin Olsen": {
+      "code": 111782,
+      "source_name": "Robin Olsen",
+      "source_club": "aston-villa",
+      "source_birth_date": "1990-01-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "robin-olsen"
+      ]
+    },
+    "Rodri": {
+      "code": 220566,
+      "source_name": "Rodrigo 'Rodri' Hernandez",
+      "source_club": "manchester-city",
+      "source_birth_date": "1996-06-22",
+      "match_method": "name_tokens",
+      "slugs": [
+        "rodri"
+      ]
+    },
+    "Rodrigo Bentancur": {
+      "code": 202993,
+      "source_name": "Rodrigo Bentancur",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1997-06-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "rodrigo-bentancur"
+      ]
+    },
+    "Rodrigo Gomes": {
+      "code": 483081,
+      "source_name": "Rodrigo Martins Gomes",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2003-07-07",
+      "match_method": "name_tokens",
+      "slugs": [
+        "rodrigo-gomes"
+      ]
+    },
+    "Rodrigo Muniz": {
+      "code": 244042,
+      "source_name": "Rodrigo Muniz Carvalho",
+      "source_club": "fulham",
+      "source_birth_date": "2001-05-04",
+      "match_method": "name_tokens",
+      "slugs": [
+        "rodrigo-muniz"
+      ]
+    },
+    "Romain Esse": {
+      "code": 606921,
+      "source_name": "Romain Esse",
+      "source_club": "crystal-palace",
+      "source_birth_date": "2005-05-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "romain-esse"
+      ]
+    },
+    "Roman Dixon": {
+      "code": 496178,
+      "source_name": "Roman Dixon",
+      "source_club": "everton",
+      "source_birth_date": "2004-12-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "roman-dixon"
+      ]
+    },
+    "Roméo Lavia": {
+      "code": 514356,
+      "source_name": "Roméo Lavia",
+      "source_club": "chelsea",
+      "source_birth_date": "2004-01-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "romeo-lavia"
+      ]
+    },
+    "Ronnie Edwards": {
+      "code": 500926,
+      "source_name": "Ronnie Edwards",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "ronnie-edwards"
+      ]
+    },
+    "Ross Barkley": {
+      "code": 88894,
+      "source_name": "Ross Barkley",
+      "source_club": "aston-villa",
+      "source_birth_date": "1993-12-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "ross-barkley"
+      ]
+    },
+    "Ross Stewart": {
+      "code": 230348,
+      "source_name": "Ross Stewart",
+      "source_club": "southampton",
+      "source_birth_date": "1996-07-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "ross-stewart"
+      ]
+    },
+    "Ryan Christie": {
+      "code": 158499,
+      "source_name": "Ryan Christie",
+      "source_club": "bournemouth",
+      "source_birth_date": "1995-02-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-christie"
+      ]
+    },
+    "Ryan Fraser": {
+      "code": 90105,
+      "source_name": "Ryan Fraser",
+      "source_club": "southampton",
+      "source_birth_date": "1994-02-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-fraser"
+      ]
+    },
+    "Ryan Gravenberch": {
+      "code": 441266,
+      "source_name": "Ryan Gravenberch",
+      "source_club": "liverpool",
+      "source_birth_date": "2002-05-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-gravenberch"
+      ]
+    },
+    "Ryan Manning": {
+      "code": 204863,
+      "source_name": "Ryan Manning",
+      "source_club": "southampton",
+      "source_birth_date": "1996-06-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-manning"
+      ]
+    },
+    "Ryan Sessegnon": {
+      "code": 184349,
+      "source_name": "Ryan Sessegnon",
+      "source_club": "fulham",
+      "source_birth_date": "2000-05-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-sessegnon"
+      ]
+    },
+    "Ryan Trevitt": {
+      "code": 591357,
+      "source_name": "Ryan Trevitt",
+      "source_club": "brentford",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-trevitt"
+      ]
+    },
+    "Ryan Yates": {
+      "code": 204968,
+      "source_name": "Ryan Yates",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1997-11-21",
+      "match_method": "exact_name",
+      "slugs": [
+        "ryan-yates"
+      ]
+    },
+    "Rúben Dias": {
+      "code": 171314,
+      "source_name": "Rúben Gato Alves Dias",
+      "source_club": "manchester-city",
+      "source_birth_date": "1997-05-14",
+      "match_method": "name_tokens",
+      "slugs": [
+        "ruben-dias"
+      ]
+    },
+    "Sam Johnstone": {
+      "code": 101982,
+      "source_name": "Sam Johnstone",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1993-03-25",
+      "match_method": "exact_name",
+      "slugs": [
+        "sam-johnstone"
+      ]
+    },
+    "Sam Morsy": {
+      "code": 74944,
+      "source_name": "Sam Morsy",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1991-09-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "sam-morsy"
+      ]
+    },
+    "Sammie Szmodics": {
+      "code": 172453,
+      "source_name": "Sam Szmodics",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1995-09-24",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "sammie-szmodics"
+      ]
+    },
+    "Samuel Amo-Ameyaw": {
+      "code": 499724,
+      "source_name": "Samuel Amo-Ameyaw",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "samuel-amo-ameyaw"
+      ]
+    },
+    "Samuel Edozie": {
+      "code": 490503,
+      "source_name": "Samuel Edozie",
+      "source_club": "southampton",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "samuel-edozie"
+      ]
+    },
+    "Sander Berge": {
+      "code": 207189,
+      "source_name": "Sander Berge",
+      "source_club": "fulham",
+      "source_birth_date": "1998-02-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "sander-berge"
+      ]
+    },
+    "Sandro Tonali": {
+      "code": 432422,
+      "source_name": "Sandro Tonali",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2000-05-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "sandro-tonali"
+      ]
+    },
+    "Santiago Bueno": {
+      "code": 231480,
+      "source_name": "Santiago Bueno",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1998-11-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "santiago-bueno"
+      ]
+    },
+    "Saša Lukić": {
+      "code": 212314,
+      "source_name": "Saša Lukić",
+      "source_club": "fulham",
+      "source_birth_date": "1996-08-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "sasa-lukic"
+      ]
+    },
+    "Scott McTominay": {
+      "code": 195851,
+      "source_name": "Scott McTominay",
+      "source_club": "manchester-united",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "scott-mctominay"
+      ]
+    },
+    "Sean Longstaff": {
+      "code": 180135,
+      "source_name": "Sean Longstaff",
+      "source_club": "newcastle-united",
+      "source_birth_date": "1997-10-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "sean-longstaff"
+      ]
+    },
+    "Sepp van den Berg": {
+      "code": 444765,
+      "source_name": "Sepp van den Berg",
+      "source_club": "brentford",
+      "source_birth_date": "2001-12-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "sepp-van-den-berg"
+      ]
+    },
+    "Sergio Reguilón": {
+      "code": 199249,
+      "source_name": "Sergio Reguilón",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1996-12-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "sergio-reguilon"
+      ]
+    },
+    "Shumaira Mheuka": {
+      "code": 567119,
+      "source_name": "Shumaira Mheuka",
+      "source_club": "chelsea",
+      "source_birth_date": "2007-10-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "shumaira-mheuka"
+      ]
+    },
+    "Simon Adingra": {
+      "code": 535818,
+      "source_name": "Simon Adingra",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2002-01-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "simon-adingra"
+      ]
+    },
+    "Solly March": {
+      "code": 109345,
+      "source_name": "Solly March",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "1994-07-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "solly-march"
+      ]
+    },
+    "Son Heung-min": {
+      "code": 85971,
+      "source_name": "Son Heung-min",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1992-07-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "son-heung-min"
+      ]
+    },
+    "Stefan Ortega": {
+      "code": 88248,
+      "source_name": "Stefan Ortega Moreno",
+      "source_club": "manchester-city",
+      "source_birth_date": "1992-11-06",
+      "match_method": "name_tokens",
+      "slugs": [
+        "stefan-ortega"
+      ]
+    },
+    "Stephy Mavididi": {
+      "code": 154048,
+      "source_name": "Stephy Mavididi",
+      "source_club": "leicester-city",
+      "source_birth_date": "1998-05-31",
+      "match_method": "exact_name",
+      "slugs": [
+        "stephy-mavididi"
+      ]
+    },
+    "Sven Botman": {
+      "code": 220237,
+      "source_name": "Sven Botman",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2000-01-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "sven-botman"
+      ]
+    },
+    "Sávio": {
+      "code": 510281,
+      "source_name": "Sávio 'Savinho' Moreira de Oliveira",
+      "source_club": "manchester-city",
+      "source_birth_date": "2004-04-10",
+      "match_method": "name_tokens",
+      "slugs": [
+        "savio"
+      ]
+    },
+    "Séamus Coleman": {
+      "code": 59949,
+      "source_name": "Séamus Coleman",
+      "source_club": "everton",
+      "source_birth_date": "1988-10-11",
+      "match_method": "exact_name",
+      "slugs": [
+        "seamus-coleman"
+      ]
+    },
+    "Taiwo Awoniyi": {
+      "code": 210156,
+      "source_name": "Taiwo Awoniyi",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1997-08-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "taiwo-awoniyi"
+      ]
+    },
+    "Takehiro Tomiyasu": {
+      "code": 223723,
+      "source_name": "Tomiyasu Takehiro",
+      "source_club": "arsenal",
+      "source_birth_date": "1998-11-05",
+      "match_method": "name_tokens",
+      "slugs": [
+        "takehiro-tomiyasu"
+      ]
+    },
+    "Tariq Lamptey": {
+      "code": 232792,
+      "source_name": "Tariq Lamptey",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2000-09-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "tariq-lamptey"
+      ]
+    },
+    "Taylor Harwood-Bellis": {
+      "code": 245719,
+      "source_name": "Taylor Harwood-Bellis",
+      "source_club": "southampton",
+      "source_birth_date": "2002-01-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "taylor-harwood-bellis"
+      ]
+    },
+    "Thiago": {
+      "code": 502500,
+      "source_name": "Igor Thiago Nascimento Rodrigues",
+      "source_club": "brentford",
+      "source_birth_date": "2001-06-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "thiago"
+      ]
+    },
+    "Thomas Partey": {
+      "code": 167199,
+      "source_name": "Thomas Partey",
+      "source_club": "arsenal",
+      "source_birth_date": "1993-06-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "thomas-partey"
+      ]
+    },
+    "Tim Iroegbunam": {
+      "code": 490094,
+      "source_name": "Tim Iroegbunam",
+      "source_club": "everton",
+      "source_birth_date": "2003-06-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "tim-iroegbunam"
+      ]
+    },
+    "Timo Werner": {
+      "code": 165153,
+      "source_name": "Timo Werner",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1996-03-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "timo-werner"
+      ]
+    },
+    "Timothy Castagne": {
+      "code": 166477,
+      "source_name": "Timothy Castagne",
+      "source_club": "fulham",
+      "source_birth_date": "1995-12-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "timothy-castagne"
+      ]
+    },
+    "Toby Collyer": {
+      "code": 490881,
+      "source_name": "Toby Collyer",
+      "source_club": "manchester-united",
+      "source_birth_date": "2004-01-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "toby-collyer"
+      ]
+    },
+    "Tom Cairney": {
+      "code": 76357,
+      "source_name": "Tom Cairney",
+      "source_club": "fulham",
+      "source_birth_date": "1991-01-20",
+      "match_method": "exact_name",
+      "slugs": [
+        "tom-cairney"
+      ]
+    },
+    "Tom King": {
+      "code": 138001,
+      "source_name": "Tom King",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1995-03-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "tom-king"
+      ]
+    },
+    "Tommy Doyle": {
+      "code": 220394,
+      "source_name": "Tommy Doyle",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-10-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "tommy-doyle"
+      ]
+    },
+    "Tomáš Souček": {
+      "code": 215439,
+      "source_name": "Tomáš Souček",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1995-02-27",
+      "match_method": "exact_name",
+      "slugs": [
+        "tomas-soucek"
+      ]
+    },
+    "Tosin Adarabioyo": {
+      "code": 109646,
+      "source_name": "Tosin Adarabioyo",
+      "source_club": "chelsea",
+      "source_birth_date": "1997-09-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "tosin-adarabioyo"
+      ]
+    },
+    "Toti Gomes": {
+      "code": 510362,
+      "source_name": "Toti António Gomes",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "1999-01-16",
+      "match_method": "name_tokens",
+      "slugs": [
+        "toti-gomes"
+      ]
+    },
+    "Trent Alexander-Arnold": {
+      "code": 169187,
+      "source_name": "Trent Alexander-Arnold",
+      "source_club": "liverpool",
+      "source_birth_date": "1998-10-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "trent-alexander-arnold"
+      ]
+    },
+    "Trevoh Chalobah": {
+      "code": 180736,
+      "source_name": "Trevoh Chalobah",
+      "source_club": "chelsea",
+      "source_birth_date": "1999-07-05",
+      "match_method": "exact_name",
+      "slugs": [
+        "trevoh-chalobah-chelsea",
+        "trevoh-chalobah-crystal-palace"
+      ]
+    },
+    "Tyler Adams": {
+      "code": 200785,
+      "source_name": "Tyler Adams",
+      "source_club": "bournemouth",
+      "source_birth_date": "1999-02-14",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyler-adams"
+      ]
+    },
+    "Tyler Dibling": {
+      "code": 496661,
+      "source_name": "Tyler Dibling",
+      "source_club": "southampton",
+      "source_birth_date": "2006-02-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyler-dibling"
+      ]
+    },
+    "Tyler Fredricson": {
+      "code": 547676,
+      "source_name": "Tyler Fredricson",
+      "source_club": "manchester-united",
+      "source_birth_date": "2005-02-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyler-fredricson"
+      ]
+    },
+    "Tyrell Malacia": {
+      "code": 222690,
+      "source_name": "Tyrell Malacia",
+      "source_club": "manchester-united",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "tyrell-malacia"
+      ]
+    },
+    "Tyrick Mitchell": {
+      "code": 244723,
+      "source_name": "Tyrick Mitchell",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1999-09-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyrick-mitchell"
+      ]
+    },
+    "Tyrique George": {
+      "code": 550615,
+      "source_name": "Tyrique George",
+      "source_club": "chelsea",
+      "source_birth_date": "2006-02-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyrique-george"
+      ]
+    },
+    "Tyrone Mings": {
+      "code": 149484,
+      "source_name": "Tyrone Mings",
+      "source_club": "aston-villa",
+      "source_birth_date": "1993-03-13",
+      "match_method": "exact_name",
+      "slugs": [
+        "tyrone-mings"
+      ]
+    },
+    "Valentino Livramento": {
+      "code": 441191,
+      "source_name": "Tino Livramento",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2002-11-12",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "valentino-livramento"
+      ]
+    },
+    "Victor Bernth Kristiansen": {
+      "code": 481510,
+      "source_name": "Victor Kristiansen",
+      "source_club": "leicester-city",
+      "source_birth_date": "2002-12-16",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "victor-bernth-kristiansen"
+      ]
+    },
+    "Victor Lindelöf": {
+      "code": 184667,
+      "source_name": "Victor Lindelöf",
+      "source_club": "manchester-united",
+      "source_birth_date": "1994-07-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "victor-lindelof"
+      ]
+    },
+    "Virgil van Dijk": {
+      "code": 97032,
+      "source_name": "Virgil van Dijk",
+      "source_club": "liverpool",
+      "source_birth_date": "1991-07-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "virgil-van-dijk"
+      ]
+    },
+    "Vitaliy Mykolenko": {
+      "code": 224967,
+      "source_name": "Vitalii Mykolenko",
+      "source_club": "everton",
+      "source_birth_date": "1999-05-29",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "vitaliy-mykolenko"
+      ]
+    },
+    "Vitaly Janelt": {
+      "code": 204580,
+      "source_name": "Vitaly Janelt",
+      "source_club": "brentford",
+      "source_birth_date": "1998-05-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "vitaly-janelt"
+      ]
+    },
+    "Vitezslav Jaros": {
+      "code": 432987,
+      "source_name": "Vítezslav Jaros",
+      "source_club": "liverpool",
+      "source_birth_date": "2001-07-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "vitezslav-jaros"
+      ]
+    },
+    "Vitor Reis": {
+      "code": 616222,
+      "source_name": "Vitor de Oliveira Nunes dos Reis",
+      "source_club": "manchester-city",
+      "source_birth_date": "2006-01-12",
+      "match_method": "exact_name",
+      "slugs": [
+        "vitor-reis"
+      ]
+    },
+    "Vladimír Coufal": {
+      "code": 164555,
+      "source_name": "Vladimír Coufal",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1992-08-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "vladimir-coufal"
+      ]
+    },
+    "Wataru Endo": {
+      "code": 158983,
+      "source_name": "Endo Wataru",
+      "source_club": "liverpool",
+      "source_birth_date": "1993-02-09",
+      "match_method": "name_tokens",
+      "slugs": [
+        "wataru-endo"
+      ]
+    },
+    "Welington": {
+      "code": 500016,
+      "source_name": "Welington Damascena Santos",
+      "source_club": "southampton",
+      "source_birth_date": "2001-02-19",
+      "match_method": "exact_name",
+      "slugs": [
+        "welington"
+      ]
+    },
+    "Wes Burns": {
+      "code": 149929,
+      "source_name": "Wes Burns",
+      "source_club": "ipswich-town",
+      "source_birth_date": "1994-11-23",
+      "match_method": "exact_name",
+      "slugs": [
+        "wes-burns"
+      ]
+    },
+    "Wesley Fofana": {
+      "code": 444463,
+      "source_name": "Wesley Fofana",
+      "source_club": "chelsea",
+      "source_birth_date": "2000-12-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "wesley-fofana"
+      ]
+    },
+    "Wilfred Ndidi": {
+      "code": 203341,
+      "source_name": "Wilfred Ndidi",
+      "source_club": "leicester-city",
+      "source_birth_date": "1996-12-16",
+      "match_method": "exact_name",
+      "slugs": [
+        "wilfred-ndidi"
+      ]
+    },
+    "Will Alves": {
+      "code": 532534,
+      "source_name": "Will Alves",
+      "source_club": "leicester-city",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "will-alves"
+      ]
+    },
+    "Will Hughes": {
+      "code": 108413,
+      "source_name": "Will Hughes",
+      "source_club": "crystal-palace",
+      "source_birth_date": "1995-04-17",
+      "match_method": "exact_name",
+      "slugs": [
+        "will-hughes"
+      ]
+    },
+    "Will Lankshear": {
+      "code": 552427,
+      "source_name": "Will Lankshear",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": null,
+      "match_method": "exact_name",
+      "slugs": [
+        "will-lankshear"
+      ]
+    },
+    "William Osula": {
+      "code": 538207,
+      "source_name": "William Osula",
+      "source_club": "newcastle-united",
+      "source_birth_date": "2003-08-04",
+      "match_method": "exact_name",
+      "slugs": [
+        "william-osula"
+      ]
+    },
+    "William Saliba": {
+      "code": 462424,
+      "source_name": "William Saliba",
+      "source_club": "arsenal",
+      "source_birth_date": "2001-03-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "william-saliba"
+      ]
+    },
+    "William Smallbone": {
+      "code": 214466,
+      "source_name": "Will Smallbone",
+      "source_club": "southampton",
+      "source_birth_date": "2000-02-21",
+      "match_method": "reviewed_alias",
+      "slugs": [
+        "william-smallbone"
+      ]
+    },
+    "Willian": {
+      "code": 47431,
+      "source_name": "Willian Borges da Silva",
+      "source_club": "fulham",
+      "source_birth_date": "1988-08-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "willian"
+      ]
+    },
+    "Willy Boly": {
+      "code": 90585,
+      "source_name": "Willy Boly",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1991-02-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "willy-boly"
+      ]
+    },
+    "Wilson Odobert": {
+      "code": 550839,
+      "source_name": "Wilson Odobert",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "2004-11-28",
+      "match_method": "exact_name",
+      "slugs": [
+        "wilson-odobert"
+      ]
+    },
+    "Wout Faes": {
+      "code": 218218,
+      "source_name": "Wout Faes",
+      "source_club": "leicester-city",
+      "source_birth_date": "1998-04-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "wout-faes"
+      ]
+    },
+    "Woyo Coulibaly": {
+      "code": 488439,
+      "source_name": "Woyo Coulibaly",
+      "source_club": "leicester-city",
+      "source_birth_date": "1999-05-26",
+      "match_method": "exact_name",
+      "slugs": [
+        "woyo-coulibaly"
+      ]
+    },
+    "Yankuba Minteh": {
+      "code": 592031,
+      "source_name": "Yankuba Minteh",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2004-07-22",
+      "match_method": "exact_name",
+      "slugs": [
+        "yankuba-minteh"
+      ]
+    },
+    "Yasin Ayari": {
+      "code": 509416,
+      "source_name": "Yasin Ayari",
+      "source_club": "brighton-and-hove-albion",
+      "source_birth_date": "2003-10-06",
+      "match_method": "exact_name",
+      "slugs": [
+        "yasin-ayari"
+      ]
+    },
+    "Yehor Yarmoliuk": {
+      "code": 508395,
+      "source_name": "Yehor Yarmoliuk",
+      "source_club": "brentford",
+      "source_birth_date": "2004-03-01",
+      "match_method": "exact_name",
+      "slugs": [
+        "yehor-yarmoliuk"
+      ]
+    },
+    "Yerson Mosquera": {
+      "code": 501837,
+      "source_name": "Yerson Mosquera",
+      "source_club": "wolverhampton-wanderers",
+      "source_birth_date": "2001-05-02",
+      "match_method": "exact_name",
+      "slugs": [
+        "yerson-mosquera"
+      ]
+    },
+    "Yoane Wissa": {
+      "code": 216646,
+      "source_name": "Yoane Wissa",
+      "source_club": "brentford",
+      "source_birth_date": "1996-09-03",
+      "match_method": "exact_name",
+      "slugs": [
+        "yoane-wissa"
+      ]
+    },
+    "Youri Tielemans": {
+      "code": 166989,
+      "source_name": "Youri Tielemans",
+      "source_club": "aston-villa",
+      "source_birth_date": "1997-05-07",
+      "match_method": "exact_name",
+      "slugs": [
+        "youri-tielemans"
+      ]
+    },
+    "Youssef Chermiti": {
+      "code": 491012,
+      "source_name": "Youssef Ramalho Chermiti",
+      "source_club": "everton",
+      "source_birth_date": "2004-05-24",
+      "match_method": "name_tokens",
+      "slugs": [
+        "youssef-chermiti"
+      ]
+    },
+    "Yukinari Sugawara": {
+      "code": 219279,
+      "source_name": "Sugawara Yukinari",
+      "source_club": "southampton",
+      "source_birth_date": "2000-06-28",
+      "match_method": "name_tokens",
+      "slugs": [
+        "yukinari-sugawara"
+      ]
+    },
+    "Yunus Emre Konak": {
+      "code": 628204,
+      "source_name": "Yunus Emre Konak",
+      "source_club": "brentford",
+      "source_birth_date": "2006-01-10",
+      "match_method": "exact_name",
+      "slugs": [
+        "yunus-emre-konak"
+      ]
+    },
+    "Yves Bissouma": {
+      "code": 227127,
+      "source_name": "Yves Bissouma",
+      "source_club": "tottenham-hotspur",
+      "source_birth_date": "1996-08-30",
+      "match_method": "exact_name",
+      "slugs": [
+        "yves-bissouma"
+      ]
+    },
+    "Zain Silcott-Duberry": {
+      "code": 530121,
+      "source_name": "Zain Silcott-Duberry",
+      "source_club": "bournemouth",
+      "source_birth_date": "2005-07-09",
+      "match_method": "exact_name",
+      "slugs": [
+        "zain-silcott-duberry"
+      ]
+    },
+    "Álex Moreno": {
+      "code": 106468,
+      "source_name": "Álex Moreno Lopera",
+      "source_club": "nottingham-forest",
+      "source_birth_date": "1993-06-08",
+      "match_method": "exact_name",
+      "slugs": [
+        "alex-moreno"
+      ]
+    },
+    "İlkay Gündoğan": {
+      "code": 59859,
+      "source_name": "Ilkay Gündogan",
+      "source_club": "manchester-city",
+      "source_birth_date": "1990-10-24",
+      "match_method": "exact_name",
+      "slugs": [
+        "ilkay-gundogan"
+      ]
+    },
+    "Łukasz Fabiański": {
+      "code": 37096,
+      "source_name": "Łukasz Fabiański",
+      "source_club": "west-ham-united",
+      "source_birth_date": "1985-04-18",
+      "match_method": "exact_name",
+      "slugs": [
+        "ukasz-fabianski"
+      ]
+    }
+  }
+}

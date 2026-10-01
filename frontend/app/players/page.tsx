@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { PlayerRadar } from "../../components/players/player-radar";
+import { PlayerPortrait } from "../../components/players/player-portrait";
 import { SiteHeader } from "../../components/system/site-header";
 import { getPlayer, getPlayers } from "../../services/api";
 import type {
@@ -41,15 +42,6 @@ function defaultDirection(key: PlayerSortKey): PlayerSortOrder {
   return key === "full_name" || key === "club" || key === "position"
     ? "asc"
     : "desc";
-}
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 3)
-    .toUpperCase();
 }
 
 export default function PlayersPage() {
@@ -410,16 +402,12 @@ export default function PlayersPage() {
                               className="player-name-cell"
                               href={`/players/${player.slug}`}
                             >
-                              <span
-                                style={
-                                  {
-                                    "--player-club-color":
-                                      player.club.primary_color,
-                                  } as CSSProperties
-                                }
-                              >
-                                {initials(player.full_name)}
-                              </span>
+                              <PlayerPortrait
+                                color={player.club.primary_color}
+                                name={player.full_name}
+                                size="sm"
+                                slug={player.slug}
+                              />
                               <strong>{player.full_name}</strong>
                             </Link>
                           </td>
@@ -527,7 +515,7 @@ export default function PlayersPage() {
                         </button>
                       </div>
                       <div className="compare-player-identity">
-                        <span>{initials(player.full_name)}</span>
+                        <PlayerPortrait color={player.club.primary_color} name={player.full_name} size="md" slug={player.slug} />
                         <div>
                           <h3>{player.full_name}</h3>
                           <p>

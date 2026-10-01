@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
 import { PlayerRadar } from "../../../components/players/player-radar";
+import { PlayerPortrait } from "../../../components/players/player-portrait";
 import { SiteHeader } from "../../../components/system/site-header";
 import { getPlayer, getSimilarPlayers } from "../../../services/api";
 import type {
@@ -43,15 +44,6 @@ const metrics: Array<{ key: MetricKey; label: string; hint: string }> = [
   },
   { key: "expected_goals_per90", label: "预期进球", hint: "xG / 90" },
 ];
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 3)
-    .toUpperCase();
-}
 
 function formatBirthDate(value: string | null, birthYear: number | null) {
   if (!value) {
@@ -182,9 +174,9 @@ export default function PlayerDetailPage() {
             }
           >
             <section className="player-profile-hero">
-              <div className="player-profile-mark" aria-hidden="true">
-                <span>{player.shirt_number ?? "—"}</span>
-                <strong>{initials(player.full_name)}</strong>
+              <div className="player-profile-photo">
+                <PlayerPortrait color={player.club.primary_color} name={player.full_name} priority size="hero" slug={player.slug} />
+                {player.shirt_number != null && <span className="player-profile-shirt">#{player.shirt_number}</span>}
               </div>
               <div className="player-profile-copy">
                 <p className="eyebrow">PLAYER PROFILE · {player.season}</p>
@@ -400,7 +392,7 @@ export default function PlayerDetailPage() {
                                   className="similarity-player-identity"
                                   href={`/players/${candidate.player.slug}`}
                                 >
-                                  <span>{initials(candidate.player.full_name)}</span>
+                                  <PlayerPortrait color={candidate.player.club.primary_color} name={candidate.player.full_name} size="sm" slug={candidate.player.slug} />
                                   <div>
                                     <h3>{candidate.player.full_name}</h3>
                                     <p>

@@ -1,8 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { RELEASE_LABEL } from "../../lib/product";
 
 export function SiteHeader({ className }: { className?: string }) {
+  const pathname = usePathname();
+  const navItems = [
+    { href: "/players", label: "球员" },
+    { href: "/#club-map", label: "球队地图" },
+    { href: "/matches", label: "比赛" },
+    { href: "/timeline", label: "赛季时间轴" },
+    { href: "/squad", label: "阵容透镜" },
+    { href: "/copilot", label: "AI 助手" },
+  ];
+
   return (
     <header className={["site-header", className].filter(Boolean).join(" ")}>
       <Link className="brand" href="/" aria-label="英超智析 Agent 首页">
@@ -14,13 +27,16 @@ export function SiteHeader({ className }: { className?: string }) {
           <small>Premier League Insight Agent</small>
         </span>
       </Link>
-      <nav className="site-utility-nav" aria-label="项目工具">
-        <Link href="/timeline">赛季时间轴</Link>
-        <Link href="/briefing">球队情报室</Link>
-        <Link href="/transfer">候选信号</Link>
-        <Link href="/squad">阵容透镜</Link>
-        <Link href="/matchup">球队对阵</Link>
-        <Link href="/evidence">数据证据</Link>
+      <nav className="site-utility-nav" aria-label="主要功能">
+        {navItems.map((item) => (
+          <Link
+            aria-current={pathname === item.href ? "page" : undefined}
+            href={item.href}
+            key={item.href}
+          >
+            {item.label}
+          </Link>
+        ))}
         <span className="phase-badge">{RELEASE_LABEL}</span>
       </nav>
     </header>

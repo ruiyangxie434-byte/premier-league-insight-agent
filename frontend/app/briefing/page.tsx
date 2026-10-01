@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { SiteHeader } from "../../components/system/site-header";
+import { PlayerPortrait } from "../../components/players/player-portrait";
 import { getClubBriefing, getClubs } from "../../services/api";
 import type {
   ClubBriefingData,
@@ -227,7 +228,7 @@ export default function BriefingPage() {
                   <article key={leader.metric}>
                     <span>{leader.label}</span>
                     <strong>{leader.value}<small>{leader.unit}</small></strong>
-                    <Link href={`/players/${leader.player.slug}`}>{leader.player.full_name}</Link>
+                    <Link className="briefing-leader-player" href={`/players/${leader.player.slug}`}><PlayerPortrait color={data.club.primary_color} name={leader.player.full_name} size="sm" slug={leader.player.slug} /><span>{leader.player.full_name}</span></Link>
                   </article>
                 ))}
               </div>

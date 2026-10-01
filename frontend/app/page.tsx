@@ -3,114 +3,130 @@ import Link from "next/link";
 import { AnalysisAgent } from "../components/agent/analysis-agent";
 import { StageTwoData } from "../components/data/stage-two-data";
 import { EnglandClubMap } from "../components/map/england-club-map";
+import { PlayerPortrait } from "../components/players/player-portrait";
 import { BackendStatus } from "../components/system/backend-status";
 import { SiteHeader } from "../components/system/site-header";
 
-const futureModules = [
+const workspaces = [
   {
-    phase: "v0.19 已上线",
-    title: "Season Timeline Lab",
-    description: "38 轮动态积分榜、排名轨迹、榜首更替与五轮状态已完成历史重建。",
+    number: "01",
+    eyebrow: "PLAYER LAB",
+    title: "球员观察",
+    description: "从个人表现、雷达画像到球员对比，找到数据背后的特点。",
+    href: "/players",
+    action: "进入球员实验室",
+    links: [{ label: "球员对比", href: "/players?compare=bukayo-saka,cole-palmer" }, { label: "相似球员", href: "/players" }],
   },
   {
-    phase: "数据下一步",
-    title: "多赛季对照",
-    description: "在保留数据许可、赛季边界和转会分段的前提下，扩展跨赛季变化分析。",
+    number: "02",
+    eyebrow: "CLUB ROOM",
+    title: "球队研究",
+    description: "看主场位置、阵容构成、对阵表现与球队情报简报。",
+    href: "#club-map",
+    action: "浏览英格兰球队",
+    links: [{ label: "阵容透镜", href: "/squad" }, { label: "球队对阵", href: "/matchup" }, { label: "情报简报", href: "/briefing" }],
   },
   {
-    phase: "v1.0 目标",
-    title: "在线演示发布",
-    description: "完成安全部署、最终回归测试和首个可公开访问版本。",
+    number: "03",
+    eyebrow: "SEASON REVIEW",
+    title: "赛季复盘",
+    description: "沿着赛季时间轴回看积分变化、状态起伏与比赛结果。",
+    href: "/timeline",
+    action: "打开赛季时间轴",
+    links: [{ label: "比赛记录", href: "/matches" }, { label: "近期状态", href: "/form" }, { label: "候选信号", href: "/transfer" }],
+  },
+  {
+    number: "04",
+    eyebrow: "AI WORKBENCH",
+    title: "AI 分析工作台",
+    description: "用自然语言提问，让 Agent 调用工具并给出可核查的证据。",
+    href: "#analysis-agent",
+    action: "体验分析 Agent",
+    links: [{ label: "League Copilot", href: "/copilot" }, { label: "数据来源", href: "/evidence" }],
   },
 ];
 
 export default function Home() {
   return (
     <main>
-      <div className="page-shell">
+      <div className="page-shell home-shell">
         <SiteHeader />
 
-        <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-copy">
-            <p className="eyebrow">
-              Premier League · Geography · Data · Agent
-            </p>
+        <section className="home-hero" aria-labelledby="hero-title">
+          <div className="home-hero-copy">
+            <p className="eyebrow">THE 2024—25 PREMIER LEAGUE, THROUGH DATA</p>
             <h1 id="hero-title">
-              先从主场出发，
-              <span>再让数据回答。</span>
+              看见球员，
+              <span>读懂比赛。</span>
             </h1>
-            <p className="hero-description">
-              在英格兰地图上探索球队与球场，再让英超智析 Agent
-              调用受控数据工具，查询球员、赛季与比赛证据，再生成可核查的中文分析。
+            <p className="home-hero-description">
+              从每一位球员的赛季表现出发，把英超地图、球队、比赛与数据证据连成一条清晰的探索路径。
             </p>
-            <div className="hero-actions">
-              <a className="primary-button" href="#club-map">
-                探索英格兰球场
-              </a>
-              <Link className="secondary-button" href="/players">
-                打开球员实验室
-              </Link>
-              <Link className="secondary-button" href="/matches">
-                打开比赛实验室
-              </Link>
-              <Link className="secondary-button" href="/form">
-                打开赛季状态实验室
-              </Link>
-              <Link className="secondary-button" href="/timeline">
-                打开赛季时间轴
-              </Link>
-              <Link className="secondary-button" href="/matchup">
-                打开球队对阵实验室
-              </Link>
-              <Link className="secondary-button" href="/squad">
-                打开阵容透镜
-              </Link>
-              <Link className="secondary-button" href="/transfer">
-                打开候选信号
-              </Link>
-              <Link className="secondary-button" href="/briefing">
-                生成球队情报简报
-              </Link>
-              <Link className="secondary-button" href="/copilot">
-                体验 League Copilot
-              </Link>
-              <Link className="secondary-button" href="/evidence">
-                核验数据证据
-              </Link>
-              <a className="secondary-button" href="#analysis-agent">
-                体验分析 Agent
-              </a>
+            <div className="home-hero-actions">
+              <Link className="primary-button" href="/players">认识球员</Link>
+              <a className="secondary-button" href="#workspace-grid">浏览全部功能 <span aria-hidden="true">↓</span></a>
+            </div>
+            <div className="home-season-facts" aria-label="数据范围">
+              <div><strong>20</strong><span>支英超球队</span></div>
+              <div><strong>562</strong><span>位球员</span></div>
+              <div><strong>380</strong><span>场联赛比赛</span></div>
+              <small>2024—25 赛季数据</small>
             </div>
           </div>
 
-          <BackendStatus />
+          <div className="home-hero-art" aria-label="英超球员照片">
+            <div className="home-hero-orbit" aria-hidden="true" />
+            <div className="home-player home-player--left">
+              <PlayerPortrait slug="bukayo-saka" name="Bukayo Saka" color="#ef0107" size="hero" priority />
+              <span>BUKAYO SAKA <small>ARSENAL</small></span>
+            </div>
+            <div className="home-player home-player--center">
+              <PlayerPortrait slug="erling-haaland" name="Erling Haaland" color="#6caddf" size="hero" priority />
+              <span>ERLING HAALAND <small>MANCHESTER CITY</small></span>
+            </div>
+            <div className="home-player home-player--right">
+              <PlayerPortrait slug="mohamed-salah" name="Mohamed Salah" color="#c8102e" size="hero" priority />
+              <span>MOHAMED SALAH <small>LIVERPOOL</small></span>
+            </div>
+            <div className="home-hero-stamp"><span>PL</span><small>DATA<br />SEASON<br />24 / 25</small></div>
+          </div>
         </section>
 
-        <EnglandClubMap />
-
-        <AnalysisAgent />
-
-        <StageTwoData />
-
-        <section className="module-section" id="roadmap" aria-labelledby="roadmap-title">
-          <div className="section-heading">
+        <section className="workspace-section" id="workspace-grid" aria-labelledby="workspace-title">
+          <div className="workspace-heading">
             <div>
-              <p className="eyebrow">BUILD ROADMAP</p>
-              <h2 id="roadmap-title">接下来做什么</h2>
+              <p className="eyebrow">YOUR PREMIER LEAGUE WORKSPACE</p>
+              <h2 id="workspace-title">想看什么，从这里开始</h2>
             </div>
-            <p>地图、球员分析、赛季赛果、38 轮动态排名、单场事件、相似度、球队对阵、阵容透镜、候选信号、可打印球队简报、真实工具调用与统一证据目录已经打通，下一步面向 v1.0 发布。</p>
+            <p>四个方向，一眼找到下一步。</p>
           </div>
-
-          <div className="module-grid">
-            {futureModules.map((module) => (
-              <article className="module-card" key={module.phase}>
-                <span>{module.phase}</span>
-                <h3>{module.title}</h3>
-                <p>{module.description}</p>
+          <div className="workspace-grid">
+            {workspaces.map((workspace) => (
+              <article className="workspace-card" key={workspace.number}>
+                <div className="workspace-card-top"><span>{workspace.eyebrow}</span><span>{workspace.number}</span></div>
+                <h3>{workspace.title}</h3>
+                <p>{workspace.description}</p>
+                <Link className="workspace-card-action" href={workspace.href}>{workspace.action}<span aria-hidden="true">↗</span></Link>
+                <div className="workspace-card-links">
+                  {workspace.links.map((item) => <Link href={item.href} key={item.label}>{item.label}</Link>)}
+                </div>
               </article>
             ))}
           </div>
         </section>
+
+        <EnglandClubMap />
+        <AnalysisAgent />
+        <StageTwoData />
+
+        <footer className="home-footer">
+          <div><strong>英超智析 Agent</strong><span>历史赛季数据 · 可追溯来源 · 2024—25</span></div>
+          <details className="home-system-details">
+            <summary>连接与版本</summary>
+            <BackendStatus />
+          </details>
+          <Link href="/evidence">查看数据来源 <span aria-hidden="true">↗</span></Link>
+        </footer>
       </div>
     </main>
   );

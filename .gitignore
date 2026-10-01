@@ -48,6 +48,7 @@ data/processed/*
 !data/processed/.gitkeep
 !data/processed/kaggle_pl_players_2024_25.json
 !data/processed/openfootball_pl_2024_25.json
+!data/processed/player_portraits_2024_25.json
 !data/processed/statsbomb_match_3749448.json
 
 # IDE and operating system

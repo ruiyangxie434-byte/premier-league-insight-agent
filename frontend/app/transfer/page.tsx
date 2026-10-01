@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { SiteHeader } from "../../components/system/site-header";
+import { PlayerPortrait } from "../../components/players/player-portrait";
 import { getClubs, getTransferSignals } from "../../services/api";
 import type {
   ClubSummary,
@@ -237,9 +238,12 @@ export default function TransferPage() {
                             <small>SIGNAL</small>
                           </div>
                         </header>
-                        <Link href={`/players/${candidate.slug}`}>
+                        <Link className="transfer-candidate-player" href={`/players/${candidate.slug}`}>
+                          <PlayerPortrait color={candidate.club.primary_color} name={candidate.full_name} size="md" slug={candidate.slug} />
+                          <span>
                           {candidate.full_name}
                           <small>{candidate.club.short_name} · {candidate.nationality}</small>
+                          </span>
                         </Link>
                         <dl>
                           <div><dt>分钟</dt><dd>{formatNumber(candidate.minutes)}</dd></div>

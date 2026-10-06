@@ -693,6 +693,8 @@ export interface PlayerPercentileProfile {
 }
 
 export interface PlayerLabItem {
+  photo_url?: string | null;
+  photo_urls?: string[];
   id: number;
   full_name: string;
   slug: string;

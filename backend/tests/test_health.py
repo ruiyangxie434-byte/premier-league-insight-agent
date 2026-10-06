@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.core.config import Settings
+from app.core.config import APP_VERSION, Settings
 from app.main import app
 
 client = TestClient(app)
@@ -17,7 +17,7 @@ def test_health_check_returns_unified_response() -> None:
             "service": "Premier League Insight Agent API",
             "status": "healthy",
             "environment": "development",
-            "version": "0.20.0",
+            "version": APP_VERSION,
         },
     }
 

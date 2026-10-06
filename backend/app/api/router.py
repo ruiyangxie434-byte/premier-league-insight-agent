@@ -20,3 +20,8 @@ api_router.include_router(players_router)
 api_router.include_router(matches_router)
 api_router.include_router(agent_router)
 api_router.include_router(copilot_router)
+
+from app.api.routes.auth import router as auth_router
+from app.api.routes.hub import router as hub_router
+api_router.include_router(auth_router)
+api_router.include_router(hub_router)

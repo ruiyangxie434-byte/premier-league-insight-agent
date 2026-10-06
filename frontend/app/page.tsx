@@ -14,6 +14,7 @@ const workspaces = [
     title: "球员观察",
     description: "从个人表现、雷达画像到球员对比，找到数据背后的特点。",
     href: "/players",
+    audience: "适合：球员表现与风格对比",
     action: "进入球员实验室",
     links: [{ label: "球员对比", href: "/players?compare=bukayo-saka,cole-palmer" }, { label: "相似球员", href: "/players" }],
   },
@@ -23,6 +24,7 @@ const workspaces = [
     title: "球队研究",
     description: "看主场位置、阵容构成、对阵表现与球队情报简报。",
     href: "#club-map",
+    audience: "适合：球队与主场探索",
     action: "浏览英格兰球队",
     links: [{ label: "阵容透镜", href: "/squad" }, { label: "球队对阵", href: "/matchup" }, { label: "情报简报", href: "/briefing" }],
   },
@@ -30,9 +32,10 @@ const workspaces = [
     number: "03",
     eyebrow: "SEASON REVIEW",
     title: "赛季复盘",
-    description: "沿着赛季时间轴回看积分变化、状态起伏与比赛结果。",
-    href: "/timeline",
-    action: "打开赛季时间轴",
+    description: "横向对照历史积分、进失球与赛果，再沿时间轴复盘。",
+    href: "/history",
+    audience: "适合：跨赛季趋势与胜平负概率",
+    action: "打开多赛季档案",
     links: [{ label: "比赛记录", href: "/matches" }, { label: "近期状态", href: "/form" }, { label: "候选信号", href: "/transfer" }],
   },
   {
@@ -41,6 +44,7 @@ const workspaces = [
     title: "AI 分析工作台",
     description: "用自然语言提问，让 Agent 调用工具并给出可核查的证据。",
     href: "#analysis-agent",
+    audience: "适合：带证据的问答与分析",
     action: "体验分析 Agent",
     links: [{ label: "League Copilot", href: "/copilot" }, { label: "数据来源", href: "/evidence" }],
   },
@@ -98,7 +102,7 @@ export default function Home() {
               <p className="eyebrow">YOUR PREMIER LEAGUE WORKSPACE</p>
               <h2 id="workspace-title">想看什么，从这里开始</h2>
             </div>
-            <p>四个方向，一眼找到下一步。</p>
+            <p>四个方向并排对照 · 手机上左右滑动</p>
           </div>
           <div className="workspace-grid">
             {workspaces.map((workspace) => (
@@ -106,6 +110,7 @@ export default function Home() {
                 <div className="workspace-card-top"><span>{workspace.eyebrow}</span><span>{workspace.number}</span></div>
                 <h3>{workspace.title}</h3>
                 <p>{workspace.description}</p>
+                <p className="workspace-audience">{workspace.audience}</p>
                 <Link className="workspace-card-action" href={workspace.href}>{workspace.action}<span aria-hidden="true">↗</span></Link>
                 <div className="workspace-card-links">
                   {workspace.links.map((item) => <Link href={item.href} key={item.label}>{item.label}</Link>)}
@@ -115,6 +120,7 @@ export default function Home() {
           </div>
         </section>
 
+        <div className="home-extra-links" aria-label="新增功能"><Link href="/live">比赛中心 · 比分 / 新闻 / 动态 ↗</Link><Link href="/history">多赛季历史与预测 ↗</Link><Link href="/account">登录 / 注册 ↗</Link></div>
         <EnglandClubMap />
         <AnalysisAgent />
         <StageTwoData />

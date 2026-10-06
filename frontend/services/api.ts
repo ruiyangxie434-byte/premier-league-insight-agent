@@ -40,15 +40,8 @@ export function getApiBaseUrl(): string {
   if (CONFIGURED_API_BASE_URL) {
     return CONFIGURED_API_BASE_URL;
   }
-  if (typeof window !== "undefined") {
-    const hostname = ["localhost", "127.0.0.1"].includes(
-      window.location.hostname,
-    )
-      ? window.location.hostname
-      : "localhost";
-    return `http://${hostname}:8000/api`;
-  }
-  return "http://localhost:8000/api";
+  // Next proxies same-origin requests; this also works over HTTPS and on phones.
+  return "/api";
 }
 
 export function getEvidenceCatalog(

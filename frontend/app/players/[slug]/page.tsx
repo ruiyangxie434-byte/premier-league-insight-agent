@@ -175,7 +175,7 @@ export default function PlayerDetailPage() {
           >
             <section className="player-profile-hero">
               <div className="player-profile-photo">
-                <PlayerPortrait color={player.club.primary_color} name={player.full_name} priority size="hero" slug={player.slug} />
+                <PlayerPortrait color={player.club.primary_color} name={player.full_name} priority size="hero" slug={player.slug} photoUrl={player.photo_url} photoUrls={player.photo_urls} />
                 {player.shirt_number != null && <span className="player-profile-shirt">#{player.shirt_number}</span>}
               </div>
               <div className="player-profile-copy">
@@ -392,7 +392,7 @@ export default function PlayerDetailPage() {
                                   className="similarity-player-identity"
                                   href={`/players/${candidate.player.slug}`}
                                 >
-                                  <PlayerPortrait color={candidate.player.club.primary_color} name={candidate.player.full_name} size="sm" slug={candidate.player.slug} />
+                                  <PlayerPortrait color={candidate.player.club.primary_color} name={candidate.player.full_name} size="sm" slug={candidate.player.slug} photoUrl={candidate.player.photo_url} photoUrls={candidate.player.photo_urls} />
                                   <div>
                                     <h3>{candidate.player.full_name}</h3>
                                     <p>

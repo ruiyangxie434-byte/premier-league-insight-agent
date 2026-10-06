@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-APP_VERSION = "0.20.0"
+APP_VERSION = "0.21.0"
 
 
 class Settings(BaseSettings):
@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     )
     qwen_model: str = "qwen-plus"
     qwen_timeout_seconds: float = 20.0
+    api_football_key: str | None = None
+    live_poll_seconds: int = 60
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -406,7 +406,7 @@ export default function PlayersPage() {
                                 color={player.club.primary_color}
                                 name={player.full_name}
                                 size="sm"
-                                slug={player.slug}
+                                slug={player.slug} photoUrl={player.photo_url} photoUrls={player.photo_urls}
                               />
                               <strong>{player.full_name}</strong>
                             </Link>
@@ -515,7 +515,7 @@ export default function PlayersPage() {
                         </button>
                       </div>
                       <div className="compare-player-identity">
-                        <PlayerPortrait color={player.club.primary_color} name={player.full_name} size="md" slug={player.slug} />
+                        <PlayerPortrait color={player.club.primary_color} name={player.full_name} size="md" slug={player.slug} photoUrl={player.photo_url} photoUrls={player.photo_urls} />
                         <div>
                           <h3>{player.full_name}</h3>
                           <p>

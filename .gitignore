@@ -70,3 +70,7 @@ work/
 
 # Local handoff archives
 *.zip
+
+# Reproducible public multi-season archive
+!data/processed/history/
+!data/processed/history/*.json

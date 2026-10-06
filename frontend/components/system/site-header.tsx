@@ -11,8 +11,9 @@ export function SiteHeader({ className }: { className?: string }) {
     { href: "/players", label: "球员" },
     { href: "/#club-map", label: "球队地图" },
     { href: "/matches", label: "比赛" },
-    { href: "/timeline", label: "赛季时间轴" },
-    { href: "/squad", label: "阵容透镜" },
+    { href: "/history", label: "多赛季" },
+    { href: "/live", label: "比赛中心" },
+    { href: "/account", label: "登录 / 注册" },
     { href: "/copilot", label: "AI 助手" },
   ];
 

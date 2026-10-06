@@ -1,4 +1,5 @@
-"""Database models will be introduced in stage 2."""
+"""Football data and account persistence models."""
+from app.models.account import Account, AccountSession
 from app.models.agent_run import AgentRun
 from app.models.club import Club
 from app.models.match import Match
@@ -8,6 +9,8 @@ from app.models.player_season_stat import PlayerSeasonStat
 from app.models.standing import Standing
 
 __all__ = [
+    "Account",
+    "AccountSession",
     "AgentRun",
     "Club",
     "Match",

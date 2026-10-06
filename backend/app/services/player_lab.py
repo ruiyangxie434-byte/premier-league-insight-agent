@@ -17,6 +17,7 @@ from app.schemas.player import (
     PlayerSimilarityDifference,
     PlayerSimilarityMetricWeight,
 )
+from app.services.player_portraits import portrait_urls
 from app.services.player_metrics import (
     PER90_METRIC_KEYS,
     PlayerSnapshot,
@@ -134,6 +135,8 @@ def _to_item(
     return PlayerLabItem(
         id=player.id,
         full_name=player.full_name,
+        photo_url=next(iter(portrait_urls(player.slug)), None),
+        photo_urls=portrait_urls(player.slug),
         slug=player.slug,
         shirt_number=player.shirt_number,
         position=player.position,

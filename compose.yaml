@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DEBUG: "false"
+      FRONTEND_ORIGINS: https://${PUBLIC_HOST:?Set PUBLIC_HOST in the root .env}
+      DATABASE_URL: sqlite:////app/storage/pl_geo_analytics.db
+      API_FOOTBALL_KEY: ${API_FOOTBALL_KEY:-}
+      LIVE_POLL_SECONDS: ${LIVE_POLL_SECONDS:-60}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+    volumes:
+      - database:/app/storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      retries: 5
+      start_period: 60s
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        API_INTERNAL_URL: http://backend:8000
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?Set PUBLIC_HOST}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+volumes:
+  database:
+  caddy_data:
+  caddy_config:

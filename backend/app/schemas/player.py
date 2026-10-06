@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 PlayerPosition = Literal["FWD", "MID", "DEF", "GK"]
@@ -71,6 +71,8 @@ class PlayerPercentileProfile(BaseModel):
 
 
 class PlayerLabItem(BaseModel):
+    photo_url: str | None = None
+    photo_urls: list[str] = Field(default_factory=list)
     id: int
     full_name: str
     slug: str
